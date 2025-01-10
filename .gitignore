@@ -1,0 +1,5 @@
+node_modules/
+dist/
+# Auto-generated type declarations
+auto-imports.d.ts
+components.d.ts
