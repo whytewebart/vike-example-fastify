@@ -1,5 +1,21 @@
 <template>
   <h1 class="font-urbanist">Welcome</h1>
+  <div class="my-16">
+    <p class="text-xl font-bold">
+      FASTIFY + VIKE JS
+      <span class="text-base font-400 block">
+        fastify-autoload
+        <br>
+        fastify-env
+        <br>
+        <a href="/__routes__" text-red>server-routes</a>
+        <br>
+        ajv validator
+        <br>
+        
+      </span>
+    </p>
+  </div>
   <h2 class="font-urbanist font-semibold text-2xl">All elements in this page are nested in the viewport (class), which is provided by the breakout preset, the viewport class is formed like so</h2>
   <pre class="my-6">
     bk-container-[nav,full,max,min]
