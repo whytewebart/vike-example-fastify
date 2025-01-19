@@ -60,7 +60,6 @@ export default defineConfig({
     // ------------
     viewport:
       "bk-container-[nav,full,max,min] bk-values-nav-1130 bk-content-585 bk-values-min-620 bk-values-full-900 bk-values-max-790 [&_>_*]:bk-col-content",
-    "bk-root": "viewport bk-col-root!",
     "router-link-active": "text-gray-7",
   },
   // ...UnoCSS options
@@ -114,10 +113,7 @@ export default defineConfig({
   layers: {
     layout: -1,
   },
-  transformers: [
-    // @ts-ignore
-    transformerDirectives(),
-  ],
+  transformers: [transformerDirectives()],
   content: {
     pipeline: {
       include: [

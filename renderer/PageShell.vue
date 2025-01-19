@@ -72,4 +72,3 @@ body.page-is-transitioning #view-content {
   margin-bottom: 10px;
 }
 </style>
-

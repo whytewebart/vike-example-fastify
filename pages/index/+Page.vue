@@ -50,11 +50,20 @@
   <div class="w-full h-20 bg-red bk-col-min!">
     <p class="text-3xl">This element is within the min grid</p>
   </div>
-  <div class="w-full h-20 bg-blue bk-col-max!"></div>
-  <div class="w-full h-20 bg-violet bk-col-full!"></div>
-  <div class="w-full h-20 bg-gray bk-col-root!"></div>
+  <div class="w-full h-20 bg-blue bk-col-max!">
+    <p class="text-3xl">This element is within the max grid</p>
+  </div>
+  <div class="w-full h-20 bg-violet bk-col-full!">
+    <p class="text-3xl">This element is within the full grid</p>
+  </div>
+  <div class="w-full h-20 bg-orange bk-col-nav!">
+    <p class="text-3xl">This element is within the nav grid</p>
+  </div>
+  <div class="w-full h-20 bg-gray bk-col-root!">
+    <p class="text-3xl">This element is within the root grid</p>
+  </div>
 
-  <div class="mt-12 min-h-20 bg-green bk-col-full! bk-inherit">
+  <div class="mt-12 min-h-20 bg-green bk-container-inherit">
     <p class="text-2xl mb-7">
       <span class="font-bold">bk-inherit</span> inherits the grid column of the parent (viewport) class, this is because the grid-column is applied only the direct children of the parent (viewport or bk-container-[*]) class
     </p>
