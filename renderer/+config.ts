@@ -128,6 +128,7 @@ export default {
   passToClient: ["pageProps", "routeParams"],
 
   unhead,
+  prerender: false,
   extends: config
   // ssr: false,
 } satisfies Config;

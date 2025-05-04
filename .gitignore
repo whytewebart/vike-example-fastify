@@ -4,3 +4,4 @@ dist/
 auto-imports.d.ts
 components.d.ts
 build/
+.vercel/

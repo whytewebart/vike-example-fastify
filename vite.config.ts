@@ -36,14 +36,7 @@ const config: UserConfig = {
       extensions: ["png", "jpg"],
       logger: true,
     }),
-    vercel({
-      "rewrites": [
-        {
-          "source": "/(.*)",
-          "destination": "/server"
-        }
-      ]
-    })
+    vercel()
   ],
 
   resolve: {
