@@ -94,7 +94,7 @@ async function buildServer() {
 async function main() {
   const fastify = await buildServer();
 
-  fastify.listen({ port: port }, function (err, address) {
+  fastify.listen({ port: port, host: '0.0.0.0' }, function (err, address) {
     if (err) {
       fastify.log.error(err);
       process.exit(1);
