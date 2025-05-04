@@ -7,4 +7,4 @@ import { fileURLToPath } from 'url'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const root = `${__dirname}/..`
 const isProduction = process.env.NODE_ENV === "production";
-const port = (process.env.PORT || isProduction ? 4500 : 9000) as number
+const port = (process.env.PORT || 9000) as number
