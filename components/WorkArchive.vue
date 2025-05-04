@@ -251,9 +251,7 @@ defineOptions({
 
 <style lang="scss">
 .truncate-overview {
-  @apply: tracking-tight;
-  // -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
+  @apply: tracking-tight [-webkit-box-orient:vertical];
   transition: all 0.3s ease-in-out;
   overflow: hidden;
 
