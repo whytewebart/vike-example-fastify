@@ -114,9 +114,7 @@ const unhead: Config["unhead"] = {
     // class: ["dark"]
   },
 
-  bodyAttrs: {
-    class: ["text-sm"],
-  },
+  bodyAttrs: {},
 };
 
 // https://vike.dev/config

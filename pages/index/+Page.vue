@@ -1,80 +1,69 @@
 <template>
-  <h1 class="font-urbanist">Welcome</h1>
-  <div class="my-16">
-    <p class="text-xl font-bold">
-      FASTIFY + VIKE JS
-      <span class="text-base font-400 block">
-        fastify-autoload
-        <br>
-        fastify-env
-        <br>
-        <a href="/__routes__" text-red>server-routes</a>
-        <br>
-        ajv validator
-        <br>
-        
-      </span>
+  <UserProfile class="bk-col-min" />
+  <section id="about-me" class="bk-col-max mt-12 space-y-4 tracking-tight">
+    <h3 class="font-medium tracking-tight text-2xl text-neutral-800">
+      About Me
+    </h3>
+    <p class="font-medium">
+      Hi, I’m Emmanuel — a full-stack software developer, mobile app engineer,
+      and visual designer. I build and maintain
+      <strong>end-to-end digital products</strong> that work beautifully and
+      stand the test of time.
     </p>
-  </div>
-  <h2 class="font-urbanist font-semibold text-2xl">All elements in this page are nested in the viewport (class), which is provided by the breakout preset, the viewport class is formed like so</h2>
-  <pre class="my-6">
-    bk-container-[nav,full,max,min]
-    bk-values-nav-1130
-    bk-values-full-900
-    bk-values-max-790
-    bk-values-min-620
-    bk-content-585
-    [&_>_*]:bk-col-content
-  </pre>
 
-  <p class="bg-red-100">
-    <span class="font-bold">bk-container-[nav,full,max,min]</span> geneated the css grid code, but lacks the max width for each breakout
-  </p>
-
-  <p class="bg-red-300">
-    <span class="font-bold">bk-values-[breakout-name]-[max-width]</span> 
-    sets the variable for the max width of the breakout, the values must defined in descending order for example bk-values-nav-1130, bk-values-full-900, bk-values-max-790, bk-values-min-620 because the is <span class="font-bold">bk-container-[nav,full,max,min]</span>, but if the class was <span class="font-bold">bk-container-[full,nav,max,min]</span> full must be greater than nav, max must be greater than min and so on
-  </p>
-
-  <p class="bg-red-500">
-    <span class="font-bold">bk-content-585</span> sets the content width, this is the width of the content grid which all content will be in by default
-  </p>
-
-  <p class="bg-red-700 text-white">
-    <span class="font-bold">bk-col-content</span> set the grid column for the element, <span class="font-bold">[&_>_*]:bk-col-content</span> set the grid column for the elements under the viewport class
-  </p>
-
-  <div class="w-full h-20 bg-amber mt-6">
-    <p class="text-3xl">This element is within the content grid</p>
-  </div>
-  <div class="w-full h-20 bg-red bk-col-min!">
-    <p class="text-3xl">This element is within the min grid</p>
-  </div>
-  <div class="w-full h-20 bg-blue bk-col-max!">
-    <p class="text-3xl">This element is within the max grid</p>
-  </div>
-  <div class="w-full h-20 bg-violet bk-col-full!">
-    <p class="text-3xl">This element is within the full grid</p>
-  </div>
-  <div class="w-full h-20 bg-orange bk-col-nav!">
-    <p class="text-3xl">This element is within the nav grid</p>
-  </div>
-  <div class="w-full h-20 bg-gray bk-col-root!">
-    <p class="text-3xl">This element is within the root grid</p>
-  </div>
-
-  <div class="mt-12 min-h-20 bg-green bk-container-inherit">
-    <p class="text-2xl mb-7">
-      <span class="font-bold">bk-inherit</span> inherits the grid column of the parent (viewport) class, this is because the grid-column is applied only the direct children of the parent (viewport or bk-container-[*]) class
+    <p>
+      With 4+ years of experience, I’ve worked across every layer of software —
+      from <strong>backend logic and APIs</strong> to
+      <strong>mobile apps</strong> built in
+      <strong>Swift, Kotlin, Java</strong>, and <strong>React Native</strong>,
+      and full-fledged <strong>web applications</strong> powered by modern
+      stacks.
     </p>
-  </div>
 
-  <h2 class="text-2xl">I built this preset to eliminate the need for nesting wrappers in order to create a conatiner of different width, this was greatly motivated and impacted by <a href="https://www.youtube.com/watch?v=c13gpBrnGEw&t=390s" text-red underline>Kevin Powell</a></h2>
+    <h3 class="font-medium tracking-tight text-2xl text-neutral-800">
+      Tech & Tools
+    </h3>
+
+    <div relative>
+      <div
+        class="hidden md:block absolute top-3 left-4 h-[calc(100%_-_1.5rem)] w-3"
+        border="2 neutral-9 r-0"
+      ></div>
+      <ul class="md:pl-10 text-neutral-700 max-md:list-disc-inside font-medium">
+        <li>
+          Full-stack software development (frontend, backend, devops)
+          <div relative>
+            <div
+              class=" absolute top-3 left-0 h-[calc(100%_-_1.5rem)] w-3"
+              border="2 neutral-3 r-0"
+            ></div>
+            <ul
+              class="pl-6 md:pl-10 text-neutral-500 font-medium"
+            >
+              <li>Node Js, Bun, Fastify</li>
+              <li>Rust</li>
+              <li>PHP, Laravel</li>
+              <li>Wordpress, Wix Studio, Webflow</li>
+              <li>React, Vue, Solid</li>
+              <li>Vite, Webpack</li>
+            </ul>
+          </div>
+        </li>
+        <li>Native iOS & Android apps (Swift, Java, Kotlin)</li>
+        <li>Cross-platform apps (React Native)</li>
+        <li>UI/UX and interaction design</li>
+        <li>Visual branding and graphic design</li>
+        <li>Debugging, optimization & long-term maintenance</li>
+      </ul>
+    </div>
+
+    <p>
+      My approach is structured, collaborative, and reliable — because good
+      software isn’t just built, it’s shaped with intent and care.
+    </p>
+  </section>
 </template>
 
-<script lang="ts" setup>
-const pgc = usePageContext();
-import Counter from "./Counter.vue";
-</script>
+<script lang="ts" setup></script>
 
-<style lang="scss"></style>
+<style></style>

@@ -1,74 +1,38 @@
 <script lang="ts" setup>
-import Link from './Link.vue';
+const showSpinner = ref(false);
+const bus = useEventBus<string>("spinner");
 
+bus.on((event) => {
+  if (event === "stop-spinner") {
+    showSpinner.value = false;
+  } else if (event === "start-spinner") {
+    showSpinner.value = true;
+  }
+});
 </script>
 
 <template>
-  <div id="view-container" min-h-screen bg-alabaster>
-    <div class="navigation">
-      <a href="/" class="logo">
-        <img src="/logo.svg" height="64" width="64" />
-      </a>
-      <Link href="/">Welcome</Link>
-      <Link href="/about">About</Link>
-      <Link href="/star-wars">Data Fetching</Link>
-      <Link href="/hello">Routing</Link>
-    </div>
-    <div id="view-content" class="viewport h-full">
+  <div id="view-container">
+    <ProgressBar
+      mode="indeterminate"
+      style="height: 6px"
+      v-if="showSpinner"
+      class="bk-col-root fixed! top-0 left-0 right-0 z-10"
+      pt:value="bg-accent!"
+      pt:root="h-.8!"
+    />
+    <div id="view-content" class="viewport h-full py-5">
       <slot />
     </div>
+
+    <!-- <img src="assets/background.webp" class="w-full h-full object-cover absolute top-0 right-0 left-0 opacity-40 md:opacity-10" alt=""> -->
   </div>
 </template>
 
 <style lang="scss">
-#view-container {
-  position: relative;
-  width: 100%;
-  display: flex;
-  // max-width: 900px;
-  // margin: auto;
-}
-#view-container::before {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  z-index: 999;
-  // background: no-repeat url('./styles/page-animation/loading.svg');
-  background-size: 100px;
-  background-position: center center;
-  pointer-events: none;
-  opacity: 0;
-}
-body.page-is-transitioning #view-container::before {
-  opacity: 1;
-}
-
-#view-content {
-  padding: 20px;
-  padding-bottom: 50px;
-  min-height: 100vh;
-  flex-grow: 1;
-}
-
-#view-content,
-#view-container::before {
-  transition: opacity 0.5s ease-in-out;
-}
-body.page-is-transitioning #view-content {
-  opacity: 0.17;
-}
-
-.navigation {
-  padding: 20px;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  line-height: 1.8em;
-  border-right: 2px solid #eee;
-}
-.logo {
-  margin-top: 20px;
-  margin-bottom: 10px;
+body {
+ background: url("assets/background-v2.png");
+ background-size: 128px auto;
+ @apply: bg-alabaster;
 }
 </style>

@@ -8,7 +8,7 @@ import {
 } from "unocss";
 import type { Preset } from "unocss";
 import { readFile } from "fs/promises";
-import { breakoutGrid } from "./renderer/styles/presets/breakout";
+import { breakoutFn, breakoutGrid } from "./renderer/styles/presets/breakout";
 import transformerDirectives from "@unocss/transformer-directives";
 
 const presets: Preset[] = [
@@ -18,12 +18,12 @@ const presets: Preset[] = [
     provider: "google",
     fonts: {
       urbanist: ["Urbanist", "Urbanist:400,500,600,700"],
-      homizio: {
-        name: "Homizio",
-        weights: [100, 300, 400, 500, 700, 900],
-        provider: "none",
-      },
-      sans: ["DM Sans", "DM Sans:400,500,600,700"],
+      sans: ["Albert Sans", "Albert Sans:300,400,500,600,700"],
+      epilogue: {
+        name: "Epilogue",
+        weights: [400, 500, 700],
+        italic: true
+      }
     },
   }),
   presetTypography({
@@ -58,15 +58,25 @@ export default defineConfig({
     "hide-scrollbar":
       "[&::-webkit-scrollbar]:w-15px [&::-webkit-scrollbar]:opacity-0 [&::-webkit-scrollbar]:transition-all",
     // ------------
-    viewport:
-      "bk-container-[nav,full,max,min] bk-values-nav-1130 bk-content-585 bk-values-min-620 bk-values-full-900 bk-values-max-790 [&_>_*]:bk-col-content",
+    viewport: breakoutFn.defineGrid({
+      content: 485,
+      containers: [
+        { name: 'min', value: 550 },
+        { name: 'max', value: 785 },
+        { name: 'full', value: 850 },
+        { name: 'nav', value: 1500 }
+      ]
+    }),
     "router-link-active": "text-gray-7",
   },
   // ...UnoCSS options
   theme: {
     colors: {
       divider: "#BDBDBD",
-      alabaster: "#FBFBFB",
+      // alabaster: "#FBFBFB",
+      alabaster: "#F8F8F8",
+      text: "#757575",
+      accent: "#1773E3"
     },
     breakpoints: {
       xsm: "410px",
@@ -94,12 +104,13 @@ export default defineConfig({
         }
 
         html,body {
-          font-family: "DM Sans";
-          font-size: 14px;
+          font-family: "Albert Sans";
+          /* font-size: 14px; */
+          color: ${theme.colors.text};
         }
 
         h1,h2,h3,h4,h5,h6 {
-          font-family: "Urbanist";
+          font-family: "Epilogue";
           font-weight: 500;
         }
       `,

@@ -87,12 +87,12 @@ async function createApp(pageContext: PageContext, ssr: boolean = true) {
     };
     const data = pageContext.data ?? {};
     assertDataIsObject(data);
-    dataRef.value = pageContext.data;
     pageContextRef.value = pageContext;
+    dataRef.value = pageContext.data;
     pageRef.value = pageContext.Page;
     // @ts-ignore
     layoutRef.value = pageContext.config.Layout;
-    setup(pageContextRef.value)["client"]();
+    setup(pageContext)["client"]();
     await nextTick();
     returned = true;
     if (err) throw err;

@@ -1,6 +1,10 @@
 import vue from "@vitejs/plugin-vue";
 import AutoImport from "unplugin-auto-import/vite";
+import vueJsx from "@vitejs/plugin-vue-jsx";
+import Components from "unplugin-vue-components/vite"
+import { PrimeVueResolver } from "@primevue/auto-import-resolver";
 import UnoCSS from "unocss/vite";
+import imageCompressor from "./renderer/plugins/image-compressor";
 
 import vike from "vike/plugin";
 import { UserConfig } from "vite";
@@ -9,17 +13,34 @@ import path from "path";
 const config: UserConfig = {
   plugins: [
     vue(),
+    vueJsx(),
     vike(),
     UnoCSS(),
     AutoImport({
-      imports: ["vue"],
+      imports: [
+        "vue",
+        "@vueuse/core",
+        {
+          primevue: [ "useDialog" ]
+        }
+      ],
       dirs: ["./composables/**"],
+    }),
+    Components({
+      dirs: ["components"],
+      resolvers: [PrimeVueResolver()],
+      directoryAsNamespace: true,
+    }),
+    imageCompressor({
+      extensions: ["png", "jpg"],
+      logger: true,
     }),
   ],
 
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./"),
+      "assets": path.resolve(__dirname, "./assets/")
     },
   },
 };

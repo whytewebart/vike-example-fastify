@@ -9,6 +9,7 @@ export {
 import { inject } from "vue";
 import type { App, InjectionKey, Ref } from "vue";
 import type { PageContext } from "vike/types";
+import { ShallowReactive } from "vue";
 
 const key: InjectionKey<Ref<PageContext>> = Symbol();
 const key_: InjectionKey<Ref<unknown>> = Symbol();
@@ -25,9 +26,11 @@ function setPageContext(app: App, pageContext: Ref<PageContext>): void {
 }
 
 /** https://vike.dev/useData */
-function useData<Data>(): Ref<Data> {
-  const data = computed(() => usePageContext().value.data as Data);
-  return data;
+function useData<Data>(): ShallowReactive<Data> {
+  // const data = computed(() => usePageContext().value.data as Data);
+  // return data;
+  const data = inject<ShallowReactive<Data>>(key_)!
+  return data
 }
 
 function setData(app: App, data: Ref<unknown>): void {

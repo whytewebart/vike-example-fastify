@@ -15,10 +15,9 @@ import Fastify from "fastify";
 import autoLoad from "@fastify/autoload";
 import { renderPage } from "vike/server";
 
-import { root, __dirname } from "./root.js";
+import { root, port, isProduction, __dirname } from "./root.js";
 import { join } from "path";
 
-const isProduction = process.env.NODE_ENV === "production";
 const production = { logger: true };
 const development = {
   logger: {
@@ -95,7 +94,6 @@ async function buildServer() {
 async function main() {
   const fastify = await buildServer();
 
-  const port = (process.env.PORT || (isProduction ? 4000 : 3040)) as number;
   fastify.listen({ port: port }, function (err, address) {
     if (err) {
       fastify.log.error(err);
