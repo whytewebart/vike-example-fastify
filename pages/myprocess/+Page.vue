@@ -62,6 +62,20 @@ const data = ref({
   process,
 });
 
+const exports_ = import.meta.glob("./assets/*.webp", {
+  eager: true,
+  import: "default",
+  // query: "?extractExportNames",
+});
+
+const processIcons = Object.values(exports_) as string[];
+function getMatchingImagePath(name:string) {
+  return processIcons.find(path => {
+    const filename = path.split('/').pop().split('.')[0];
+    return filename === name;
+  });
+}
+
 const Process = (props: (typeof data.value.process)[0], ctx: SetupContext) => {
   return (
     <div class="min-h-sm bg-white p-4.5 rounded-3xl shadow-md flex flex-col gap-2">
@@ -71,7 +85,7 @@ const Process = (props: (typeof data.value.process)[0], ctx: SetupContext) => {
       </h3>
       <p class="text-sm tracking-tight max-w-sm">{props.description}</p>
       <img
-        src={`pages/myprocess/assets/${props.icon}.png`}
+        src={getMatchingImagePath(props.icon)}
         alt=""
         class="w-full max-w-244px h-a"
       />
