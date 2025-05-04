@@ -36,7 +36,9 @@ const config: UserConfig = {
       extensions: ["png", "jpg"],
       logger: true,
     }),
-    vercel()
+    vercel({
+      source: "/.*"
+    })
   ],
 
   resolve: {
