@@ -1,4 +1,5 @@
 import type { Config, ConfigEffect } from "vike/types";
+// @ts-ignore
 import config from '@vite-plugin-vercel/vike/config';
 
 const toggleSsrRelatedConfig: ConfigEffect = ({
@@ -86,7 +87,7 @@ const meta: Config["meta"] = {
 };
 
 const unhead: Config["unhead"] = {
-  titleTemplate: "Vike & Fastify - %s",
+  titleTemplate: "%s - Fullstack Software developer",
   link: [
     {
       href: "/favicon-dark.svg",
@@ -128,7 +129,7 @@ export default {
   passToClient: ["pageProps", "routeParams"],
 
   unhead,
+  extends: [config],
   prerender: false,
-  extends: config
   // ssr: false,
 } satisfies Config;

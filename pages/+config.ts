@@ -11,7 +11,7 @@ export default {
     },
 
     unhead: {
-        title: "Emmanuel - Whyte WebArt",
+        title: "Emmanuel",
         meta: [
             // {
             //     name: "theme-color",
