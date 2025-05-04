@@ -154,7 +154,7 @@
 const exports_ = import.meta.glob("../../assets/clients/*.webp", {
   eager: true,
   import: "default",
-  query: "?extractExportNames",
+  // query: "?extractExportNames",
 });
 
 const myclients = Object.values(exports_) as string[];
