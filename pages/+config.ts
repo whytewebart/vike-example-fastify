@@ -18,7 +18,5 @@ export default {
             //     content: "#FBFBFB"
             // }
         ]
-    },
-
-    clients: []
+    }
 } satisfies Config
