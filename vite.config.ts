@@ -5,6 +5,7 @@ import Components from "unplugin-vue-components/vite"
 import { PrimeVueResolver } from "@primevue/auto-import-resolver";
 import UnoCSS from "unocss/vite";
 import imageCompressor from "./renderer/plugins/image-compressor";
+import vercel from 'vite-plugin-vercel';
 
 import vike from "vike/plugin";
 import { UserConfig } from "vite";
@@ -35,6 +36,9 @@ const config: UserConfig = {
       extensions: ["png", "jpg"],
       logger: true,
     }),
+    vercel({
+      
+    })
   ],
 
   resolve: {
