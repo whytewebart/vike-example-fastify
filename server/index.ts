@@ -72,7 +72,7 @@ async function buildServer() {
   instance.get("*", async (request, reply) => {
     const pageContextInit = {
       urlOriginal: request.raw.url || "",
-      urlFullRoute: request.headers.referer || "",
+      urlFullRoute: `http://${request.host}${request.url}`,
       headersOriginal: request.headers,
     };
 
