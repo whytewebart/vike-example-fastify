@@ -72,12 +72,13 @@ async function buildServer() {
   instance.get("*", async (request, reply) => {
     const pageContextInit = {
       urlOriginal: request.raw.url || "",
-      urlFullRoute: request.headers.referer,
+      urlFullRoute: request.headers.referer || "",
       headersOriginal: request.headers,
     };
 
     console.log("// urlFullRoute")
     console.log(pageContextInit.urlFullRoute)
+    console.log(request.headers)
 
     const pageContext = await renderPage(pageContextInit);
     const { httpResponse } = pageContext;
