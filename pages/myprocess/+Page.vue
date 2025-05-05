@@ -71,7 +71,7 @@ const exports_ = import.meta.glob("./assets/*.webp", {
 const processIcons = Object.values(exports_) as string[];
 function getMatchingImagePath(name:string) {
   return processIcons.find(path => {
-    const filename = path.split('/').pop().split('.')[0];
+    const filename = path.split('/').pop()?.split('.')[0];
     return filename === name;
   });
 }

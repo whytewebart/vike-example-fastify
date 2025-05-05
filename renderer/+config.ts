@@ -87,17 +87,17 @@ const meta: Config["meta"] = {
 };
 
 const unhead: Config["unhead"] = {
-  titleTemplate: "%s - Fullstack Software developer",
+  // titleTemplate: "%s - Fullstack Software developer",
   link: [
+    // {
+    //   href: "/favicon-dark.svg",
+    //   rel: "icon",
+    //   media: "(prefers-color-scheme: light)",
+    // },
     {
-      href: "/favicon-dark.svg",
+      href: "/favicon.png",
       rel: "icon",
-      media: "(prefers-color-scheme: light)",
-    },
-    {
-      href: "/favicon.svg",
-      rel: "icon",
-      media: "(prefers-color-scheme: dark)",
+      // media: "(prefers-color-scheme: dark)",
     },
   ],
 
@@ -126,10 +126,7 @@ export default {
   // https://vike.dev/meta
   meta,
   hydrationCanBeAborted: true,
-  passToClient: ["pageProps", "routeParams"],
+  passToClient: ["pageProps", "routeParams", 'urlFullRoute'],
 
   unhead,
-  // extends: [config],
-  prerender: false,
-  // ssr: false,
 } satisfies Config;

@@ -35,6 +35,7 @@ declare global {
         /** Value for <meta name="description"> defined statically */
         description?: string;
       };
+      urlFullRoute: string;
     }
 
     interface Config {
@@ -49,8 +50,8 @@ declare global {
       >;
       ssrSlot?: string;
       unhead?:
-        | UseHeadInput<any>
-        | ((pageContext: PageContext) => UseHeadInput<any>);
+      | UseHeadInput<any>
+      | ((pageContext: PageContext) => UseHeadInput<any>);
       secrets?: Record<string, string>;
     }
   }
