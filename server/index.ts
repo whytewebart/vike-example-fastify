@@ -76,10 +76,6 @@ async function buildServer() {
       headersOriginal: request.headers,
     };
 
-    console.log("// urlFullRoute")
-    console.log(pageContextInit.urlFullRoute)
-    console.log(request.headers)
-
     const pageContext = await renderPage(pageContextInit);
     const { httpResponse } = pageContext;
     if (!httpResponse) return reply.callNotFound();
