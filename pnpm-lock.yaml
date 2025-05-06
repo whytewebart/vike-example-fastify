@@ -17,6 +17,9 @@ dependencies:
   '@fastify/static':
     specifier: ^8.0.3
     version: 8.0.3
+  '@iconify-json/fa6-brands':
+    specifier: ^1.2.5
+    version: 1.2.5
   '@iconify-json/heroicons':
     specifier: ^1.2.2
     version: 1.2.2
@@ -933,6 +936,12 @@ packages:
       fastify-plugin: 5.0.1
       fastq: 1.18.0
       glob: 11.0.0
+    dev: false
+
+  /@iconify-json/fa6-brands@1.2.5:
+    resolution: {integrity: sha512-U/iFfziz6jSN9zArOJZYTtoj2tQyh6MxPdI8M84DQ2kEulPaj8j+h9bqvjmzszNHmD7v+kmmKd/MLkMKk+3Zuw==}
+    dependencies:
+      '@iconify/types': 2.0.0
     dev: false
 
   /@iconify-json/heroicons@1.2.2:

@@ -123,11 +123,11 @@
 import { SetupContext } from "vue";
 import { ofetch } from "ofetch";
 import { Button } from "primevue";
-import { navigate } from "vike/client/router";
 
 const context = usePageContext();
 const data = useData<any>();
 const clients = ref();
+const loading = ref(false);
 
 const clientsComputed = computed(() => {
   if (clients.value && Array.isArray(clients.value) && clients.value.length > 0) {
@@ -137,7 +137,6 @@ const clientsComputed = computed(() => {
   return data.value.clients
 })
 
-const loading = ref(false);
 
 const WorkCard = (props: Record<any, any>, ctx: SetupContext) => {
   const data = props.client.data;
@@ -201,11 +200,11 @@ const fetchClients = async () => {
         if (response.status !== 200)
           throw new Error("Failed to fetch data from Plasmic CMS");
 
-        console.log("ran once");
+        // console.log("ran once");
         // @ts-ignore
         context.value.data.clients = await response._data.rows;
         clients.value = context.value.data.clients;
-        console.log(context.value.data);
+        // console.log(context.value.data);
       },
     }
   ).catch((e) => console.log(e));

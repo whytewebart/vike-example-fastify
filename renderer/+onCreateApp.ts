@@ -1,6 +1,6 @@
 export { onCreateApp };
 
-// import AuraTailwind from "./styles/primevue/aura";
+import AuraTailwind from "./styles/primevue/aura";
 import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
 import { Ripple, Tooltip } from 'primevue';
@@ -21,9 +21,9 @@ const onCreateApp = (pageContext: PageContextWithApp) => {
     },
 
     ripple: true,
-    // unstyled: true,
+    unstyled: true,
 
-    // pt: AuraTailwind,
+    pt: AuraTailwind,
     ptOptions: {
       mergeProps: true,
       // mergeSections: false,

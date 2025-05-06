@@ -10,6 +10,7 @@ import type { Preset } from "unocss";
 import { readFile } from "fs/promises";
 import { breakoutFn, breakoutGrid } from "./renderer/styles/presets/breakout";
 import transformerDirectives from "@unocss/transformer-directives";
+import { primary, surface } from "./renderer/styles/primevue/colors";
 
 const presets: Preset[] = [
   presetUno(),
@@ -41,6 +42,8 @@ const presets: Preset[] = [
       // @ts-ignore
       solar: () =>
         import("@iconify-json/solar/icons.json").then((i) => i.default),
+      "fa6-brands": () =>
+        import("@iconify-json/fa6-brands/icons.json").then((i) => i.default),
     },
   }),
   breakoutGrid,
@@ -76,7 +79,9 @@ export default defineConfig({
       // alabaster: "#FBFBFB",
       alabaster: "#F8F8F8",
       text: "#757575",
-      accent: "#1773E3"
+      accent: "#1773E3",
+      primary,
+      surface
     },
     breakpoints: {
       xsm: "410px",

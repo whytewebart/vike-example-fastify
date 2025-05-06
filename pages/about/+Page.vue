@@ -79,7 +79,7 @@
         severity="secondary"
         pt:root="absolute! z-1 ml-4! justify-between!"
         as="a"
-        href="/about"
+        href="/work"
       />
     </div>
 

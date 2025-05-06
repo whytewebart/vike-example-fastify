@@ -14,7 +14,7 @@
         pt:label="flex-none!"
       />
     </div>
-    <img src="./assets/code-icon.png" class="w-105px h-a" alt="" />
+    <img src="./assets/code-icon.webp" class="w-105px h-a" alt="" />
     <h1 class="sm:text-center text-neutral-900 font-medium heading--text-services">
       Practical Solutions for Real-World Problems
     </h1>
@@ -32,16 +32,20 @@
         severity="info"
         size="large"
         pt:label="text-xl font-medium! tracking-tighter font-epilogue"
-        pt:root="bg-accent! rounded-xl!"
+        pt:root="bg-accent! hover:bg-blue-700! rounded-xl!"
         fluid
+        as="a"
+        href="mailto:wills.yte50@gmail.com"
       />
       <Button
         label="Troubleshoot My App"
         severity="secondary"
         size="large"
         pt:label="text-xl font-medium! tracking-tighter text-accent! font-epilogue"
-        pt:root="bg-white! rounded-xl! b-none!"
+        pt:root="bg-white! hover:bg-surface-50! rounded-xl! b-none!"
         fluid
+        as="a"
+        href="https://api.whatsapp.com/send?phone=2349019381921"
       />
     </div>
   </div>

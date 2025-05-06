@@ -87,7 +87,6 @@ const meta: Config["meta"] = {
 };
 
 const unhead: Config["unhead"] = {
-  // titleTemplate: "%s - Fullstack Software developer",
   link: [
     // {
     //   href: "/favicon-dark.svg",
@@ -113,10 +112,7 @@ const unhead: Config["unhead"] = {
 
   htmlAttrs: {
     lang: "en",
-    // class: ["dark"]
   },
-
-  bodyAttrs: {},
 };
 
 // https://vike.dev/config

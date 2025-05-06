@@ -26,10 +26,10 @@
 
     <div relative>
       <div
-        class="hidden md:block absolute top-3 left-4 h-[calc(100%_-_1.5rem)] w-3"
+        class="hidden md:block absolute top-3 left-1 h-[calc(100%_-_1.5rem)] w-3"
         border="2 neutral-9 r-0"
       ></div>
-      <ul class="md:pl-10 text-neutral-700 max-md:list-disc-inside font-medium">
+      <ul class="md:pl-7 text-neutral-700 max-md:list-disc-inside font-medium">
         <li>
           Full-stack software development (frontend, backend, devops)
           <div relative>
@@ -38,7 +38,7 @@
               border="2 neutral-3 r-0"
             ></div>
             <ul
-              class="pl-6 md:pl-10 text-neutral-500 font-medium"
+              class="pl-6 text-neutral-500 font-medium"
             >
               <li>Node Js, Bun, Fastify</li>
               <li>Rust</li>
