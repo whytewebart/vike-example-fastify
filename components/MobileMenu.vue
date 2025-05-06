@@ -39,6 +39,8 @@
           pt:label="text-2xl font-medium! tracking-tighter text-accent font-epilogue"
           pt:root="bg-white! rounded-xl!"
           fluid
+          as="a"
+        href="mailto:wills.yte50@gmail.com"
         />
         <Button
           label="Troubleshoot My App"
@@ -47,6 +49,8 @@
           pt:label="text-2xl font-medium! tracking-tighter text-white font-epilogue"
           pt:root="bg-white/50! rounded-xl! b-none!"
           fluid
+        as="a"
+        href="https://api.whatsapp.com/send?phone=2349019381921"
         />
       </div>
     </div>
