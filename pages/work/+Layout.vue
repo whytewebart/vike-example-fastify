@@ -24,7 +24,7 @@
       icon="i-solar-hamburger-menu-outline text-xl"
       size="small"
       severity="secondary"
-      pt:root="mb-4 sm:hidden! float-end absolute! top-0 right-0 p-2!"
+      pt:root="mb-4 sm:hidden! float-end absolute! top-0 right-0 p-2! z-1"
       @click="() => bus.emit('open')"
     />
   </div>
