@@ -29,7 +29,7 @@
     </div>
 
     <img
-      src="./assets/background.jpg"
+      src="./assets/background.webp"
       class="w-full min-h-screen sm:max-h-3xl object-cover absolute top-0 left-0 right-0 bk-col-root"
       alt=""
     />

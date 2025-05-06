@@ -7,6 +7,7 @@
       <!-- HAMBURGER MENU -->
       <Button
         icon="i-heroicons-x-mark-solid text-xl"
+        size="small"
         severity="secondary"
         pt:root="mb-4 float-end fixed! top-4 right-4 bg-white! rounded-full!"
         @click="() => bus.emit('close')"
