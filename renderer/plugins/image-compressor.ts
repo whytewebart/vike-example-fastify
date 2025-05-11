@@ -8,10 +8,20 @@ export default ({
   extensions = ["png", "jpg"],
   logger = false,
 }: VitePluginWebpGenerator): Plugin => {
+  let isBuild = false;
+
   return {
     name: "vite-plugin-webp-generator",
     enforce: "post",
+    configResolved(config) {
+      isBuild = config.command === "build";
+    },
     async transform(_, id) {
+      if (!isBuild) {
+        // console.info("Vite plugin webp-generator only runs during build.");
+        return null; // Only run during build
+      }
+      
       if (
         new RegExp(`\\.(${extensions.join("|")})$`).test(id) &&
         !id.includes("node_modules")

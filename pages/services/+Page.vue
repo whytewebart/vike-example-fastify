@@ -3,17 +3,6 @@
     class="bk-col-min bk-inherit sm:mt-25 mb-4xl"
     flex="~ col sm:items-center gap-3"
   >
-    <div sm:hidden>
-      <Button
-        text
-        label="Back to Home"
-        icon="i-solar-arrow-left-outline"
-        severity="contrast"
-        size="small"
-        class="w-fit"
-        pt:label="flex-none!"
-      />
-    </div>
     <img src="./assets/code-icon.webp" class="w-105px h-a" alt="" />
     <h1 class="sm:text-center text-neutral-900 font-medium heading--text-services">
       Practical Solutions for Real-World Problems

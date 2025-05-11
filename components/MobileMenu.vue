@@ -1,8 +1,27 @@
 <template>
-  <div fixed top-0 z-20 overflow-y-auto h-screen id="mobile-menu">
+  <div
+    fixed
+    top-0
+    z-20
+    w-full
+    overflow-y-auto
+    id="mobile-menu"
+    v-motion="{
+      initial: {
+        height: '0vh',
+        opacity: 0,
+      },
+
+      enter: {
+        height: '100vh',
+        opacity: 1,
+        transition: { duration: 400, ease: 'easeInOut' },
+      }
+    }"
+  >
     <div
-      class="h-screen bg-accent pt-30 pb-4"
-      grid="~ rows-[auto_auto] content-between"
+      class="min-h-screen bg-accent pt-30 pb-4"
+      grid="~ rows-[auto_auto] gap-y-4 content-between"
     >
       <!-- HAMBURGER MENU -->
       <Button
@@ -10,7 +29,7 @@
         size="small"
         severity="secondary"
         pt:root="mb-4 float-end fixed! top-4 right-4 bg-white! rounded-full!"
-        @click="() => bus.emit('close')"
+        @click="() => toggle('close')"
       />
 
       <ul class="px-4" flex="~ col gap-y-2">
@@ -40,7 +59,7 @@
           pt:root="bg-white! rounded-xl!"
           fluid
           as="a"
-        href="mailto:wills.yte50@gmail.com"
+          href="mailto:wills.yte50@gmail.com"
         />
         <Button
           label="Troubleshoot My App"
@@ -49,8 +68,8 @@
           pt:label="text-2xl font-medium! tracking-tighter text-white font-epilogue"
           pt:root="bg-white/50! rounded-xl! b-none!"
           fluid
-        as="a"
-        href="https://api.whatsapp.com/send?phone=2349019381921"
+          as="a"
+          href="https://api.whatsapp.com/send?phone=2349019381921"
         />
       </div>
     </div>
@@ -64,17 +83,9 @@
 </template>
 
 <script lang="ts" setup>
-defineProps<{
-  links: {
-    path: string;
-    name: string;
-  }[];
-}>();
-defineEmits<{
-  (e: "close"): void;
-}>();
+import { useMobileMenu } from '../composables/store';
+const { links, toggle } = useMobileMenu();
 
-const bus = useEventBus<string>("mobile-menu");
 onMounted(() => {
   // HIDE BODY SCROLL
   const body = document.querySelector("body") as HTMLBodyElement;

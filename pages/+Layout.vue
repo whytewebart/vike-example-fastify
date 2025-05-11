@@ -1,11 +1,16 @@
 <template>
-  <MobileMenu :links="links" class="bk-col-root" v-if="!hideModal" />
+  <MobileMenu class="bk-col-root" v-if="status == 'show'" />
   <div class="bk-col-min hidden" flex="sm:~ justify-center">
     <p
-      class="text-xs tracking-tight text-gray-600 font-sans bg-gray-100 px-3 py-1 rounded-full"
+      class="text-xs tracking-tight text-gray-600 font-sans bg-gray-100 px-3 py-1 rounded-full overflow-clip"
+      v-gsap:notice
     >
-      Building Systems From Concept to Brilliance -
-      <span class="font-semibold">Simple, Polished, Built to Last.</span>
+      <span>
+        Building Systems From Concept to Brilliance -
+        <span class="font-semibold"
+          >Simple, Polished, Built to Last.</span
+        ></span
+      >
     </p>
   </div>
   <div class="bk-col-max sm:my-3 relative">
@@ -14,6 +19,7 @@
       flex="sm:~ col items-center gap-x1 gap-y-2"
       sm="flex-row justify-center"
       class="hidden"
+      v-gsap:menu-desktop
     >
       <li v-for="link in links" :key="link.name">
         <Link :href="link.path">{{ link.name }}</Link>
@@ -77,42 +83,16 @@
 </template>
 
 <script lang="ts" setup>
-const links = [
-  {
-    name: "Home",
-    path: "/",
-  },
-  {
-    name: "About",
-    path: "/about",
-  },
-  {
-    name: "Services",
-    path: "/services",
-  },
-  {
-    name: "Work Process",
-    path: "/myprocess",
-  },
-  {
-    name: "Portfolio / Case Studies",
-    path: "/work",
-  },
-];
+import { storeToRefs } from "pinia";
+import { useMobileMenu } from "../composables/store";
 
-const MobileMenu = defineAsyncComponent(() =>
-  import('@/components/MobileMenu.vue')
-)
+const bus = useEventBus("mobile-menu");
+const { status, links } = storeToRefs(useMobileMenu())
 
-const hideModal = ref(true);
-const bus = useEventBus<string>("mobile-menu");
-bus.on((event) => {
-  if (event === "close") {
-    hideModal.value = true;
-  } else if (event === "open") {
-    hideModal.value = false;
-  }
-});
+const MobileMenu = defineAsyncComponent(
+  () => import("@/components/MobileMenu.vue")
+);
+
 </script>
 
 <style lang="scss">

@@ -3,10 +3,28 @@
     sm="bg-white p-2 rounded-5"
     grid="sm:~ cols-[minmax(0,_350px)_auto] items-start justify-between"
   >
-    <div grid="~ sm:cols-[1fr_1.3fr] gap-y-4 gap-x-1.5">
+    <div grid="~ sm:cols-[1fr_1.3fr] gap-y-4 gap-x-1.5" overflow-clip>
       <div
         class="h-102px w-full rounded-4 bg-gray-100 profile-wrapper relative"
         max-sm="h-210px w-210px rounded-full order-1"
+        v-motion="{
+          initial: {
+            background:
+              'conic-gradient(from 0deg at 50% 50%, #ffffff 0% 0%, #1773e3 100% 100%)',
+            transition: {
+              duration: 400,
+              ease: 'easeInOut',
+            },
+          },
+          enter: {
+            background:
+              'conic-gradient(from 180deg at 50% 50%, #ffffff 0% 0%, #1773e3 100% 100%)',
+            transition: {
+              duration: 400,
+              ease: 'easeInOut',
+            },
+          },
+        }"
       >
         <!-- active-state -->
         <div
@@ -16,13 +34,26 @@
 
         <img
           src="assets/images/emmanuel-transparent-bg.webp"
+          v-if="ctx.urlOriginal == '/about'"
           alt=""
           class="w-full h-full object-contain rounded-full"
+          v-motion="{
+            initial: {
+              opacity: 0,
+              y: '100%',
+            },
+            enter: {
+              opacity: 1,
+              y: '0%',
+              transition: { duration: 500, ease: 'easeInOut' },
+            },
+          }"
         />
       </div>
       <div class="space-y-1.5">
         <h4
           class="font-epilogue tracking-tight sm:text-3.25 font-medium max-sm:max-w-55 leading-tight"
+          v-gsap:aboutMe
         >
           I help individuals and businesses build reliable apps and websites —
           with clarity, care, and long-term support.
@@ -59,12 +90,14 @@
         href="https://www.upwork.com/freelancers/~01d2c9b0fd4909e526?mp_source=share"
         target="_blank"
       />
-
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+
+const ctx = usePageContext()
+
 defineOptions({
   inheritAttrs: true,
 });
@@ -72,8 +105,9 @@ defineOptions({
 
 <style>
 .profile-wrapper {
+  --deg: 0deg;
   background: conic-gradient(
-    from 180deg at 50% 50%,
+    from var(--deg) at 50% 50%,
     #ffffff 0% 0%,
     #1773e3 100% 100%
   );

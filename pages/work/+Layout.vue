@@ -1,5 +1,6 @@
 <template>
-  <MobileMenu :links="links" class="bk-col-root" v-if="!hideModal" />
+  
+  <MobileMenu class="bk-col-root" v-if="status == 'show'" />
   <div class="bk-col-min hidden" flex="sm:~ justify-center">
     <p
       class="text-xs tracking-tight text-gray-600 font-sans bg-gray-100 px-3 py-1 rounded-full"
@@ -76,38 +77,15 @@
 </template>
 
 <script lang="ts" setup>
-const links = [
-  {
-    name: "Home",
-    path: "/",
-  },
-  {
-    name: "About",
-    path: "/about",
-  },
-  {
-    name: "Services",
-    path: "/services",
-  },
-  {
-    name: "Work Process",
-    path: "/myprocess",
-  },
-  {
-    name: "Portfolio / Case Studies",
-    path: "/work",
-  },
-];
+import { storeToRefs } from "pinia";
+import { useMobileMenu } from "../../composables/store";
 
-const hideModal = ref(true);
-const bus = useEventBus<string>("mobile-menu");
-bus.on((event) => {
-  if (event === "close") {
-    hideModal.value = true;
-  } else if (event === "open") {
-    hideModal.value = false;
-  }
-});
+const bus = useEventBus("mobile-menu");
+const { status, links } = storeToRefs(useMobileMenu())
+
+const MobileMenu = defineAsyncComponent(
+  () => import("@/components/MobileMenu.vue")
+);
 </script>
 
 <style lang="scss">

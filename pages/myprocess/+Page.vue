@@ -6,17 +6,6 @@
       class="bk-col-min bk-inherit mt-4 sm:mt-25 mb-4xl z-1 dark"
       flex="~ col sm:items-center gap-3"
     >
-      <div sm:hidden>
-        <Button
-          text
-          label="Back to Home"
-          icon="i-solar-arrow-left-outline"
-          severity="contrast"
-          size="small"
-          class="text-white! w-fit hover:bg-white/30!"
-          pt:label="flex-none!"
-        />
-      </div>
       <h1 class="sm:text-center text-neutral-50 font-medium heading--text">
         A Clear Path to a Reliable Product
       </h1>

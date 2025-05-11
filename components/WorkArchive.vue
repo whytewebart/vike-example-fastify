@@ -123,6 +123,7 @@
 import { SetupContext } from "vue";
 import { ofetch } from "ofetch";
 import { Button } from "primevue";
+import { MotionVariants, useMotion } from "@vueuse/motion";
 
 const context = usePageContext();
 const data = useData<any>();
@@ -130,51 +131,91 @@ const clients = ref();
 const loading = ref(false);
 
 const clientsComputed = computed(() => {
-  if (clients.value && Array.isArray(clients.value) && clients.value.length > 0) {
-    return clients.value
+  if (
+    clients.value &&
+    Array.isArray(clients.value) &&
+    clients.value.length > 0
+  ) {
+    return clients.value;
   }
 
-  return data.value.clients
-})
+  return data.value.clients;
+});
 
-
-const WorkCard = (props: Record<any, any>, ctx: SetupContext) => {
-  const data = props.client.data;
-  const publishedDate = new Intl.DateTimeFormat("en-US", {
-    month: "2-digit",
-    year: "numeric",
-  }).format(new Date(data.published));
-
-  return (
-    <div grid="~">
-      <div flex="~ justify-between">
-        <p class="text-sm">{data.projectType}</p>
-        <p class="text-sm font-semibold text-neutral-800">{publishedDate}</p>
-      </div>
-      <div class="w-full h-78.75 bg-blue-6 my-2 p-4">
-        <img
-          src={data.thumbnail.url}
-          alt=""
-          class="w-full h-full object-contain"
-        />
-      </div>
-      <h3 class="font-medium text-neutral-800 tracking-tighter">
-        {data.client}
-      </h3>
-      <p class="tracking-tight truncate-overview">{data.overview}</p>
-      <Button
-        rounded
-        icon="i-solar-link-outline"
-        severity="secondary"
-        pt={{
-          root: "bg-gray-200!",
-        }}
-        as="a"
-        href={data.url}
-      />
-    </div>
-  );
+const vMotion:MotionVariants<""> = {
+  initial: {
+    background:
+      "conic-gradient(from 0deg at 50% 50%, #ffffff 0% 0%, #1773e3 100% 100%)",
+    transition: {
+      duration: 400,
+      ease: "easeInOut",
+    },
+  },
+  visible: {
+    background:
+      "conic-gradient(from 180deg at 50% 50%, #ffffff 0% 0%, #1773e3 100% 100%)",
+    transition: {
+      duration: 400,
+      ease: "easeInOut",
+    },
+  },
 };
+
+const WorkCard = defineComponent(
+  (props, ctx) => {
+    const data = props.client.data;
+    const publishedDate = new Intl.DateTimeFormat("en-US", {
+      month: "2-digit",
+      year: "numeric",
+    }).format(new Date(data.published));
+
+    const target = templateRef<HTMLElement>('target', null);
+    const variants = ref(vMotion);
+    // useMotion(target, variants);
+
+    return () => {
+      return (
+        <div grid="~">
+          <div flex="~ justify-between">
+            <p class="text-sm">{data.projectType}</p>
+            <p class="text-sm font-semibold text-neutral-800">
+              {publishedDate}
+            </p>
+          </div>
+          <div class="w-full h-78.75 bg-blue-6 my-2 p-4" ref="target">
+            <img
+              src={data.thumbnail.url}
+              alt=""
+              class="w-full h-full object-contain"
+            />
+          </div>
+          <h3 class="font-medium text-neutral-800 tracking-tighter">
+            {data.client}
+          </h3>
+          <p class="tracking-tight truncate-overview">{data.overview}</p>
+          <Button
+            rounded
+            icon="i-solar-link-outline"
+            severity="secondary"
+            pt={{
+              root: "bg-gray-200!",
+            }}
+            as="a"
+            href={data.url}
+          />
+        </div>
+      );
+    };
+  },
+  {
+    props: {
+      client: {
+        type: Object,
+        required: true,
+      },
+    },
+  }
+);
 
 const fetchClients = async () => {
   const plasmicEnv = context.value.config.secrets as {
@@ -220,7 +261,7 @@ onMounted(async () => {
   }
 
   if (data.value.clients.length > 0) {
-    clients.value = data.value.clients
+    clients.value = data.value.clients;
   }
 });
 

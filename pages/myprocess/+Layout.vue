@@ -1,6 +1,5 @@
 <template>
-    <MobileMenu :links="links" class="bk-col-root" v-if="!hideModal" />
-    
+    <MobileMenu class="bk-col-root" v-if="status == 'show'" />
     <slot />
     <WorkArchive class="mt-13 bk-col-max" />
     <!-- FOOTER -->
@@ -22,38 +21,14 @@
 </template>
 
 <script lang="ts" setup>
-const links = [
-    {
-        name: "Home",
-        path: "/",
-    },
-    {
-        name: "About",
-        path: "/about",
-    },
-    {
-        name: "Services",
-        path: "/services",
-    },
-    {
-        name: "Work Process",
-        path: "/#work-process",
-    },
-    {
-        name: "Portfolio / Case Studies",
-        path: "/work",
-    },
-];
+import { storeToRefs } from "pinia";
+import { useMobileMenu } from "../../composables/store";
 
-const hideModal = ref(true);
-const bus = useEventBus<string>("mobile-menu");
-bus.on((event) => {
-    if (event === "close") {
-        hideModal.value = true;
-    } else if (event === "open") {
-        hideModal.value = false;
-    }
-})
+const { status } = storeToRefs(useMobileMenu())
+
+const MobileMenu = defineAsyncComponent(
+  () => import("@/components/MobileMenu.vue")
+);
 </script>
 
 <style>
