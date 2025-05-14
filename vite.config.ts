@@ -22,7 +22,8 @@ const config: UserConfig = {
         "vue",
         "@vueuse/core",
         {
-          primevue: ["useDialog"]
+          primevue: ["useDialog"],
+          pinia: ["storeToRefs", "defineStore"],
         }
       ],
       dirs: ["./composables/**"],

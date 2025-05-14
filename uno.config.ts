@@ -24,6 +24,11 @@ const presets: Preset[] = [
         name: "Epilogue",
         weights: [400, 500, 700],
         italic: true
+      },
+      "eb-garamond": {
+        name: "EB Garamond",
+        weights: [400, 500, 700],
+        italic: true
       }
     },
   }),
@@ -115,7 +120,7 @@ export default defineConfig({
         }
 
         h1,h2,h3,h4,h5,h6 {
-          font-family: "Epilogue";
+          font-family: "EB Garamond";
           font-weight: 500;
         }
       `,

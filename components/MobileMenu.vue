@@ -83,7 +83,6 @@
 </template>
 
 <script lang="ts" setup>
-import { useMobileMenu } from '../composables/store';
 const { links, toggle } = useMobileMenu();
 
 onMounted(() => {
