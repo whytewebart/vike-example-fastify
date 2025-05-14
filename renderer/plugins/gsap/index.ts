@@ -3,7 +3,8 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import MorphSVGPlugin from "gsap/MorphSVGPlugin";
 import ScrollSmoother from "gsap/ScrollSmoother";
-import { MotionDirective } from "@vueuse/motion";
+import SplitText from "gsap/SplitText";
+
 import { parseObjectToStyle } from "./composables";
 
 // @unocss-include
@@ -14,9 +15,10 @@ export default {
             ScrollTrigger: ScrollTrigger,
             MorphSVGPlugin: MorphSVGPlugin,
             ScrollSmoother: ScrollSmoother,
+            SplitText: SplitText,
         };
 
-        gsap.registerPlugin(ScrollTrigger, MorphSVGPlugin, ScrollSmoother);
+        gsap.registerPlugin(...Object.values(plugins));
 
         app.config.globalProperties.$gsap = gsap;
         app.config.globalProperties.$gsapPlugins = plugins;
@@ -69,6 +71,7 @@ declare module "vue" {
             ScrollTrigger: typeof ScrollTrigger;
             MorphSVGPlugin: typeof MorphSVGPlugin;
             ScrollSmoother: typeof ScrollSmoother;
+            SplitText: typeof SplitText;
         };
     }
 }

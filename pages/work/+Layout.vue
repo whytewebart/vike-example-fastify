@@ -77,9 +77,6 @@
 </template>
 
 <script lang="ts" setup>
-import { storeToRefs } from "pinia";
-import { useMobileMenu } from "../../composables/store";
-
 const bus = useEventBus("mobile-menu");
 const { status, links } = storeToRefs(useMobileMenu())
 

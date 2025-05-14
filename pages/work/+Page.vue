@@ -2,7 +2,9 @@
   <div relative bk-col-full sm:mt-13>
     <div flex="~ items-end justify-between">
       <div>
-        <h3 class="font-medium tracking-tight text-4xl sm:text-2xl text-neutral-800">
+        <h3
+          class="font-medium tracking-tight text-4xl sm:text-2xl text-neutral-800"
+        >
           Work Archive
         </h3>
         <p class="max-w-62.5 leading-snug">
@@ -13,7 +15,7 @@
 
     <div class="clients-grid mt-4">
       <!-- CLIENT COMPONENT -->
-      <WorkCard v-for="client in data.clients" :client :key="client.id" />
+      <WorkArchiveCard v-for="client in data.clients" :client :key="client.id" />
     </div>
 
     <Paginator
@@ -31,7 +33,7 @@
       unstyled
       pt:current="font-bold"
       :pt="{
-        current: 'text-neutral-800 px-4'
+        current: 'text-neutral-800 px-4',
       }"
       v-if="false"
     />
@@ -111,8 +113,6 @@
 </template>
 
 <script lang="tsx" setup>
-import { SetupContext } from "vue";
-import { ofetch } from "ofetch";
 import { Button } from "primevue";
 import { navigate } from "vike/client/router";
 
@@ -120,44 +120,6 @@ const context = usePageContext();
 const data = useData<any>();
 
 const page = ref(Number(context.value.urlParsed.search.page) || 0);
-
-const WorkCard = (props: Record<any, any>, ctx: SetupContext) => {
-  const data = props.client.data;
-  const publishedDate = new Intl.DateTimeFormat("en-US", {
-    month: "2-digit",
-    year: "numeric",
-  }).format(new Date(data.published));
-
-  return (
-    <div grid="~">
-      <div flex="~ justify-between">
-        <p class="">{data.projectType}</p>
-        <p class=" font-semibold text-neutral-800">{publishedDate}</p>
-      </div>
-      <div class="w-full h-78.75 bg-blue-6 my-2 p-4">
-        <img
-          src={data.thumbnail.url}
-          alt=""
-          class="w-full h-full object-contain"
-        />
-      </div>
-      <h3 class="font-medium text-neutral-800 tracking-tighter">
-        {data.client}
-      </h3>
-      <p class="tracking-tight truncate-overview">{data.overview}</p>
-      <Button
-        rounded
-        icon="i-solar-link-outline"
-        severity="secondary"
-        pt={{
-          root: "bg-gray-200! mt-2",
-        }}
-        as="a"
-        href={data.url}
-      />
-    </div>
-  );
-};
 
 // TOGGLE PROCESS STEPS
 const processSteps = ref<0 | 1>(0);
@@ -178,24 +140,8 @@ defineOptions({
   letter-spacing: -0.07em;
 }
 
-.truncate-overview {
-  @apply: tracking-tight;
-  // -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  transition: all 0.3s ease-in-out;
-  overflow: hidden;
-
-  &:not(:hover) {
-    -webkit-line-clamp: 3;
-  }
-
-  @screen sm {
-    display: -webkit-box;
-  }
-}
-
 .clients-grid {
-  @apply: grid gap-3;
+  @apply: grid gap-3 gap-y-5;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   align-items: start;
 }
