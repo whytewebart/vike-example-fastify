@@ -76,7 +76,8 @@ const Process = (props: (typeof data.value.process)[0], ctx: SetupContext) => {
       <img
         src={getMatchingImagePath(props.icon)}
         alt=""
-        class="w-full max-w-244px h-a"
+        width="244px"
+        height="244px"
       />
       <p class="text-sm tracking-tight font-medium">
         {props.powerPhrases.join(", ")}

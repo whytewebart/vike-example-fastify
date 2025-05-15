@@ -3,7 +3,7 @@
     class="bk-col-min bk-inherit sm:mt-25 mb-4xl"
     flex="~ col sm:items-center gap-3"
   >
-    <img src="./assets/code-icon.webp" class="w-105px h-a" alt="" />
+    <img src="./assets/code-icon.webp" width="150px" alt="" />
     <h1 class="sm:text-center text-neutral-900 font-medium heading--text-services">
       Practical Solutions for Real-World Problems
     </h1>

@@ -62,37 +62,37 @@
     <!-- MY PROCESS GRID -->
     <div class="process-grid transition-all" v-show="processSteps == 1">
       <div>
-        <img src="assets/process/communicate.webp" alt="" />
+        <img src="assets/process/communicate.webp" v-if="processSteps == 1" alt="" />
         <span>1</span>
       </div>
       <div>
-        <img src="assets/process/identify.webp" alt="" />
+        <img src="assets/process/identify.webp" v-if="processSteps == 1" alt="" />
         <span>2</span>
       </div>
       <div>
-        <img src="assets/process/troubleshoot.webp" alt="" />
+        <img src="assets/process/troubleshoot.webp" v-if="processSteps == 1" alt="" />
         <span>3</span>
       </div>
 
       <div>
-        <img src="assets/process/listen.webp" alt="" />
+        <img src="assets/process/listen.webp" v-if="processSteps == 1" alt="" />
         <span>4</span>
       </div>
       <div>
-        <img src="assets/process/breakdown.webp" alt="" />
+        <img src="assets/process/breakdown.webp" v-if="processSteps == 1" alt="" />
         <span>5</span>
       </div>
 
       <div>
-        <img src="assets/process/simplify.webp" alt="" />
+        <img src="assets/process/simplify.webp" v-if="processSteps == 1" alt="" />
         <span>6</span>
       </div>
       <div>
-        <img src="assets/process/revert.webp" alt="" />
+        <img src="assets/process/revert.webp" v-if="processSteps == 1" alt="" />
         <span>7</span>
       </div>
       <div>
-        <img src="assets/process/complete-and-polish.webp" alt="" />
+        <img src="assets/process/complete-and-polish.webp" v-if="processSteps == 1" alt="" />
         <span>8</span>
       </div>
     </div>
