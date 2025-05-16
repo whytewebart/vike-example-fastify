@@ -4,9 +4,19 @@ export {
 }
 
 const useMobileMenu = defineStore('mobile-menu', () => {
+    const gsap = useGsap();
+    const key = elementKey("mobile-menu")
+
     const status = ref<"hide" | "show">('hide');
-    const toggle = (state: "close" | "open") =>
-        status.value = state === 'close' ? 'hide' : 'show';
+    const toggle = (state: "close" | "open") => {
+        if (state == 'close') {
+            status.value = 'hide'
+        }
+
+        if (state == 'open') {
+            status.value = 'show'
+        }
+    }
 
     const links = ref([
         {
@@ -32,17 +42,37 @@ const useMobileMenu = defineStore('mobile-menu', () => {
     ])
 
     const bus = useEventBus<string>("mobile-menu");
-    bus.on((event: any) => toggle(event));
+    bus.on((event: any) => {
+        if (event == "close") {
+            const body = document.querySelector("body") as HTMLBodyElement;
+            gsap.to(key, {
+                height: 0,
+                marginTop: '-1.25rem',
+                duration: 0.5,
+                ease: "sine.in",
+                scrollTo: {
+                    y: 0,
+                    autoKill: true,
+                },
+                onComplete: () => {
+                    body.classList.remove("overflow-hidden");
+                    toggle("close");
+                },
+            });
+        }
+
+        if(event == "open") toggle('open')
+    });
 
     return {
         status,
-        toggle,
+        toggle: (state: 'close' | 'open') => bus.emit(state),
         links
     }
 })
 
 const useWorkArchive = defineStore('work-archive', () => {
-    const archive = ref<Record<any,any>[]>([]);
+    const archive = ref<Record<any, any>[]>([]);
     const setArchive = (data: Record<any, any>[]) => {
         archive.value = data;
     }

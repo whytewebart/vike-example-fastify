@@ -16,7 +16,7 @@
         size="small"
         severity="secondary"
         pt:root="mb-4 float-end fixed! top-4 right-4 bg-white! rounded-full!"
-        @click="closeModal"
+        @click="() => toggle('close')"
       />
 
       <ul class="px-4" flex="~ col gap-y-2">
@@ -87,8 +87,8 @@ onMounted(() => {
   gsap.to(key, {
     height: "100vh",
     marginBottom: '2rem',
-    duration: 0.5,
-    ease: "power2.inOut",
+    duration: 1,
+    ease: "power4.inOut",
     onComplete: () => {
       body.classList.add("overflow-hidden");
       gsap.to(key, {
@@ -102,20 +102,6 @@ onMounted(() => {
     },
   });
 });
-
-const closeModal = () => {
-  const body = document.querySelector("body") as HTMLBodyElement;
-  gsap.to(key, {
-    height: 0,
-    marginTop: '-1.25rem',
-    duration: 0.5,
-    ease: "power2.inOut",
-    onComplete: () => {
-      body.classList.remove("overflow-hidden");
-      toggle("close");
-    },
-  });
-};
 </script>
 
 <style>
