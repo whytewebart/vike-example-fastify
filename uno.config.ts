@@ -102,6 +102,12 @@ export default defineConfig({
       large: "790px",
       container: "900px",
     },
+    boxShadow: {
+      reflect:
+        "0.375em 0.375em #1773E3",
+      "reflect-dark":
+        "0.375em 0.375em var(--p-surface-200), 0.375em 0.375em 0px 0.06em var(--p-surface-400)",
+    }
   },
   safelist: ["router-link-active"],
   preflights: [
@@ -132,7 +138,7 @@ export default defineConfig({
     },
   ],
   layers: {
-    layout: -1,
+    "custom-reset": -1,
   },
   transformers: [transformerDirectives()],
   content: {

@@ -20,7 +20,7 @@
         rounded
         icon="i-solar-link-outline"
         severity="secondary"
-        pt:root="bg-gray-200! bg-opacity-60! hover:bg-opacity-100! b-0! opacity-0 z-2 absolute! left-50% translate--50%"
+        pt:root="bg-gray-200! hover:shadow-reflect b-0! opacity-0 z-2 absolute! left-50% translate--50%"
         pt:label="font-eb-garamond whitespace-nowrap"
         as="a"
         :href="data.url"

@@ -1,5 +1,13 @@
 <template>
-  <div class="bk-col-min hidden z-1" flex="sm:~ justify-center">
+  <div class="bk-col-min hidden z-1" flex="sm:~ justify-center items-center">
+    <a href="/" class="[all:unset] cursor-pointer mr-2">
+      <img
+        data-animate="application-brandmark"
+        src="/brandmark.png"
+        width="20px"
+        alt=""
+      />
+    </a>
     <p
       class="text-xs tracking-tight text-gray-50 font-sans bg-gray-100/20 px-3 py-1 rounded-full"
     >
@@ -66,4 +74,27 @@ bus.on((event) => {
     hideModal.value = false;
   }
 });
+
+useGsapTimeline(
+    ["application-brandmark"],
+    {},
+    ({ gsap, elements }) => {
+        const key = elements["application-brandmark"];
+        document.querySelector(key)?.addEventListener("mouseenter", (e) => {
+            gsap.to(key, {
+                scale: 1.5,
+                rotate: 360,
+                duration: 0.3,
+            });
+        });
+
+        document.querySelector(key)?.addEventListener("mouseleave", (e) => {
+            gsap.to(key, {
+                scale: 1,
+                duration: 0.3,
+                rotate: 0,
+            });
+        });
+    }
+);
 </script>

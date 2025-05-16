@@ -1,14 +1,7 @@
 <template>
   
   <MobileMenu class="bk-col-root" v-if="status == 'show'" />
-  <div class="bk-col-min hidden" flex="sm:~ justify-center">
-    <p
-      class="text-xs tracking-tight text-gray-600 font-sans bg-gray-100 px-3 py-1 rounded-full"
-    >
-      Building Systems From Concept to Brilliance -
-      <span class="font-semibold">Simple, Polished, Built to Last.</span>
-    </p>
-  </div>
+  <Header />
   <div class="bk-col-max sm:my-3 relative">
     <!-- MENU -->
     <ul

@@ -1,18 +1,6 @@
 <template>
   <MobileMenu class="bk-col-root" v-if="status == 'show'" />
-  <div class="bk-col-min hidden" flex="sm:~ justify-center">
-    <p
-      class="text-xs tracking-tight text-gray-600 font-sans bg-gray-100 px-3 py-1 rounded-full overflow-clip"
-      v-gsap:notice
-    >
-      <span>
-        Building Systems From Concept to Brilliance -
-        <span class="font-semibold"
-          >Simple, Polished, Built to Last.</span
-        ></span
-      >
-    </p>
-  </div>
+  <Header />
   <div class="bk-col-max sm:my-3 relative">
     <!-- MENU -->
     <ul
@@ -84,12 +72,11 @@
 
 <script lang="ts" setup>
 const bus = useEventBus("mobile-menu");
-const { status, links } = storeToRefs(useMobileMenu())
+const { status, links } = storeToRefs(useMobileMenu());
 
 const MobileMenu = defineAsyncComponent(
   () => import("@/components/MobileMenu.vue")
 );
-
 </script>
 
 <style lang="scss">

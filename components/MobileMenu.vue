@@ -1,23 +1,13 @@
 <template>
   <div
-    fixed
+    mt--6
+    relative
     top-0
     z-20
     w-full
     overflow-y-auto
     id="mobile-menu"
-    v-motion="{
-      initial: {
-        height: '0vh',
-        opacity: 0,
-      },
-
-      enter: {
-        height: '100vh',
-        opacity: 1,
-        transition: { duration: 400, ease: 'easeInOut' },
-      }
-    }"
+    v-gsap:mobile-menu
   >
     <div
       class="min-h-screen bg-accent pt-30 pb-4"
@@ -84,6 +74,16 @@
 
 <script lang="ts" setup>
 const { links, toggle } = useMobileMenu();
+
+useGsapTimeline(
+  ["mobile-menu"],
+  { inject: "gsap" },
+  ({ gsap, elements, timeline }) => {
+    const key = elements["mobile-menu"];
+    
+    
+  }
+);
 
 onMounted(() => {
   // HIDE BODY SCROLL
