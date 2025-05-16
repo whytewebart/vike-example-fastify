@@ -1,11 +1,8 @@
 <template>
   <div
-    mt--6
-    relative
-    top-0
-    z-20
     w-full
     overflow-y-auto
+    scroll-smooth
     id="mobile-menu"
     v-gsap:mobile-menu
   >
@@ -19,7 +16,7 @@
         size="small"
         severity="secondary"
         pt:root="mb-4 float-end fixed! top-4 right-4 bg-white! rounded-full!"
-        @click="() => toggle('close')"
+        @click="closeModal"
       />
 
       <ul class="px-4" flex="~ col gap-y-2">
@@ -73,29 +70,52 @@
 </template>
 
 <script lang="ts" setup>
+const gsap = useGsap();
 const { links, toggle } = useMobileMenu();
-
-useGsapTimeline(
-  ["mobile-menu"],
-  { inject: "gsap" },
-  ({ gsap, elements, timeline }) => {
-    const key = elements["mobile-menu"];
-    
-    
-  }
-);
+const key = elementKey("mobile-menu");
 
 onMounted(() => {
   // HIDE BODY SCROLL
   const body = document.querySelector("body") as HTMLBodyElement;
-  body.classList.add("overflow-hidden");
+  const mobileMenu = document.querySelector("#mobile-menu") as HTMLDivElement;
+  
+  gsap.set(key, {
+    height: 0,
+    marginTop: '-1.25rem'
+  });
+
+  gsap.to(key, {
+    height: "100vh",
+    marginBottom: '2rem',
+    duration: 0.5,
+    ease: "power2.inOut",
+    onComplete: () => {
+      body.classList.add("overflow-hidden");
+      gsap.to(key, {
+        scrollTo: {
+          y: mobileMenu.scrollHeight,
+          autoKill: true,
+        },
+        duration: 0.8,
+        ease: "power2.inOut",
+      });
+    },
+  });
 });
 
-onBeforeUnmount(() => {
-  // SHOW BODY SCROLL
+const closeModal = () => {
   const body = document.querySelector("body") as HTMLBodyElement;
-  body.classList.remove("overflow-hidden");
-});
+  gsap.to(key, {
+    height: 0,
+    marginTop: '-1.25rem',
+    duration: 0.5,
+    ease: "power2.inOut",
+    onComplete: () => {
+      body.classList.remove("overflow-hidden");
+      toggle("close");
+    },
+  });
+};
 </script>
 
 <style>

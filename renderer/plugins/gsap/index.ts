@@ -4,6 +4,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import MorphSVGPlugin from "gsap/MorphSVGPlugin";
 import ScrollSmoother from "gsap/ScrollSmoother";
 import SplitText from "gsap/SplitText";
+import ScrollToPlugin from "gsap/ScrollToPlugin";
 
 import { parseObjectToStyle } from "./composables";
 
@@ -16,6 +17,7 @@ export default {
             MorphSVGPlugin: MorphSVGPlugin,
             ScrollSmoother: ScrollSmoother,
             SplitText: SplitText,
+            ScrollToPlugin: ScrollToPlugin
         };
 
         gsap.registerPlugin(...Object.values(plugins));
@@ -72,6 +74,7 @@ declare module "vue" {
             MorphSVGPlugin: typeof MorphSVGPlugin;
             ScrollSmoother: typeof ScrollSmoother;
             SplitText: typeof SplitText;
+            ScrollToPlugin: typeof ScrollToPlugin;
         };
     }
 }
