@@ -9,12 +9,14 @@ export default ({
   logger = false,
 }: VitePluginWebpGenerator): Plugin => {
   let isBuild = false;
+  let publicDir = "";
 
   return {
     name: "vite-plugin-webp-generator",
     enforce: "post",
     configResolved(config) {
       isBuild = config.command === "build";
+      publicDir = config.publicDir;
     },
     async transform(_, id) {
       if (!isBuild) {
@@ -26,10 +28,15 @@ export default ({
         new RegExp(`\\.(${extensions.join("|")})$`).test(id) &&
         !id.includes("node_modules")
       ) {
-        const webpPath = id.replace(extname(id), ".webp");
+        var relativePath = id.startsWith('/') ? `public${id}` : id;
+
+        var webpPath = relativePath.replace(extname(relativePath), ".webp");
+
+        console.info(`Processing: ${relativePath} -> ${webpPath}`);
+
         if (!existsSync(webpPath)) {
           await mkdir(dirname(webpPath), { recursive: true });
-          const buffer = await sharp(id).webp().toBuffer();
+          const buffer = await sharp(relativePath).webp().toBuffer();
           await writeFile(webpPath, buffer);
           logger && console.info(`Generated: ${webpPath}`);
         }
