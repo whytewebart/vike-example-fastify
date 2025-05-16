@@ -20,11 +20,10 @@
         rounded
         icon="i-solar-link-outline"
         severity="secondary"
-        pt:root="bg-gray-200! hover:shadow-reflect b-0! opacity-0 z-2 absolute! left-50% translate--50%"
+        pt:root="hover:shadow-reflect b-0! opacity-0 z-2 absolute! left-50% translate--50% visit-site-btn"
         pt:label="font-eb-garamond whitespace-nowrap"
         as="a"
         :href="data.url"
-        class=""
         size="large"
         label="Visit Application"
         data-animate="visit-app"
@@ -168,5 +167,11 @@ const publishedDate = new Intl.DateTimeFormat("en-US", {
 .truncate-overview {
   @apply: tracking-tight line-clamp-3;
   transition: all 0.3s ease-in-out;
+}
+
+.visit-site-btn {
+  background: url("assets/background-v2.png");
+  background-size: 128px auto;
+  @apply: bg-alabaster;
 }
 </style>

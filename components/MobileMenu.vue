@@ -96,8 +96,16 @@ onMounted(() => {
           y: mobileMenu.scrollHeight,
           autoKill: true,
         },
-        duration: 0.8,
+        duration: 1.2,
         ease: "power2.inOut",
+        onComplete: () => {
+          gsap.to(key, {
+            scrollTo: {
+              y: 0
+            },
+            duration: 0.8
+          })
+        }
       });
     },
   });

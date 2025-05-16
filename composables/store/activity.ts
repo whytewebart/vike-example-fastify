@@ -50,10 +50,6 @@ const useMobileMenu = defineStore('mobile-menu', () => {
                 marginTop: '-1.25rem',
                 duration: 0.5,
                 ease: "sine.in",
-                scrollTo: {
-                    y: 0,
-                    autoKill: true,
-                },
                 onComplete: () => {
                     body.classList.remove("overflow-hidden");
                     toggle("close");

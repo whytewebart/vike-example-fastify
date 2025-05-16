@@ -32,9 +32,6 @@
           max-sm="top-12 right-0 left-initial"
         ></div>
 
-        <div class="m-3 h-[-webkit-fill-available] rounded-full bg-white/50 absolute top-0 right-0 left-0 sm:hidden">
-        </div>
-
         <img
           src="assets/images/emmanuel-transparent-bg.webp"
           v-if="ctx.urlOriginal == '/about'"
