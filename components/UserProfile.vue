@@ -28,9 +28,12 @@
       >
         <!-- active-state -->
         <div
-          class="w-4.5 h-4.5 rounded-full bg-#1773e3 border-2 border-solid border-white absolute top--1 left--1 sm:hidden"
+          class="w-4.5 h-4.5 rounded-full bg-#1773e3 border-2 border-solid border-white absolute top--1 left--1 hidden"
           max-sm="top-12 right-0 left-initial"
         ></div>
+
+        <div class="m-3 h-[-webkit-fill-available] rounded-full bg-white/50 absolute top-0 right-0 left-0">
+        </div>
 
         <img
           src="assets/images/emmanuel-transparent-bg.webp"
@@ -78,17 +81,20 @@
         severity="secondary"
         as="a"
         href="mailto:wills.yte50@gmail.com"
+        size="large"
+        class="grid!"
       />
 
       <Button
         rounded
-        icon="i-fa6-brands-upwork"
         severity="secondary"
+        text
         as="a"
-        label="Upwork profile"
+        label="Let's Connect"
         pt:root="sm:hidden"
         href="https://www.upwork.com/freelancers/~01d2c9b0fd4909e526?mp_source=share"
         target="_blank"
+        v-if="false"
       />
     </div>
   </div>
