@@ -17,6 +17,11 @@ const unhead = (pageContext: PageContext): Vike.Config['unhead'] => {
             { property: 'og:image:height', content: '630' },
             { property: 'og:image:type', content: 'image/png' },
             { name: 'robots', content: 'index, follow' },
+            {
+                name: 'theme-color',
+                // content: "#F6FAFE"
+                content: "#FBFDFF"
+            }
         ]
     }
 }

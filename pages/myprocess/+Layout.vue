@@ -1,5 +1,4 @@
 <template>
-    <MobileMenu class="bk-col-root" v-if="status == 'show'" />
     <slot />
     <WorkArchive class="mt-13 bk-col-max" />
     <!-- FOOTER -->
@@ -21,11 +20,6 @@
 </template>
 
 <script lang="ts" setup>
-const { status } = storeToRefs(useMobileMenu())
-
-const MobileMenu = defineAsyncComponent(
-  () => import("@/components/MobileMenu.vue")
-);
 </script>
 
 <style>

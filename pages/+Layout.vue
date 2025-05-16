@@ -1,5 +1,4 @@
 <template>
-  <MobileMenu class="bk-col-root" v-if="status == 'show'" />
   <Header />
   <div class="bk-col-max sm:my-3 relative">
     <!-- MENU -->
@@ -73,10 +72,6 @@
 <script lang="ts" setup>
 const bus = useEventBus("mobile-menu");
 const { status, links } = storeToRefs(useMobileMenu());
-
-const MobileMenu = defineAsyncComponent(
-  () => import("@/components/MobileMenu.vue")
-);
 </script>
 
 <style lang="scss">

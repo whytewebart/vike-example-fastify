@@ -1,6 +1,11 @@
 <script lang="ts" setup>
 const showSpinner = ref(false);
 const bus = useEventBus<string>("spinner");
+const { status } = storeToRefs(useMobileMenu());
+
+const PortfolioMobileMenu = defineAsyncComponent(
+  () => import("@/components/MobileMenu.vue")
+);
 
 bus.on((event) => {
   if (event === "stop-spinner") {
@@ -22,6 +27,7 @@ bus.on((event) => {
       pt:root="h-.8!"
     />
     <div id="view-content" class="viewport h-full py-5">
+      <PortfolioMobileMenu class="bk-col-root" v-if="status == 'show'" />
       <slot />
     </div>
 
@@ -31,8 +37,8 @@ bus.on((event) => {
 
 <style lang="scss">
 body {
- background: url("assets/background-v2.png");
- background-size: 128px auto;
- @apply: bg-alabaster;
+  background: url("assets/background-v2.png");
+  background-size: 128px auto;
+  @apply: bg-alabaster;
 }
 </style>

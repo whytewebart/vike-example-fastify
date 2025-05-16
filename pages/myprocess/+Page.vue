@@ -3,7 +3,7 @@
     <Header />
 
     <div
-      class="bk-col-min bk-inherit mt-4 sm:mt-25 mb-4xl z-1 dark"
+      class="bk-col-min bk-inherit sm:mt-25 mb-4xl z-1 dark"
       flex="~ col sm:items-center gap-3"
     >
       <h1 class="sm:text-center text-neutral-50 font-medium heading--text">
