@@ -34,7 +34,7 @@
     </div>
 
     <p class="grid-col-[max]! font-medium tracking-tight text-white">
-      I’m a freelance developer with 4+ years of experience working across the
+      I’m a freelance developer with 5+ years of experience working across the
       full stack — building, fixing, and maintaining applications of all kinds.
       I’ve worked on large-scale projects and small, focused builds, and I treat
       both with the same level of care. <br /><br />

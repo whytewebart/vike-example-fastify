@@ -3,9 +3,19 @@ import ogImage from "assets/og-image.webp"
 
 export { unhead }
 
+
+
 const unhead = (pageContext: PageContext): Vike.Config['unhead'] => {
+    const _processImages = import.meta.glob('assets/process/*.webp', {
+        eager: true,
+        import: "default",
+        // query: "?extractExportNames",
+    })
+
+    const processImages = Object.values(_processImages) as string[]
+
     var { origin, pathname } = new URL(pageContext.urlFullRoute);
-    const url = origin+pageContext.urlOriginal
+    const url = origin + pageContext.urlOriginal
 
     return {
         meta: [
@@ -22,6 +32,13 @@ const unhead = (pageContext: PageContext): Vike.Config['unhead'] => {
                 // content: "#F6FAFE"
                 content: "#FBFDFF"
             }
-        ]
+        ],
+
+        link: processImages.map(imagestring => ({
+            rel: 'preload',
+            as: 'image',
+            href: imagestring
+        })),
+
     }
 }

@@ -12,7 +12,7 @@
     </p>
 
     <p>
-      With 4+ years of experience, I’ve worked across every layer of software —
+      With 5+ years of experience, I’ve worked across every layer of software —
       from <strong>backend logic and APIs</strong> to
       <strong>mobile apps</strong> built in
       <strong>Swift, Kotlin, Java</strong>, and <strong>React Native</strong>,
