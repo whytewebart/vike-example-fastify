@@ -11,12 +11,14 @@
 //  - HatTip (https://github.com/hattipjs/hattip)
 //    - You can use Bati (https://batijs.dev/) to scaffold a Vike + HatTip app. Note that Bati generates apps that use the V1 design (https://vike.dev/migration/v1-design) and Vike packages (https://vike.dev/vike-packages)
 
-import Fastify from "fastify";
+import Fastify, { FastifyInstance } from "fastify";
 import autoLoad from "@fastify/autoload";
 import { renderPage } from "vike/server";
 
 import { root, port, isProduction, __dirname } from "./root.js";
-import { join } from "path";
+import path, { join } from "path";
+
+export { buildServer }
 
 const production = { logger: true };
 const development = {
@@ -31,37 +33,28 @@ const development = {
   },
 };
 
-export const instance = Fastify(isProduction ? production : development);
-async function buildServer() {
+// Global Fastify instance
+let fastifyInstance: FastifyInstance | null = null;
+// export const instance = Fastify(isProduction ? production : development);
+function buildServer() {
+  if (fastifyInstance) return fastifyInstance; // Return existing instance
+  const instance = Fastify(isProduction ? production : development);
+
   // fastify autoload routes and plugins
   instance.register(autoLoad, { dir: join(__dirname, "plugins") });
-  await instance.register(import("@fastify/compress"), { global: true });
+  instance.register(import("@fastify/compress"), { global: true });
   instance.register(autoLoad, { dir: join(__dirname, "routes") });
 
   if (isProduction) {
-    await instance.register(import("@fastify/static"), {
-      root: root + "/dist/client/assets",
+    instance.register(import("@fastify/static"), {
+      root: path.join(root, '/client/assets'),
       prefix: "/assets/",
     });
 
-    await instance.register(import("@fastify/static"), {
-      root: root + "/dist/client",
+    instance.register(import("@fastify/static"), {
+      root: path.join(root, '/client'),
       decorateReply: false,
       wildcard: false,
-    });
-  } else {
-    const vite = await import("vite");
-    const viteDevMiddleware = (
-      await vite.createServer({ server: { middlewareMode: true } })
-    ).middlewares;
-
-    // this is middleware for vite's dev servert
-    instance.addHook("onRequest", async (request, reply) => {
-      const next = () =>
-        new Promise<void>((resolve) => {
-          viteDevMiddleware(request.raw, reply.raw, () => resolve());
-        });
-      await next();
     });
   }
 
@@ -88,19 +81,41 @@ async function buildServer() {
     return reply;
   });
 
-  // await instance.ready();
+  fastifyInstance = instance;
   return instance;
 }
 
-async function main() {
-  const fastify = await buildServer();
+function main() {
+  const fastify = buildServer();
 
-  fastify.listen({ port: port, host: '0.0.0.0' }, function (err, address) {
-    if (err) {
-      fastify.log.error(err);
-      process.exit(1);
+  const injectVite = async () => {
+    if (!isProduction) {
+      const vite = await import("vite");
+      const viteDevMiddleware = (
+        await vite.createServer({ server: { middlewareMode: true } })
+      ).middlewares;
+
+      // this is middleware for vite's dev servert
+      fastify.addHook("onRequest", async (request, reply) => {
+        const next = () =>
+          new Promise<void>((resolve) => {
+            viteDevMiddleware(request.raw, reply.raw, () => resolve());
+          });
+        await next();
+      });
     }
-  });
+  }
+
+  Promise.allSettled([injectVite()])
+    .then(() => {
+      fastify.listen({ port: port, host: '0.0.0.0' }, function (err, address) {
+        if (err) {
+          fastify.log.error(err);
+          process.exit(1);
+        }
+      });
+
+    })
 }
 
-main();
+if (!isProduction) main();

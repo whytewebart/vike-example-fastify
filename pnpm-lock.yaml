@@ -2414,7 +2414,7 @@ packages:
       chokidar: 4.0.3
       confbox: 0.2.2
       defu: 6.1.4
-      dotenv: 16.4.7
+      dotenv: 16.5.0
       exsolve: 1.0.5
       giget: 2.0.0
       jiti: 2.4.2
@@ -2653,8 +2653,8 @@ packages:
     engines: {node: '>=12'}
     dev: false
 
-  /dotenv@16.4.7:
-    resolution: {integrity: sha512-47qPchRCykZC03FhkYAhrvwU4xDBFIj1QPqaarj6mdM/hgUzfPHcpkHJOn3mJAufFeeAxAzeGsr5X0M4k6fLZQ==}
+  /dotenv@16.5.0:
+    resolution: {integrity: sha512-m/C+AwOAr9/W1UOIZUo232ejMNnJAJtYQjUbHoNTBNTJSvqzzDh7vnrei3o3r3m9blf6ZoDkvcw0VmozNRFJxg==}
     engines: {node: '>=12'}
     dev: false
 
@@ -2717,7 +2717,7 @@ packages:
     resolution: {integrity: sha512-WRD40Q25pP4NUbI3g3CNU5PPzcaiX7YYcPwiCZlfR4qGsKmTlckRixgHww0/fOXiXSNKA87pwshzq0ULTK/48A==}
     dependencies:
       ajv: 8.17.1
-      dotenv: 16.4.7
+      dotenv: 16.5.0
       dotenv-expand: 10.0.0
     dev: false
 
