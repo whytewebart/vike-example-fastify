@@ -1,0 +1,110 @@
+[
+  {
+    "type": "Bordeaux-Style Blend",
+    "name": "Escudo Rojo Classic Blend",
+    "age": "2021 - 2023",
+    "overview": "The iconic blend embodying Bordeaux elegance with Chilean vibrancy. It's a complex, harmonious red, crafted to offer both immediate pleasure and aging potential.",
+    "producer": "Baron Philippe de Rothschild Maipo Chile",
+    "region": "Central Valley, Chile (Blended from various sub-regions)",
+    "grapes": ["Cabernet Sauvignon", "Carmenère", "Syrah", "Cabernet Franc"],
+    "alcohol_content": "13.5% - 14.5% ABV",
+    "food_pairings": ["Roasted red meats", "Hard cheeses", "Mushroom dishes"],
+    "image": "/assets/images/wines/escudo-rojo-classic.jpg"
+  },
+  {
+    "type": "Red Blend",
+    "name": "Escudo Rojo Gran Reserva",
+    "age": "2020 - 2022",
+    "overview": "A refined and powerful Gran Reserva, showcasing the very best of Chile's diverse terroir. It offers exceptional depth, concentration, and a long, elegant finish.",
+    "producer": "Baron Philippe de Rothschild Maipo Chile",
+    "region": "Selected Chilean Valleys (e.g., Maipo, Colchagua, Maule)",
+    "grapes": ["Cabernet Sauvignon", "Carmenère", "Syrah", "Cabernet Franc", "Petit Verdot"],
+    "alcohol_content": "14.0% - 14.5% ABV",
+    "food_pairings": ["Grilled lamb chops", "Beef Wellington", "Rich stews"],
+    "image": "/assets/images/wines/escudo-rojo-gran-reserva.jpg"
+  },
+  {
+    "type": "Premium Red Blend",
+    "name": "Escudo Rojo Origine",
+    "age": "2019 - 2021",
+    "overview": "Origine represents the pinnacle of Escudo Rojo's expression. This truly exceptional and complex blend is crafted from the finest parcels, designed for connoisseurs seeking ultimate elegance and a profound tasting experience.",
+    "producer": "Baron Philippe de Rothschild Maipo Chile",
+    "region": "Maipo Valley (Puente Alto), Chile",
+    "grapes": ["Cabernet Sauvignon", "Carmenère", "Cabernet Franc"],
+    "alcohol_content": "14.0% - 14.5% ABV",
+    "food_pairings": ["Game meats", "Aged beef cuts", "Dark chocolate desserts"],
+    "image": "/assets/images/wines/escudo-rojo-origine.jpg"
+  },
+  {
+    "type": "Cabernet Sauvignon",
+    "name": "Escudo Rojo Reserva Cabernet Sauvignon",
+    "age": "2021 - 2023",
+    "overview": "A pure and expressive Cabernet Sauvignon, highlighting ripe black fruit aromas with elegant notes of spice. It possesses a firm, silky tannic structure that promises excellent aging potential.",
+    "producer": "Baron Philippe de Rothschild Maipo Chile",
+    "region": "Maipo Valley, Chile",
+    "grapes": ["Cabernet Sauvignon"],
+    "alcohol_content": "13.5% - 14.0% ABV",
+    "food_pairings": ["Steak frites", "Pasta with rich meat sauce", "Hard cheeses"],
+    "image": "/assets/images/wines/escudo-rojo-reserva-cabernet-sauvignon.jpg"
+  },
+  {
+    "type": "Carmenère",
+    "name": "Escudo Rojo Reserva Carmenère",
+    "age": "2021 - 2023",
+    "overview": "Chile's emblematic grape shines in this Reserva. Expect notes of ripe red berries, black pepper, and a touch of roasted coffee, with a smooth, lingering finish that truly represents the varietal.",
+    "producer": "Baron Philippe de Rothschild Maipo Chile",
+    "region": "Colchagua Valley, Chile",
+    "grapes": ["Carmenère"],
+    "alcohol_content": "13.5% - 14.0% ABV",
+    "food_pairings": ["Spicy chorizo", "Grilled vegetables", "Lamb tagine"],
+    "image": "/assets/images/wines/escudo-rojo-reserva-carmenere.jpg"
+  },
+  {
+    "type": "Syrah",
+    "name": "Escudo Rojo Reserva Syrah",
+    "age": "2020 - 2022",
+    "overview": "A rich and aromatic Syrah, offering a bouquet of dark fruits, violet, and hints of smoked meat. It culminates in a full-bodied and spicy palate with a long, satisfying finish.",
+    "producer": "Baron Philippe de Rothschild Maipo Chile",
+    "region": "Colchagua Valley, Chile",
+    "grapes": ["Syrah"],
+    "alcohol_content": "14.0% - 14.5% ABV",
+    "food_pairings": ["Braised short ribs", "BBQ pork", "Aged cheddar"],
+    "image": "/assets/images/wines/escudo-rojo-reserva-syrah.jpg"
+  },
+  {
+    "type": "Pinot Noir",
+    "name": "Escudo Rojo Reserva Pinot Noir",
+    "age": "2020 - 2022",
+    "overview": "An elegant and fresh Pinot Noir, characterized by delicate red fruit aromas like cherry and raspberry, with subtle earthy undertones and fine tannins. It's a testament to the cool-climate potential of Chilean Pinot Noir.",
+    "producer": "Baron Philippe de Rothschild Maipo Chile",
+    "region": "Casablanca Valley, Chile",
+    "grapes": ["Pinot Noir"],
+    "alcohol_content": "13.0% - 13.5% ABV",
+    "food_pairings": ["Salmon", "Roasted chicken", "Mushroom risotto"],
+    "image": "/assets/images/wines/escudo-rojo-reserva-pinot-noir.jpg"
+  },
+  {
+    "type": "Sauvignon Blanc",
+    "name": "Escudo Rojo Reserva Sauvignon Blanc",
+    "age": "2023 - 2024",
+    "overview": "A vibrant and refreshing Sauvignon Blanc, bursting with crisp citrus, zesty grapefruit, and tropical fruit notes. It's underpinned by a lively acidity and clean minerality from the Casablanca Valley.",
+    "producer": "Baron Philippe de Rothschild Maipo Chile",
+    "region": "Casablanca Valley, Chile",
+    "grapes": ["Sauvignon Blanc"],
+    "alcohol_content": "12.5% - 13.0% ABV",
+    "food_pairings": ["Oysters", "Goat cheese salad", "Light seafood dishes"],
+    "image": "/assets/images/wines/escudo-rojo-reserva-sauvignon-blanc.jpg"
+  },
+  {
+    "type": "Chardonnay",
+    "name": "Escudo Rojo Reserva Chardonnay",
+    "age": "2022 - 2023",
+    "overview": "A balanced and elegant Chardonnay, offering delightful aromas of white peach and pineapple, with a subtle touch of vanilla and a creamy, lingering finish. It beautifully combines fruitiness with subtle oak influence.",
+    "producer": "Baron Philippe de Rothschild Maipo Chile",
+    "region": "Casablanca Valley, Chile",
+    "grapes": ["Chardonnay"],
+    "alcohol_content": "13.0% - 13.5% ABV",
+    "food_pairings": ["Grilled chicken", "Creamy pasta", "Lobster"],
+    "image": "/assets/images/wines/escudo-rojo-reserva-chardonnay.jpg"
+  }
+]
