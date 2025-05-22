@@ -20,6 +20,7 @@ const data: DataAsync = async (pageContext) => {
                 offset: Number(pageContext.urlParsed.search.page) * 10 || 0,
             },
         },
+        timeout: 2000
     };
 
     var result: any[] = [];
@@ -36,7 +37,8 @@ const data: DataAsync = async (pageContext) => {
                 result = await response._data.rows;
             },
         }
-    );
+    )
+    .catch(e => {})
 
     return {
         clients: result,

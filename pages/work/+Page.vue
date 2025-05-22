@@ -18,6 +18,21 @@
       <WorkArchiveCard v-for="client in data.clients" :client :key="client.id" />
     </div>
 
+    <template v-if="data.clients.length === 0">
+      <div class="pt-8">
+        <p
+          class="text-lg text-center text-neutral-800"
+          hover="text-accent/80 cursor-pointer"
+          @click="() => navigate('/work')"
+        >
+          <span
+            class="i-solar-refresh-bold mr-1"
+          ></span>
+          Failed to Load Work Archive '25
+        </p>
+      </div>
+    </template>
+
     <Paginator
       v-model:first="page"
       :rows="1"

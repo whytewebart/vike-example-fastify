@@ -161,6 +161,7 @@ const fetchClients = async () => {
     `https://data.plasmic.app/api/v1/cms/databases/${plasmicEnv.databaseId}/tables/clients/query`,
     {
       ...options,
+      timeout: 2000,
       async onResponse({ response }) {
         if (response.status !== 200)
           throw new Error("Failed to fetch data from Plasmic CMS");
