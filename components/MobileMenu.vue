@@ -97,15 +97,7 @@ onMounted(() => {
           autoKill: true,
         },
         duration: 1.2,
-        ease: "power2.inOut",
-        onComplete: () => {
-          gsap.to(key, {
-            scrollTo: {
-              y: 0
-            },
-            duration: 0.8
-          })
-        }
+        ease: "power2.inOut"
       });
     },
   });
@@ -113,9 +105,9 @@ onMounted(() => {
 </script>
 
 <style>
-#tagline {
+/* #tagline {
   box-shadow: inset 0px 10px 18px -14px #00000080;
-}
+} */
 
 #mobile-menu::-webkit-scrollbar {
   width: 0px;
