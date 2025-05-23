@@ -55,7 +55,7 @@
     <div grid="~ sm:cols-[1fr_auto] items-start gap-8">
       <div>
         <p class="font-[Instrument_Serif] font-semibold text-white py-3 text-xl">Escudo Rojo on Social Media</p>
-        <div flex="~ items-center gap-2">
+        <div flex="~ items-center gap-2" class="[&]:has-[button:hover]:gap-x-4">
           <Button label="Instagram" icon="i-fa6-brands-instagram" :pt="socialBtn" unstyled />
           <Button label="Facebook" icon="i-fa6-brands-square-facebook" :pt="socialBtn" unstyled />
         </div>
@@ -73,8 +73,8 @@
 <script lang="ts" setup>
 
 const socialBtn = {
-  root: 'px-3 py-2 flex items-center gap-x-2.5 bg-white text-black! rounded-none border-none hover:bg-red-3',
-  label: '',
+  root: 'px-3 py-2 flex items-center gap-x-2.5 bg-white! text-black! rounded-none! border-none hover:scale-110',
+  label: 'font-[Instrument_Sans]',
   icon: 'text-xl'
 }
 

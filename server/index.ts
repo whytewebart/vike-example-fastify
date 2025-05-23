@@ -118,4 +118,4 @@ function main() {
     })
 }
 
-if (!isProduction) main();
+if (!process.env.VERCEL) main();

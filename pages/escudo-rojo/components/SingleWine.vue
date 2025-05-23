@@ -11,9 +11,7 @@
       ref="target"
     >
       <img
-        :src="`/pages/escudo-rojo/assets/wines/${props.wine.name
-          .toLowerCase()
-          .replaceAll(' ', '-')}.png`"
+        :src="wine.image"
         alt=""
         class="w-full h-full object-contain z-1 relative"
       />

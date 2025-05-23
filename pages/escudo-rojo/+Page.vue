@@ -193,7 +193,7 @@
       <!-- <div xmd="h-33"></div> -->
     </div>
     <img
-      src="https://instagram.fabb1-3.fna.fbcdn.net/v/t39.30808-6/481078640_658881889814680_6206222914399524960_n.jpg?stp=dst-jpg_e35_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6IkZFRUQuaW1hZ2VfdXJsZ2VuLjEwODB4MTM1MC5zZHIuZjMwODA4LmRlZmF1bHRfaW1hZ2UifQ&_nc_ht=instagram.fabb1-3.fna.fbcdn.net&_nc_cat=104&_nc_oc=Q6cZ2QE_njhae5Cx2EpW2LDROZTxqhAKpkZM7exE8y3JPiMpStOBDyPe1lietRhiE2zAHJk&_nc_ohc=ziExU8ES1kwQ7kNvwHfJOAH&_nc_gid=TTmRZDQ_sXg0K6Qv705U4g&edm=APoiHPcAAAAA&ccb=7-5&ig_cache_key=MzU2MDYzODU4NzA1ODMyMjU2OQ%3D%3D.3-ccb7-5&oh=00_AfJRQeLzVrYxNXjnzjkgnP6TYUlJ8iBCmKcAydWUZsOWbA&oe=682FAD1F&_nc_sid=22de04"
+      src="./assets/f1d426ed7edb9d256ab20ed7fa084fc2d4410fff.webp"
       alt=""
       class="bg-gray-100 min-h-md max-h-xl w-full rounded-tl-40 object-cover"
     />
@@ -202,10 +202,11 @@
 </template>
 
 <script lang="tsx" setup>
-import wineJson from "./wines.json";
 import Slider from "./components/Slider.vue";
 import SingleWine from "./components/SingleWine.vue";
 import Footer from "./components/Footer.vue";
+import { escudoWines as wineJson } from "./wines";
+
 const sliderComp = ref();
 </script>
 

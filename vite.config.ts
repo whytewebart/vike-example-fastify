@@ -33,10 +33,10 @@ const config: UserConfig = {
       resolvers: [PrimeVueResolver()],
       directoryAsNamespace: true,
     }),
-    imageCompressor({
-      extensions: ["png", "jpg"],
-      logger: true,
-    }),
+    // imageCompressor({
+    //   extensions: ["png", "jpg"],
+    //   logger: true,
+    // }),
     // vercel({
     //   source: "/.*"
     // })
