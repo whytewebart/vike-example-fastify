@@ -1,7 +1,7 @@
 <template>
   <header
     flex="~ items-center justify-between"
-    class="p-5 relative overflow-x-clip"
+    class="py-5 relative overflow-x-clip"
     ref="headerEl"
     v-gsap:header-el
   >

@@ -1,7 +1,7 @@
 <template>
   <section data-section="hero-section" grid="~">
     <div
-      class="px-5 font-[Instrument_Sans] font-medium space-y-2 pb-5 grid justify-items-start"
+      class=" font-[Instrument_Sans] font-medium space-y-2 pb-5 grid justify-items-start"
     >
       <p class="text-sm text-red-400 xmd:hidden">
         Worthy Heir of Baron Philippe De Rothschild in Chile
@@ -46,10 +46,10 @@
         pt:root="xmd:hidden"
       />
     </div>
-    <Slider ref="sliderComp" class="xmd:px-5 xmd:order-first" />
+    <Slider ref="sliderComp" class="xmd: xmd:order-first" />
     <div
       grid="~ xmd:cols-2 lg:cols-3 xmd:gap-y-2 gap-x-2"
-      xmd="py-2 px-5"
+      xmd="py-2 "
       max-xmd="divide-x-none divide-y divide-red"
     >
       <Button
@@ -84,7 +84,6 @@
 
   <section
     data-section="crafting-excellence"
-    class="p-5"
     grid="~  xmd:cols-[minmax(0,_36rem)_auto] gap-4"
   >
     <div grid="~ gap-y-4 justify-items-start">
@@ -131,7 +130,7 @@
     />
   </section>
 
-  <section data-section="wines" class="px-5 py-10 space-y-8">
+  <section data-section="wines" class=" py-10 space-y-8">
     <h3 class="font-normal leading-snug text-gray font-[Instrument_Sans]">
       Discover Our Distinguished Collection
     </h3>
@@ -151,7 +150,7 @@
 
   <section
     data-section="our vineyards"
-    class="px-5"
+    class=""
     grid="~  xmd:cols-[minmax(0,_24rem)_1fr] gap-4 gap-y-12 items-start"
   >
     <div grid="~ gap-y-6 justify-items-start">

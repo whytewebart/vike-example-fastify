@@ -1,14 +1,10 @@
 <template>
-  <div class="bk-col-root escudo-rojo">
-    <Header />
-    <slot />
-  </div>
+  <Header />
+  <slot />
 </template>
 
 <script lang="ts" setup>
 import Header from './components/Header.vue';
-// import "./assets/main.scss"
-
 </script>
 
 <style lang="scss">
@@ -21,7 +17,7 @@ import Header from './components/Header.vue';
 }
 
 #view-content:has(.escudo-rojo) {
-  @apply: p-0;
+  @apply: p-0 bk-content-1440;
 }
 
 </style>

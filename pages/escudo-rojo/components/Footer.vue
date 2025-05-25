@@ -1,5 +1,8 @@
 <template>
-  <footer class="bg-red-800 mt-5 p-5">
+  <footer
+    class="bg-red-800 mt-5 py-5 bk-col-root *:grid-col-[content]"
+    bk="container-[max] values-max-700 content-1440"
+  >
     <div flex="~ items-start justify-between">
       <ul class="font-[Instrument_Serif] text-2xl font-semibold text-white">
         <li>The Worthy Heir</li>
@@ -54,30 +57,47 @@
     <div border="1 white/50" w-full mt-14></div>
     <div grid="~ sm:cols-[1fr_auto] items-start gap-8">
       <div>
-        <p class="font-[Instrument_Serif] font-semibold text-white py-3 text-xl">Escudo Rojo on Social Media</p>
+        <p
+          class="font-[Instrument_Serif] font-semibold text-white py-3 text-xl"
+        >
+          Escudo Rojo on Social Media
+        </p>
         <div flex="~ items-center gap-2" class="[&]:has-[button:hover]:gap-x-4">
-          <Button label="Instagram" icon="i-fa6-brands-instagram" :pt="socialBtn" unstyled />
-          <Button label="Facebook" icon="i-fa6-brands-square-facebook" :pt="socialBtn" unstyled />
+          <Button
+            label="Instagram"
+            icon="i-fa6-brands-instagram"
+            :pt="socialBtn"
+            unstyled
+          />
+          <Button
+            label="Facebook"
+            icon="i-fa6-brands-square-facebook"
+            :pt="socialBtn"
+            unstyled
+          />
         </div>
       </div>
-      <ul class="text-gray-100 text-sm sm:py-3 sm:pl-3 sm:border-l-2 border-white/50" flex="~ items-center gap-4 wrap">
+      <ul
+        class="text-gray-100 text-sm sm:py-3 sm:pl-3 sm:border-l-2 border-white/50"
+        flex="~ items-center gap-4 wrap"
+      >
         <li>Contact</li>
         <li>Baron Philippe De Rothschild website</li>
         <li>Legal Notices</li>
         <li>Privacy Policy</li>
       </ul>
     </div>
+
+    <div class="hidden escudo-rojo"></div>
   </footer>
 </template>
 
 <script lang="ts" setup>
-
 const socialBtn = {
-  root: 'px-3 py-2 flex items-center gap-x-2.5 bg-white! text-black! rounded-none! border-none hover:scale-110',
-  label: 'font-[Instrument_Sans]',
-  icon: 'text-xl'
-}
-
+  root: "px-3 py-2 flex items-center gap-x-2.5 bg-white! text-black! rounded-none! border-none hover:scale-110",
+  label: "font-[Instrument_Sans]",
+  icon: "text-xl",
+};
 </script>
 
 <style scoped>
