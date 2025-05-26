@@ -81,11 +81,11 @@ onMounted(() => {
   
   gsap.set(key, {
     height: 0,
-    marginTop: '-1.25rem'
+    // marginTop: '-1.25rem'
   });
 
   gsap.to(key, {
-    height: "100vh",
+    height: "100dvh",
     marginBottom: '2rem',
     duration: 1,
     ease: "power4.inOut",
@@ -104,7 +104,7 @@ onMounted(() => {
 });
 </script>
 
-<style>
+<style lang="scss">
 /* #tagline {
   box-shadow: inset 0px 10px 18px -14px #00000080;
 } */
@@ -112,4 +112,11 @@ onMounted(() => {
 #mobile-menu::-webkit-scrollbar {
   width: 0px;
 }
+
+#view-content:not(:has(.escudo-rojo)) {
+  & > #mobile-menu {
+    @apply: mt--5;
+  }
+}
+
 </style>

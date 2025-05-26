@@ -62,37 +62,37 @@
     <!-- MY PROCESS GRID -->
     <div class="process-grid transition-all" v-show="processSteps == 1">
       <div>
-        <img src="assets/process/communicate.webp" />
+        <img src="assets/process/communicate.webp" loading="lazy" />
         <span>1</span>
       </div>
       <div>
-        <img src="assets/process/identify.webp" />
+        <img src="assets/process/identify.webp" loading="lazy" />
         <span>2</span>
       </div>
       <div>
-        <img src="assets/process/troubleshoot.webp" />
+        <img src="assets/process/troubleshoot.webp" loading="lazy" />
         <span>3</span>
       </div>
 
       <div>
-        <img src="assets/process/listen.webp" />
+        <img src="assets/process/listen.webp" loading="lazy" />
         <span>4</span>
       </div>
       <div>
-        <img src="assets/process/breakdown.webp" />
+        <img src="assets/process/breakdown.webp" loading="lazy" />
         <span>5</span>
       </div>
 
       <div>
-        <img src="assets/process/simplify.webp" />
+        <img src="assets/process/simplify.webp" loading="lazy" />
         <span>6</span>
       </div>
       <div>
-        <img src="assets/process/revert.webp" />
+        <img src="assets/process/revert.webp" loading="lazy" />
         <span>7</span>
       </div>
       <div>
-        <img src="assets/process/complete-and-polish.webp" />
+        <img src="assets/process/complete-and-polish.webp" loading="lazy" />
         <span>8</span>
       </div>
     </div>

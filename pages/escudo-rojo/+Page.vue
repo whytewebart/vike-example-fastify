@@ -1,7 +1,11 @@
 <template>
-  <section data-section="hero-section" grid="~">
+  <section
+    data-section="hero-section"
+    grid="~"
+    max-xmd="bk-col-root bk-container-[max] bk-values-max-700 bk-content-1440 *:grid-col-[content]"
+  >
     <div
-      class=" font-[Instrument_Sans] font-medium space-y-2 pb-5 grid justify-items-start"
+      class="font-[Instrument_Sans] font-medium space-y-2 pb-5 grid justify-items-start"
     >
       <p class="text-sm text-red-400 xmd:hidden">
         Worthy Heir of Baron Philippe De Rothschild in Chile
@@ -36,7 +40,11 @@
         combination of the latest technology with the great French winemaking
         tradition.
       </h3>
-      <h1 class="font-[Instrument_Serif] font-bold text-6xl text-red-7 xmd:order-first">The Worthy Heir</h1>
+      <h1
+        class="font-[Instrument_Serif] font-bold text-6xl text-red-7 xmd:order-first"
+      >
+        The Worthy Heir
+      </h1>
       <Button
         label="Get to know our Wines"
         icon="i-solar-arrow-right-outline text-xl!"
@@ -46,11 +54,11 @@
         pt:root="xmd:hidden"
       />
     </div>
-    <Slider ref="sliderComp" class="xmd: xmd:order-first" />
+    <Slider ref="sliderComp" class="max-xmd:bk-col-root xmd:order-first" />
     <div
       grid="~ xmd:cols-2 lg:cols-3 xmd:gap-y-2 gap-x-2"
       xmd="py-2 "
-      max-xmd="divide-x-none divide-y divide-red"
+      max-xmd="divide-x-none divide-y divide-red bk-col-root"
     >
       <Button
         label="Our Expertise"
@@ -85,9 +93,12 @@
   <section
     data-section="crafting-excellence"
     grid="~  xmd:cols-[minmax(0,_36rem)_auto] gap-4"
+    class="py-10"
   >
     <div grid="~ gap-y-4 justify-items-start">
-      <h2 class="text-5xl text-red-700 font-[Instrument_Serif] font-bold">Crafting Excellence since 1999</h2>
+      <h2 class="text-5xl text-red-700 font-[Instrument_Serif] font-bold">
+        Crafting Excellence since 1999
+      </h2>
       <p class="font-normal leading-snug text-gray">
         Born from the esteemed Baron Philippe de Rothschild legacy, Escudo Rojo
         represents a bold venture: bringing the meticulous art of Bordeaux
@@ -130,7 +141,7 @@
     />
   </section>
 
-  <section data-section="wines" class=" py-10 space-y-8">
+  <section data-section="wines" class="py-10 space-y-8">
     <h3 class="font-normal leading-snug text-gray font-[Instrument_Sans]">
       Discover Our Distinguished Collection
     </h3>
@@ -209,6 +220,4 @@ import { escudoWines as wineJson } from "./wines";
 const sliderComp = ref();
 </script>
 
-<style>
-
-</style>
+<style></style>
