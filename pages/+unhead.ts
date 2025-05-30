@@ -40,5 +40,21 @@ const unhead = (pageContext: PageContext): Vike.Config['unhead'] => {
             href: imagestring
         })),
 
+        script: [
+            {
+                async: true,
+                src: "https://www.googletagmanager.com/gtag/js?id=G-WG2PHLTVVJ",
+                tagPosition: "bodyOpen"
+            },
+            {
+                textContent: `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+
+                gtag('config', 'G-WG2PHLTVVJ');`,
+                tagPosition: "bodyOpen"
+            }
+        ]
     }
 }
