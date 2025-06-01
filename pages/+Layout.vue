@@ -6,7 +6,6 @@
       flex="sm:~ col items-center gap-x1 gap-y-2"
       sm="flex-row justify-center"
       class="hidden"
-      v-gsap:menu-desktop
     >
       <li v-for="link in links" :key="link.name">
         <Link :href="link.path">{{ link.name }}</Link>
@@ -19,6 +18,7 @@
       severity="secondary"
       pt:root="mb-4 sm:hidden! float-end absolute! top-0 right-0 p-2!"
       @click="() => bus.emit('open')"
+      title="menu dropdown"
     />
   </div>
   <slot />

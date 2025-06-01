@@ -4,7 +4,7 @@ export {
 }
 
 const useMobileMenu = defineStore('mobile-menu', () => {
-    const gsap = useGsap();
+    var gsap: GSAP;
     const key = elementKey("mobile-menu")
 
     const status = ref<"hide" | "show">('hide');
@@ -42,9 +42,14 @@ const useMobileMenu = defineStore('mobile-menu', () => {
     ])
 
     const bus = useEventBus<string>("mobile-menu");
-    bus.on((event: any) => {
+    bus.on(async (event: any) => {
         if (event == "close") {
             const body = document.querySelector("body") as HTMLBodyElement;
+
+            if(!gsap) {
+                gsap = (await import('gsap')).gsap
+            }
+
             gsap.to(key, {
                 height: 0,
                 marginTop: '-1.25rem',

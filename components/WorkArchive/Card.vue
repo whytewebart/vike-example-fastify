@@ -58,8 +58,9 @@ const props = defineProps<{
   client: Record<string, any>;
 }>();
 
-useGsapTimeline(["visit-app", "alt-bg", "work-card-overview"], {}, (ctx) => {
-  const { gsap, elements: keys, timeline } = ctx;
+useGsap(({ gsap, defineKeys }) => {
+  const keys = defineKeys(["visit-app", "alt-bg", "work-card-overview"]);
+  const timeline = gsap.timeline();
 
   // Animate the visit-app button .01
   target.value.addEventListener("mouseenter", (e) => {

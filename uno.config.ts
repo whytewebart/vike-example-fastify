@@ -81,7 +81,6 @@ export default defineConfig({
   theme: {
     colors: {
       divider: "#BDBDBD",
-      // alabaster: "#FBFBFB",
       alabaster: "#F8F8F8",
       text: "#757575",
       accent: "#1773E3",

@@ -32,6 +32,9 @@ dependencies:
   '@primevue/auto-import-resolver':
     specifier: ^4.3.3
     version: 4.3.3
+  '@primevue/metadata':
+    specifier: 4.3.3
+    version: 4.3.3
   '@unhead/ssr':
     specifier: ^1.11.15
     version: 1.11.15

@@ -49,21 +49,13 @@ interface Wine {
 
 const props = defineProps<{ wine: Wine }>();
 
-useGsapTimeline(["visit-app", "alt-bg", "work-card-overview"], {}, (ctx) => {
-  const { gsap, elements: keys, timeline } = ctx;
+useGsap(({ gsap, defineKeys }) => {
+  const keys = defineKeys(["visit-app", "alt-bg", "work-card-overview"])
 
   // Animate the visit-app button .01
   target.value.addEventListener("mouseenter", (e) => {
     const element = e.target as HTMLElement;
-    const key = element.querySelector(keys["visit-app"]);
-
     const bg = target.value.querySelector(keys["alt-bg"]);
-    const alternate_bgs = document.querySelectorAll(keys["alt-bg"]);
-    const alternate_bgs_array = Object.values(alternate_bgs).filter(
-      (d) =>
-        d.getAttribute("data-animate-key") !==
-        bg?.getAttribute("data-animate-key")
-    );
 
     gsap.to(bg, {
       height: "100%",

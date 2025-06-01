@@ -3,7 +3,7 @@
     flex="~ items-center justify-between"
     class="py-5 relative overflow-x-clip"
     ref="headerEl"
-    v-gsap:header-el
+    v-animate-key:header-el
   >
     <nav>
       <ul flex="~ items-center">
@@ -34,7 +34,7 @@
     </nav>
 
     <div
-      v-gsap:logo-el
+      v-animate-key:logo-el
       class="xmd:absolute right-50% left-50% hover:cursor-pointer z-10"
     >
       <span
@@ -111,12 +111,12 @@ const socialMedia = {
 const { x, y } = useMouse();
 const headerEl = ref<HTMLElement>();
 
-useGsapTimeline(["header-el", "logo-el"], {}, ({ elements, gsap }) => {
-  const logoEl = document.querySelector(elements["logo-el"]);
-  const headerEl = document.querySelector(elements["header-el"]);
-  const logoElSpan = document.querySelector(elements["logo-el"] + " span");
+useGsap(({ gsap }) => {
+  const logoEl = document.querySelector(elementKey("logo-el"));
+  const headerEl = document.querySelector(elementKey("header-el"));
+  const logoElSpan = document.querySelector(elementKey("logo-el") + " span");
 
-  gsap.to(elements["logo-el"] + " span", {
+  gsap.to(elementKey("logo-el") + " span", {
     backgroundColor: "#F8F8F8",
     opacity: 1,
     onComplete: () => {
@@ -130,7 +130,7 @@ useGsapTimeline(["header-el", "logo-el"], {}, ({ elements, gsap }) => {
   headerEl?.addEventListener("mousemove", (e) => {
     let [xValue, yValue] = [x.value + 10, y.value - 10];
 
-    gsap.to(elements["logo-el"] + " span", {
+    gsap.to(elementKey("logo-el") + " span", {
       backgroundColor: "#F8F8F8",
       border: 1,
       opacity: 1,

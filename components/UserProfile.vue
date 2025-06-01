@@ -53,7 +53,6 @@
       <div class="space-y-1.5">
         <h4
           class="font-epilogue tracking-tight sm:text-3.25 font-medium max-sm:max-w-55 leading-tight"
-          v-gsap:aboutMe
         >
           I help individuals and businesses build reliable apps and websites —
           with clarity, care, and long-term support.
@@ -80,6 +79,7 @@
         href="mailto:wills.yte50@gmail.com"
         size="large"
         class="grid!"
+        title="Email Address"
       />
 
       <Button

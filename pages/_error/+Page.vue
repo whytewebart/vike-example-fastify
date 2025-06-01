@@ -5,7 +5,7 @@
         src="/brandmark.png"
         width="100px"
         alt=""
-        v-gsap:error-application-brandmark
+        v-animate-key:error-application-brandmark
       />
     </a>
   </div>
@@ -55,21 +55,21 @@ if (!abortReason) {
   abortReason = is404 ? "Page not found." : "Something went wrong.";
 }
 
-useGsapTimeline(["error-application-brandmark"], {}, ({ gsap, elements }) => {
-  const key = elements["error-application-brandmark"];
+useGsap(({ gsap, elementKey }) => {
+  const key = elementKey("error-application-brandmark");
   
   document.querySelector(key)?.addEventListener("mouseenter", (e) => {
     gsap.to(key, {
       // scale: 1.5,
       rotate: 360,
-      duration: 0.3,
+      duration: 0.5,
     });
   });
 
   document.querySelector(key)?.addEventListener("mouseleave", (e) => {
     gsap.to(key, {
       // scale: 1,
-      duration: 0.3,
+      duration: 0.5,
       rotate: 0,
     });
   });

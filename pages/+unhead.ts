@@ -44,16 +44,16 @@ const unhead = (pageContext: PageContext): Vike.Config['unhead'] => {
             {
                 async: true,
                 src: "https://www.googletagmanager.com/gtag/js?id=G-WG2PHLTVVJ",
-                tagPosition: "bodyOpen"
+                tagPriority: 'critical',
             },
             {
-                textContent: `
+                innerHTML: `
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
                 gtag('js', new Date());
 
                 gtag('config', 'G-WG2PHLTVVJ');`,
-                tagPosition: "bodyOpen"
+                tagPriority: 'critical'
             }
         ]
     }

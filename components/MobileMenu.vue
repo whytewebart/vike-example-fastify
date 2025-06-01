@@ -3,8 +3,7 @@
     w-full
     overflow-y-auto
     scroll-smooth
-    id="mobile-menu"
-    v-gsap:mobile-menu
+    v-animate-key:mobile-menu
   >
     <div
       class="min-h-screen bg-accent pt-30 pb-4"
@@ -70,11 +69,10 @@
 </template>
 
 <script lang="ts" setup>
-const gsap = useGsap();
 const { links, toggle } = useMobileMenu();
 const key = elementKey("mobile-menu");
 
-onMounted(() => {
+useGsap(({ gsap }) => {
   // HIDE BODY SCROLL
   const body = document.querySelector("body") as HTMLBodyElement;
   const mobileMenu = document.querySelector("#mobile-menu") as HTMLDivElement;

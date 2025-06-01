@@ -37,6 +37,7 @@
       severity="secondary"
       pt:root="mb-4 sm:hidden! float-end absolute! top-0 right-0 p-2!"
       @click="() => bus.emit('open')"
+      title="menu dropdown"
     />
   </div>
 </template>
@@ -75,26 +76,22 @@ bus.on((event) => {
   }
 });
 
-useGsapTimeline(
-    ["application-brandmark"],
-    {},
-    ({ gsap, elements }) => {
-        const key = elements["application-brandmark"];
-        document.querySelector(key)?.addEventListener("mouseenter", (e) => {
-            gsap.to(key, {
-                scale: 1.5,
-                rotate: 360,
-                duration: 0.3,
-            });
-        });
+useGsap(({ gsap, elementKey }) => {
+  const key = elementKey("application-brandmark");
+  document.querySelector(key)?.addEventListener("mouseenter", (e) => {
+    gsap.to(key, {
+      scale: 1.5,
+      rotate: 360,
+      duration: 0.3,
+    });
+  });
 
-        document.querySelector(key)?.addEventListener("mouseleave", (e) => {
-            gsap.to(key, {
-                scale: 1,
-                duration: 0.3,
-                rotate: 0,
-            });
-        });
-    }
-);
+  document.querySelector(key)?.addEventListener("mouseleave", (e) => {
+    gsap.to(key, {
+      scale: 1,
+      duration: 0.3,
+      rotate: 0,
+    });
+  });
+});
 </script>

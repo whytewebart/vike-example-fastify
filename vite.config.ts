@@ -48,6 +48,12 @@ const config: UserConfig = {
       "assets": path.resolve(__dirname, "./assets/")
     },
   },
+
+  optimizeDeps: {
+    exclude: [
+      './renderer/styles/primevue/aura'
+    ]
+  }
 };
 
 export default config;
