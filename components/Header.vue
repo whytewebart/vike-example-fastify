@@ -1,6 +1,6 @@
 <template>
   <div class="bk-col-min hidden" flex="sm:~ justify-center items-center">
-    <a href="/" class="[all:unset] cursor-pointer hover:animate-bounc">
+    <a href="/" class="[all:unset] cursor-pointer" title="Home">
       <img
         data-animate="application-brandmark"
         src="/brandmark.png"

@@ -1,7 +1,7 @@
 // https://vike.dev/onRenderHtml
 export { onRenderHtml };
 
-import { renderToString as renderToString_ } from "@vue/server-renderer";
+import { renderToNodeStream, renderToString as renderToString_ } from "@vue/server-renderer";
 import type { App } from "vue";
 import { escapeInject, dangerouslySkipEscape } from "vike/server";
 import type { OnRenderHtmlAsync } from "vike/types";
@@ -16,7 +16,8 @@ const onRenderHtml: OnRenderHtmlAsync = async (
 
   const { app, head } =
     await createApp(pageContext, !!pageContext.Page);
-  const appHtml = await renderToString(app);
+  // const appHtml = await renderToString(app);
+  const stream = renderToNodeStream(app);
 
   const {
     headTags,
@@ -33,7 +34,7 @@ const onRenderHtml: OnRenderHtmlAsync = async (
       </head>
       <body ${dangerouslySkipEscape(bodyAttrs)}>
        ${dangerouslySkipEscape(bodyTagsOpen)}
-        <div id="app">${dangerouslySkipEscape(appHtml)}</div>
+        <div id="app">${stream}</div>
          ${dangerouslySkipEscape(bodyTags)}
       </body>
     </html>`;
@@ -42,6 +43,7 @@ const onRenderHtml: OnRenderHtmlAsync = async (
     documentHtml,
     pageContext: {
       // We can add custom pageContext properties here, see https://vike.dev/pageContext#custom
+      enableEagerStreaming: true
     },
   };
 };

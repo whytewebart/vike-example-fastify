@@ -22,7 +22,16 @@
     />
   </div>
   <slot />
-  <WorkArchive class="mt-13 bk-col-max" />
+  <div class="mt-13 bk-col-max relative">
+    <AsyncWorkArchive />
+    <MyProcess ref="myprocessRef" />
+
+    <div
+      id="border-line"
+      :class="['absolute top-10 -left-8 w-4', isOpened, 'hidden md:block']"
+      border="2 text r-0"
+    ></div>
+  </div>
   <!-- FOOTER -->
   <footer class="bk-col-full mt-14">
     <p class="text-accent text-sm font-medium">
@@ -70,8 +79,27 @@
 </template>
 
 <script lang="ts" setup>
+import { hydrateOnInteraction } from "vue";
+
 const bus = useEventBus("mobile-menu");
-const { status, links } = storeToRefs(useMobileMenu());
+const { links } = storeToRefs(useMobileMenu());
+const AsyncWorkArchive = defineAsyncComponent({
+  loader: () => import("../components/WorkArchive/index.vue"),
+  hydrate: hydrateOnInteraction("mouseenter"),
+});
+
+const myprocessRef = ref();
+const isOpened = computed(() => {
+  if (myprocessRef.value?.status) {
+    return myprocessRef.value?.status === "open"
+      ? borderLine.value[0]
+      : borderLine.value[1];
+  }
+
+  return borderLine.value[0];
+});
+
+const borderLine = ref(["h-[calc(100%_-_6.5rem)]", "h-[calc(100%_-_22rem)]"]);
 </script>
 
 <style lang="scss">

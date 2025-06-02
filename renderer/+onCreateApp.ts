@@ -2,11 +2,9 @@ export { onCreateApp };
 
 // import Aura from '@primeuix/themes/aura';
 import PrimeVue from 'primevue/config';
-import gsap from "./plugins/gsap";
 
 import { Ripple, Tooltip } from 'primevue';
-import { MotionPlugin } from '@vueuse/motion'
-import { createPinia } from "pinia"; 
+import { createPinia } from "pinia";
 import { usePt } from './styles/primevue/preset';
 
 import "virtual:uno.css";
@@ -36,11 +34,26 @@ const onCreateApp = async (pageContext: PageContextWithApp) => {
   });
 
   const pinia = createPinia()
-  
+
   app.use(pinia)
-  app.use(MotionPlugin)
-  app.use(gsap)
 
   app.directive("tooltip", Tooltip);
   app.directive('ripple', Ripple);
+  app.directive("animate-key", {
+    getSSRProps(binding, vnode) {
+      if (!binding.arg) {
+        console.warn("gsap directive must have an argument of a string");
+        return {};
+      }
+
+      return {
+        'data-animate': binding.arg
+      }
+    },
+
+    mounted(el, binding, vnode) {
+      const element: HTMLElement = el;
+      element.setAttribute("data-animate", binding.arg || '');
+    }
+  });
 };

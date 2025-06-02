@@ -1,6 +1,6 @@
 <template>
   <div class="bk-col-min hidden z-1" flex="sm:~ justify-center items-center">
-    <a href="/" class="[all:unset] cursor-pointer mr-2">
+    <a href="/" class="[all:unset] cursor-pointer mr-2" title="Home">
       <img
         data-animate="application-brandmark"
         src="/brandmark.png"

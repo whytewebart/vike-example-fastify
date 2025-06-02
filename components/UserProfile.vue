@@ -7,24 +7,7 @@
       <div
         class="h-102px w-full rounded-4 bg-gray-100 profile-wrapper relative"
         max-sm="h-210px w-210px rounded-full order-1"
-        v-motion="{
-          initial: {
-            background:
-              'conic-gradient(from 0deg at 50% 50%, #ffffff 0% 0%, #1773e3 100% 100%)',
-            transition: {
-              duration: 400,
-              ease: 'easeInOut',
-            },
-          },
-          enter: {
-            background:
-              'conic-gradient(from 180deg at 50% 50%, #ffffff 0% 0%, #1773e3 100% 100%)',
-            transition: {
-              duration: 400,
-              ease: 'easeInOut',
-            },
-          },
-        }"
+        v-animate-key:profile-bg
       >
         <!-- active-state -->
         <div
@@ -36,18 +19,8 @@
           src="assets/images/emmanuel-transparent-bg.webp"
           v-if="ctx.urlOriginal == '/about'"
           alt=""
-          class="w-full h-full object-contain rounded-full"
-          v-motion="{
-            initial: {
-              opacity: 0,
-              y: '100%',
-            },
-            enter: {
-              opacity: 1,
-              y: '0%',
-              transition: { duration: 500, ease: 'easeInOut' },
-            },
-          }"
+          class="w-full h-full object-contain rounded-full invisible"
+          v-animate-key:profile-pic
         />
       </div>
       <div class="space-y-1.5">
@@ -98,8 +71,36 @@
 </template>
 
 <script lang="ts" setup>
+const ctx = usePageContext();
 
-const ctx = usePageContext()
+useGsap(({ gsap }) => {
+  const key = elementKey("profile-bg");
+  const profileImg = elementKey("profile-pic");
+  const tl = gsap.timeline();
+
+  tl.fromTo(
+    key,
+    {
+      background:
+        "conic-gradient(from 0deg at 50% 50%, #ffffff 0% 0%, #1773e3 100% 100%)",
+    },
+    {
+      background:
+        "conic-gradient(from 180deg at 50% 50%, #ffffff 0% 0%, #1773e3 100% 100%)",
+    }
+  );
+
+  tl.from(
+    profileImg,
+    {
+      opacity: 0,
+      y: "100%",
+      duration: .5,
+      autoAlpha: 0,
+    },
+    "-=.5"
+  );
+});
 
 defineOptions({
   inheritAttrs: true,

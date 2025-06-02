@@ -27,6 +27,7 @@ declare global {
         title?: string;
         description?: string;
         unhead?: UseHeadInput<any>;
+        [key: string]: any
       };
 
       config: {
