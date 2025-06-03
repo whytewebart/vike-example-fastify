@@ -6,7 +6,7 @@
     v-animate-key:mobile-menu
   >
     <div
-      class="min-h-screen bg-accent pt-30 pb-4"
+      class="min-h-full bg-accent pt-30 pb-4"
       grid="~ rows-[auto_auto] gap-y-4 content-between"
     >
       <!-- HAMBURGER MENU -->
@@ -75,7 +75,7 @@ const key = elementKey("mobile-menu");
 useGsap(({ gsap }) => {
   // HIDE BODY SCROLL
   const body = document.querySelector("body") as HTMLBodyElement;
-  const mobileMenu = document.querySelector("#mobile-menu") as HTMLDivElement;
+  const mobileMenu = document.querySelector(key) as HTMLDivElement;
   
   gsap.set(key, {
     height: 0,
@@ -99,6 +99,8 @@ useGsap(({ gsap }) => {
       });
     },
   });
+}, {
+  plugins: ['ScrollToPlugin']
 });
 </script>
 

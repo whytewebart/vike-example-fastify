@@ -1,4 +1,4 @@
-import { onMounted, ref } from 'vue';
+import { onMounted } from 'vue';
 
 // DECLARE TYPES
 interface GsapContext {
@@ -24,6 +24,7 @@ const pluginLoaders = {
     MorphSVGPlugin: () => import('gsap/MorphSVGPlugin').then(mod => mod.default),
     ScrollSmoother: () => import('gsap/ScrollSmoother').then(mod => mod.default),
     SplitText: () => import('gsap/SplitText').then(mod => mod.default),
+    ScrollToPlugin: () => import('gsap/ScrollToPlugin').then(mod => mod.default)
 };
 
 export const useGsap = (
