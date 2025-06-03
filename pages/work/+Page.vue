@@ -15,7 +15,11 @@
 
     <div class="clients-grid mt-4">
       <!-- CLIENT COMPONENT -->
-      <WorkArchiveCard v-for="client in data.clients" :client :key="client.id" />
+      <WorkArchiveCard
+        v-for="client in data.clients"
+        :client
+        :key="client.id"
+      />
     </div>
 
     <template v-if="data.clients.length === 0">
@@ -25,9 +29,7 @@
           hover="text-accent/80 cursor-pointer"
           @click="() => navigate('/work')"
         >
-          <span
-            class="i-solar-refresh-bold mr-1"
-          ></span>
+          <span class="i-solar-refresh-bold mr-1"></span>
           Failed to Load Work Archive '25
         </p>
       </div>
@@ -53,82 +55,17 @@
       v-if="false"
     />
 
-    <div flex="~ items-center justify-between" class="mt-9">
-      <h3 class="font-medium tracking-tight text-2xl text-neutral-800">
-        🔁 My Process
-      </h3>
-      <Button
-        :label="processSteps == 0 ? '[Expand]' : '[Collapse]'"
-        text
-        size="small"
-        severity="contrast"
-        pt:label="font-bold"
-        @click="toggleProcessSteps"
-      />
-    </div>
-
-    <!-- MY PROCESS GRID -->
-    <div class="process-grid transition-all" v-show="processSteps == 1">
-      <div>
-        <img src="assets/process/communicate.webp" alt="" />
-        <span>1</span>
-      </div>
-      <div>
-        <img src="assets/process/identify.webp" alt="" />
-        <span>2</span>
-      </div>
-      <div>
-        <img src="assets/process/troubleshoot.webp" alt="" />
-        <span>3</span>
-      </div>
-
-      <div>
-        <img src="assets/process/listen.webp" alt="" />
-        <span>4</span>
-      </div>
-      <div>
-        <img src="assets/process/breakdown.webp" alt="" />
-        <span>5</span>
-      </div>
-
-      <div>
-        <img src="assets/process/simplify.webp" alt="" />
-        <span>6</span>
-      </div>
-      <div>
-        <img src="assets/process/revert.webp" alt="" />
-        <span>7</span>
-      </div>
-      <div>
-        <img src="assets/process/complete-and-polish.webp" alt="" />
-        <span>8</span>
-      </div>
-    </div>
-
-    <div class="mt-6">
-      <h4 class="text-neutral-800 process-steps-text -tracking-.4 font-medium">
-        Communicate → Identify →
-        <span class="text-blue-700">Troubleshoot</span> <br />
-        Listen → Break Down → <span class="text-blue-700">Simplify</span> <br />
-        Revert if needed → <span class="text-blue-700">Complete & Polish</span>
-        <br />
-      </h4>
-    </div>
+    <MyProcess ref="myprocessRef" />
 
     <div
       id="border-line"
-      :class="[
-        'absolute top-10 -left-8 w-4',
-        borderLine[processSteps],
-        'hidden md:block',
-      ]"
+      :class="['absolute top-10 -left-8 w-4', isOpened, 'hidden md:block']"
       border="2 text r-0"
     ></div>
   </div>
 </template>
 
 <script lang="tsx" setup>
-import { Button } from "primevue";
 import { navigate } from "vike/client/router";
 
 const context = usePageContext();
@@ -136,11 +73,18 @@ const data = useData<any>();
 
 const page = ref(Number(context.value.urlParsed.search.page) || 0);
 
-// TOGGLE PROCESS STEPS
-const processSteps = ref<0 | 1>(0);
+const myprocessRef = ref();
+const isOpened = computed(() => {
+  if (myprocessRef.value?.status) {
+    return myprocessRef.value?.status === "open"
+      ? borderLine.value[0]
+      : borderLine.value[1];
+  }
+
+  return borderLine.value[0];
+});
+
 const borderLine = ref(["h-[calc(100%_-_6.5rem)]", "h-[calc(100%_-_22rem)]"]);
-const toggleProcessSteps = () =>
-  (processSteps.value = processSteps.value === 0 ? 1 : 0);
 
 defineOptions({
   inheritAttrs: true,
