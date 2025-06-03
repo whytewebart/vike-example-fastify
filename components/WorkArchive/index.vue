@@ -103,7 +103,7 @@ const fetchClients = async () => {
 };
 
 onServerPrefetch(fetchClients);
-// onMounted(fetchClients);
+onMounted(fetchClients);
 
 // TOGGLE PROCESS STEPS
 const processSteps = ref<0 | 1>(0);
