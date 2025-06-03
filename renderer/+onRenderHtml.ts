@@ -1,9 +1,9 @@
 // https://vike.dev/onRenderHtml
 export { onRenderHtml };
 
-import { renderToNodeStream, renderToString as renderToString_ } from "@vue/server-renderer";
+import { pipeToNodeWritable, pipeToWebWritable, renderToNodeStream, renderToString as renderToString_ } from "@vue/server-renderer";
 import type { App } from "vue";
-import { escapeInject, dangerouslySkipEscape } from "vike/server";
+import { escapeInject, dangerouslySkipEscape, stampPipe } from "vike/server";
 import type { OnRenderHtmlAsync } from "vike/types";
 import { createApp } from "./app";
 
@@ -17,7 +17,11 @@ const onRenderHtml: OnRenderHtmlAsync = async (
   const { app, head } =
     await createApp(pageContext, !!pageContext.Page);
   // const appHtml = await renderToString(app);
-  const stream = renderToNodeStream(app);
+  // const stream = renderToNodeStream(app);
+  const pipeWrapper = (writable) => {
+    pipeToNodeWritable(app, {}, writable)
+  }
+  stampPipe(pipeWrapper, 'node-stream')
 
   const {
     headTags,
@@ -34,7 +38,7 @@ const onRenderHtml: OnRenderHtmlAsync = async (
       </head>
       <body ${dangerouslySkipEscape(bodyAttrs)}>
        ${dangerouslySkipEscape(bodyTagsOpen)}
-        <div id="app">${stream}</div>
+        <div id="app">${pipeWrapper}</div>
          ${dangerouslySkipEscape(bodyTags)}
       </body>
     </html>`;

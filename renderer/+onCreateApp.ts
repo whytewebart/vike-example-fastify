@@ -8,7 +8,7 @@ import { createPinia } from "pinia";
 import { usePt } from './styles/primevue/preset';
 
 import "virtual:uno.css";
-import "./styles/main.scss";
+// import "./styles/main.scss";
 
 const onCreateApp = async (pageContext: PageContextWithApp) => {
   const { app } = pageContext;

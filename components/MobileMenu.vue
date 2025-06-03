@@ -107,12 +107,12 @@ useGsap(({ gsap }) => {
   box-shadow: inset 0px 10px 18px -14px #00000080;
 } */
 
-#mobile-menu::-webkit-scrollbar {
+[data-animate="mobile-menu"]::-webkit-scrollbar {
   width: 0px;
 }
 
 #view-content:not(:has(.escudo-rojo)) {
-  & > #mobile-menu {
+  & > [data-animate="mobile-menu"] {
     @apply: mt--5;
   }
 }

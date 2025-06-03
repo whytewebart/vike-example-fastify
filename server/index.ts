@@ -92,7 +92,14 @@ function main() {
     if (!isProduction) {
       const vite = await import("vite");
       const viteDevMiddleware = (
-        await vite.createServer({ server: { middlewareMode: true } })
+        await vite.createServer({
+          server: {
+            middlewareMode: true,
+            headers: {
+              "cache-control": "no-cache, must-revalidate"
+            }
+          }
+        })
       ).middlewares;
 
       // this is middleware for vite's dev servert

@@ -34,17 +34,28 @@ const unhead = (pageContext: PageContext): Vike.Config['unhead'] => {
             }
         ],
 
-        link: processImages.map(imagestring => ({
-            rel: 'preload',
-            as: 'image',
-            href: imagestring
-        })),
+        // link: processImages.map(imagestring => ({
+        //     rel: 'preload',
+        //     as: 'image',
+        //     href: imagestring
+        // })),
+
+        link: [
+            {
+                rel: "preconnect",
+                href: "https://www.googletagmanager.com"
+            },
+            {
+                rel: "preload",
+                href: "https://www.googletagmanager.com/gtag/js?id=G-WG2PHLTVVJ",
+                as: "script"
+            }
+        ],
 
         script: [
             {
                 async: true,
                 src: "https://www.googletagmanager.com/gtag/js?id=G-WG2PHLTVVJ",
-                tagPriority: 'critical',
             },
             {
                 innerHTML: `
@@ -53,7 +64,6 @@ const unhead = (pageContext: PageContext): Vike.Config['unhead'] => {
                 gtag('js', new Date());
 
                 gtag('config', 'G-WG2PHLTVVJ');`,
-                tagPriority: 'critical'
             }
         ]
     }
