@@ -8,7 +8,7 @@
 :host::after,
 #canvas::before,
 #canvas::after {
-    --drag-border-width: 2px; 
+    --drag-border-width: 2px;
     content: '';
     position: absolute;
     width: 55px;
@@ -22,6 +22,7 @@
     left: -12px;
     border-right: none !important;
     border-bottom: none !important;
+    --at-apply: rounded-tl-4p;
 }
 
 /* Top-right */
@@ -30,6 +31,7 @@
     right: -12px;
     border-left: none !important;
     border-bottom: none !important;
+    --at-apply: rounded-tr-4p;
 }
 
 /* Bottom-left */
@@ -38,6 +40,7 @@
     left: -12px;
     border-right: none !important;
     border-top: none !important;
+    --at-apply: rounded-bl-4p;
 }
 
 /* Bottom-right */
@@ -46,10 +49,11 @@
     right: -12px;
     border-left: none !important;
     border-top: none !important;
+    --at-apply: rounded-br-4p;
 }
 
 #handle button[position="top"] {
-    --at-apply: -top-27px left-1/2 -translate-x-1/2;
+    --at-apply: -top-25px left-1/2 -translate-x-1/2 opacity-100;
 }
 
 #handle button[position="left"] {
@@ -62,4 +66,15 @@
 
 #handle button[position="bottom"] {
     --at-apply: -bottom-25px left-1/2 -translate-x-1/2 rounded-t-none rounded-b-lg b-b-0 hover:border-t-indigo-400 hover:b-t-2;
+}
+
+:host:has(#handle:hover) #canvas,
+:host:has(#handle:hover) {
+    --drag-border-color: rgba(99, 97, 97, 0.17)
+}
+
+:host:has(#handle button:hover) #canvas,
+:host:has(#handle button:hover) {
+    --drag-border-color: rgba(136, 129, 240, 0.41) !important;
+    --drag-border-width: 3px !important
 }

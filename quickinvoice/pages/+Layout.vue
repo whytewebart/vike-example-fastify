@@ -1,6 +1,6 @@
 <template>
   <div class="quickinvoice">
-    <header class="py-8"></header>
+    <!-- <header class="py-8"></header> -->
     <slot />
   </div>
 </template>

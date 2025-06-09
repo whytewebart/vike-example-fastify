@@ -46,8 +46,8 @@ export class EditorCanvas extends MinzeElement {
             'text-xs font-urbanist font-semibold capitalize',
             'hover:cursor-grab',
             'transition-all',
-            'pointer-events-auto absolute z-10',
-            // 'opacity-0 hover:opacity-100',
+            'pointer-events-auto absolute z-1',
+            'opacity-0 hover:opacity-100',
         ]
     }
 
@@ -88,7 +88,8 @@ export class EditorCanvas extends MinzeElement {
         clearTimeout(this.resizeTimeout)
 
         this.resizeTimeout = setTimeout(() => {
-            const containerWidth = window.innerWidth - this.CANVAS_PADDING - this.HANDLE_PADDING;
+            const padding = this.CANVAS_PADDING + this.HANDLE_PADDING
+            const containerWidth = window.innerWidth - padding;
             const containerHeight = window.innerHeight;
 
             const canvasWidth = this.canvas.width;
@@ -100,7 +101,7 @@ export class EditorCanvas extends MinzeElement {
             const scaleY = containerHeight / canvasHeight;
             const scale = Math.min(scaleX, scaleY, 1); // Don't scale above 100%
 
-            console.log('Scaling canvas:', scale)
+            // console.log("canvas:ready was dispatched")
 
             if (this.canvasScale !== scale) {
                 this.canvasScale = scale;
@@ -112,9 +113,9 @@ export class EditorCanvas extends MinzeElement {
     }
 
     html = () => /*html*/`
-            ${this.handle}
-        <div id="canvas" class="bg-white relative z-1">
-            <p class="text-2xl">${this.canvasScale}</p>
+        ${this.handle}
+        <div id="canvas" class="bg-white relative border p-1">
+            <!-- <p class="text-2xl">${this.canvasScale}</p> -->
             <slot></slot>
         </div>
     `
@@ -129,18 +130,11 @@ export class EditorCanvas extends MinzeElement {
             display: block;
         }
 
+        :not(:defined) {
+            visibility: hidden;
+        }
+
         ${css}
-
-        :host:has(#handle:hover) #canvas,
-        :host:has(#handle:hover) {
-            --drag-border-color:rgba(99, 97, 97, 0.17)
-        }
-
-        :host:has(#handle button:hover) #canvas,
-        :host:has(#handle button:hover) {
-            --drag-border-color:rgba(136, 129, 240, 0.41) !important;
-            --drag-border-width: 3px !important
-        }
 
         @media (max-width: ${this.canvas.width + this.CANVAS_PADDING + this.HANDLE_PADDING}px) {
             :host {
@@ -154,6 +148,9 @@ export class EditorCanvas extends MinzeElement {
     eventListeners: EventListeners = [
         ...this.handleEvents,
         [window, 'resize', this.scaleCanvas],
+        [window, 'editor-wrapper:ready', () => {
+            this.dispatch('canvas:ready', { canvas: this.canvas });
+        }]
     ]
 
     onReady() {

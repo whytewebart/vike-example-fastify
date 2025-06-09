@@ -29,7 +29,7 @@ export class CustomLink extends MinzeElement {
         this.className = ''
 
         // Apply in correct order
-        this.classList.add(...baseClasses, ...userClasses)
+        // this.classList.add(...baseClasses, ...userClasses)
     }
 
     afterRender() {
@@ -55,13 +55,15 @@ export class CustomLink extends MinzeElement {
 
     css = () => `
     @unocss-placeholder
-    :host {
-      --at-apply: inline-block invisible;
-    }
 
     :host(:hover) {
       cursor: pointer;
       text-decoration: underline;
+    }
+
+    /* :not(:defined) { */
+    :host {
+        visibility: hidden;
     }
   `
 
