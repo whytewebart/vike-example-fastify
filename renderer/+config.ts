@@ -125,4 +125,5 @@ export default {
   passToClient: ["pageProps", "routeParams", 'urlFullRoute'],
 
   unhead,
+  ssrSlot: 'default'
 } satisfies Config;

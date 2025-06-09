@@ -25,16 +25,22 @@ const onRenderClient: OnRenderClientAsync = async (
      * If the ssrSlot is defined, we check if it's empty to determine if the page (nested) is client-side rendered.
      */
     const container = document.getElementById("app")!;
-    const ssrSlot = pageContext.config.ssrSlot
-      ? document.getElementById(pageContext.config.ssrSlot)
-      : null;
+    const opts = {
+      ssr: {
+        default: 'view-content'
+      }
+    };
 
-    const ssr = ssrSlot
-      ? ssrSlot?.children.length !== 0
-      : container.children.length > 0;
+    const ssr = (() => {
+      const slotValue = pageContext.config.ssrSlot;
+      var element = container;
+      if (slotValue && slotValue === 'default')
+        element = document.getElementById(opts.ssr.default)!;
+      else if (slotValue) { element = document.getElementById(slotValue)! }
 
-    // console.log(ssrSlot?.children);
-    // console.log(ssr);
+      // console.log(element, element?.children.length > 0, pageContext.config)
+      return element?.children.length > 0
+    })()
 
     const res = await createApp(pageContext, ssr);
 
@@ -47,7 +53,7 @@ const onRenderClient: OnRenderClientAsync = async (
     app.mount(container);
   } else {
     objectAssign(pageContext, { app });
-    
+
     await executeHook(pageContext.config.middleware, pageContext);
     await changePage!(pageContext);
   }

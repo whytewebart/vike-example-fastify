@@ -1,11 +1,9 @@
 import vue from "@vitejs/plugin-vue";
 import AutoImport from "unplugin-auto-import/vite";
+import { PrimeVueResolver } from "@primevue/auto-import-resolver";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 import Components from "unplugin-vue-components/vite"
-import { PrimeVueResolver } from "@primevue/auto-import-resolver";
 import UnoCSS from "unocss/vite";
-import imageCompressor from "./renderer/plugins/image-compressor";
-import vercel from 'vite-plugin-vercel';
 
 import vike from "vike/plugin";
 import { UserConfig } from "vite";
@@ -13,9 +11,19 @@ import path from "path";
 
 const config: UserConfig = {
   plugins: [
-    vue(),
+    vue({
+      template: {
+        compilerOptions: {
+          // treat all tags with a dash as custom elements
+          isCustomElement: (tag) => tag.includes('-')
+        }
+      }
+    }),
     vueJsx(),
     vike(),
+    UnoCSS({
+      mode: "shadow-dom"
+    }),
     UnoCSS(),
     AutoImport({
       imports: [
@@ -32,14 +40,7 @@ const config: UserConfig = {
       dirs: ["components"],
       resolvers: [PrimeVueResolver()],
       directoryAsNamespace: true,
-    }),
-    // imageCompressor({
-    //   extensions: ["png", "jpg"],
-    //   logger: true,
-    // }),
-    // vercel({
-    //   source: "/.*"
-    // })
+    })
   ],
 
   resolve: {
@@ -53,6 +54,10 @@ const config: UserConfig = {
     exclude: [
       './renderer/styles/primevue/aura'
     ]
+  },
+
+  esbuild: {
+    keepNames: true
   }
 };
 

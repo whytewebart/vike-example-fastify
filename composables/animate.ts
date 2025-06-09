@@ -31,13 +31,13 @@ export const useGsap = (
     callback: (context: GsapContext) => void,
     options?: { plugins?: Array<keyof typeof pluginLoaders>; }
 ) => {
+    const isVue = !!getCurrentInstance()
     const { plugins = [] } = options || {};
     // HELPER FUNCTIONS
     /** DEFINE MULTIPLE KEYS */ // @ts-ignore
     const defineKeys = <const Keys extends readonly string[]>(keys: Keys): SelectorMap<Keys> => Object.fromEntries(keys.map(key => [key, elementKey(key)]))
 
-    // HELPER FUNCTIONS END
-    onMounted(async () => {
+    const lifecycle = async () => {
         try {
             if (!state.instance) {
                 state.loadingPromise ??=
@@ -65,5 +65,12 @@ export const useGsap = (
         } catch (error) {
             console.error('❌ GSAP setup failed:', error);
         }
-    });
+    }
+
+    if (!isVue) {
+        return lifecycle()
+    }
+
+    // HELPER FUNCTIONS END
+    onMounted(lifecycle);
 };
