@@ -1,8 +1,8 @@
 <template>
   <div class="quickinvoice">
     <header class="py-4 bk-col-nav px-6" flex="~ justify-between items-center" border="b-1">
-      <h3 class="font-urbanist tracking-tight text-xl font-semibold">InvoiceSpace.</h3>
-      <Button rounded label="Get in Touch." severity="secondary" />
+      <h3 class="font-space-mono tracking-tight text-xl font-semibold">InvoiceSpace.</h3>
+      <Button rounded pt:label="font-space-mono" label="Get in Touch." severity="secondary" />
     </header>
     <slot />
   </div>

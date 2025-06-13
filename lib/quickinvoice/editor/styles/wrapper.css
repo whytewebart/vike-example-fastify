@@ -118,6 +118,16 @@ div[section="panels"] div[section="tabs"] {
     }
 }
 
+div[section=blocks-container] {
+    --at-apply: divide-y;
+    & > div.block {
+        --at-apply: transition-all px-4 relative;
+        &:hover {
+            --at-apply: bg-gray-100 cursor-grab b-b-2 tracking-.8 font-bold shadow-sm z-1;
+        }
+    }
+}
+
 
 /* ==========================================
    Container Query: Panels <= 21rem
@@ -146,7 +156,7 @@ div[section="panels"] div[section="tabs"] {
     }
 
     div[section="panels"] div[section="tabs"] {
-        --at-apply: fixed top-17.25 -translate-x-full grid divide-y;
+        --at-apply: fixed top-18.2 -translate-x-full grid divide-y;
     }
 
     /* Panels ≥ 21rem */

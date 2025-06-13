@@ -1,7 +1,10 @@
 import type { Reactive, Attrs, Watch, EventListeners } from 'minze'
 import { MinzeElement } from 'minze';
 
-import css from './styles/canvas.css?inline'
+import css from '../styles/canvas.css?inline'
+import componentCss from '../styles/canvas.component.css?inline'
+
+import { EditorCanvasBase } from './base';
 
 export interface EditorCanvas {
     canvas: {
@@ -15,7 +18,7 @@ export interface EditorCanvas {
 
 type EventDetail = Event & { detail: any }
 
-export class EditorCanvas extends MinzeElement {
+export class EditorCanvas extends EditorCanvasBase {
     options = { cssReset: false }
 
     RESIZE_TIMEOUT = 0;
@@ -43,7 +46,7 @@ export class EditorCanvas extends MinzeElement {
             'border border-b-0 hover:b-b-2 hover:border-b-indigo-400',
             'bg-gray-100 hover:bg-gray-50',
             'w-fit',
-            'text-xs font-urbanist font-semibold capitalize',
+            'text-xs font-space-mono font-semibold capitalize',
             'hover:cursor-grab',
             'transition-all',
             'pointer-events-auto absolute z-1',
@@ -88,7 +91,7 @@ export class EditorCanvas extends MinzeElement {
         clearTimeout(this.resizeTimeout)
 
         this.resizeTimeout = setTimeout(() => {
-            const padding = this.CANVAS_PADDING + this.HANDLE_PADDING
+            const padding = this.HANDLE_PADDING
             const containerWidth = window.innerWidth - padding;
             const containerHeight = window.innerHeight;
 
@@ -114,9 +117,9 @@ export class EditorCanvas extends MinzeElement {
 
     html = () => /*html*/`
         ${this.handle}
-        <div id="canvas" class="bg-white relative border p-1">
+        <div id="canvas" data-dropzone-id="${this.CANVAS_ID}" class="bg-white relative border p-1 shadow">
             <!-- <p class="text-2xl">${this.canvasScale}</p> -->
-            <slot></slot>
+            <!-- <slot></slot> -->
         </div>
     `
 
@@ -135,6 +138,7 @@ export class EditorCanvas extends MinzeElement {
         }
 
         ${css}
+        ${componentCss}
 
         @media (max-width: ${this.canvas.width + this.CANVAS_PADDING + this.HANDLE_PADDING}px) {
             :host {
@@ -149,12 +153,16 @@ export class EditorCanvas extends MinzeElement {
         ...this.handleEvents,
         [window, 'resize', this.scaleCanvas],
         [window, 'editor-wrapper:ready', () => {
+            this.scaleCanvas();
             this.dispatch('canvas:ready', { canvas: this.canvas });
         }]
     ]
 
+    onStart() {
+        this.dropzone.hooks.start()
+    }
+
     onReady() {
-        this.dispatch('canvas:ready', { canvas: this.canvas });
-        this.scaleCanvas();
+        this.dropzone.setup()
     }
 }

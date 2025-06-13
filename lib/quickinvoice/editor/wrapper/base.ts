@@ -106,7 +106,7 @@ export abstract class EditorWrapperBase extends MinzeElement {
                 this.style.setProperty('--canvas-min-width', cmw)
             }
 
-            if (key !== 'scale') return
+            if (key !== 'scale') return;
             this.style.setProperty('--canvas-scale', `${newValue}`)
         }
     }
@@ -125,15 +125,27 @@ export abstract class EditorWrapperBase extends MinzeElement {
             start: (event: MouseEvent | TouchEvent) => {
                 if (this.showWarn) return
 
-                const rect = this.getBoundingClientRect()
-                const pos: any = this.handlers.drag.getClientPosition(event)
+                const slots = this.slotted('default');
+                const editorCanvas = slots
+                    ?.find(d => d.tagName.toLowerCase() === 'editor-canvas');
 
-                if ('touches' in event)
-                    this.canvas.touchIdentifier = event.touches[0].identifier
+                const rect = editorCanvas!.getBoundingClientRect();
+                const pos: any = this.handlers.drag.getClientPosition(event);
 
                 this.canvas.dragging = true;
-                this.canvas.offsetX = pos.offsetX || pos.clientX - rect.left
-                this.canvas.offsetY = pos.offsetY || pos.clientY - rect.top
+
+                if ('touches' in event) {
+                    this.canvas.touchIdentifier = event.touches[0].identifier
+                    this.canvas.offsetX = pos.clientX - rect.left
+                    this.canvas.offsetY = pos.clientY - rect.top;
+
+                    document.body.classList.add('overflow-hidden');
+                    return
+                }
+
+                this.canvas.offsetX = pos.offsetX;
+                this.canvas.offsetY = pos.offsetY;
+
             },
 
             move: (event: MouseEvent | TouchEvent) => {
@@ -154,6 +166,8 @@ export abstract class EditorWrapperBase extends MinzeElement {
             end: () => {
                 this.canvas.dragging = false
                 this.canvas.touchIdentifier = null
+
+                document.body.classList.remove('overflow-hidden')
             }
         },
         canvas: {
@@ -216,6 +230,10 @@ export abstract class EditorWrapperBase extends MinzeElement {
         [window, 'mousemove', this.handlers.drag.move],
         [window, 'canvas:startdrag', (_) => this.handlers.drag.start(_.detail)],
         [window, 'canvas:enddrag', this.handlers.drag.end],
+        // Touch events - Not implemented yet
+        ['#canvas-container', 'touchstart', this.handlers.drag.start],
+        [window, 'touchmove', this.handlers.drag.move],
+        [window, 'touchend', this.handlers.drag.end],
         // Canvas events
         [window, 'canvas:resize', this.handlers.canvas.resize],
         [window, 'canvas:ready', this.handlers.canvas.ready],

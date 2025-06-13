@@ -29,6 +29,11 @@ const presets: Preset[] = [
         name: "EB Garamond",
         weights: [400, 500, 700],
         italic: true
+      },
+      "space-mono": {
+        name: 'Space Mono',
+        weights: [400, 700],
+        italic: true
       }
     },
   }),
