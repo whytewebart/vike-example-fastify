@@ -1,5 +1,6 @@
 <template>
-  <editor-wrapper class="bk-col-nav [contain:content">
+
+  <editor-wrapper class=" grid-col-start-[nav-start]! bk-col-root b-y-1 [contain:content]">
     <editor-canvas> </editor-canvas>
   </editor-wrapper>
 

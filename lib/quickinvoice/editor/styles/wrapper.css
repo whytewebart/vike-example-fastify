@@ -118,7 +118,7 @@ div[section="panels"] div[section="tabs"] {
     }
 }
 
-div[section=blocks-container] {
+editor-panel[title=Components] {
     --at-apply: divide-y;
     & > div.block {
         --at-apply: transition-all px-4 relative;
@@ -153,6 +153,7 @@ div[section=blocks-container] {
 
     :host {
         grid-template-columns: 1fr minmax(21rem, 42rem);
+        height: 100vh;
     }
 
     div[section="panels"] div[section="tabs"] {
