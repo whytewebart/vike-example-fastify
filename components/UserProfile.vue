@@ -1,7 +1,8 @@
 <template>
   <div
-    sm="bg-white p-2 rounded-5"
+    sm="bg-white p-2 rounded-5 border border-transparent transition transition-duration-500"
     grid="sm:~ cols-[minmax(0,_350px)_auto] items-start justify-between"
+    hover="sm:border border-dashed sm:bg-stone-100 border-gray sm:[&_a]:bg-stone-200"
   >
     <div grid="~ sm:cols-[1fr_1.3fr] gap-y-4 gap-x-1.5" overflow-clip>
       <div

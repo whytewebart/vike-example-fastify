@@ -4,6 +4,7 @@
     overflow-y-auto
     scroll-smooth
     v-animate-key:mobile-menu
+    h-0
   >
     <div
       class="min-h-full bg-accent pt-30 pb-4"
@@ -77,10 +78,10 @@ useGsap(({ gsap }) => {
   const body = document.querySelector("body") as HTMLBodyElement;
   const mobileMenu = document.querySelector(key) as HTMLDivElement;
   
-  gsap.set(key, {
-    height: 0,
-    // marginTop: '-1.25rem'
-  });
+  // gsap.set(key, {
+  //   height: 0,
+  //   // marginTop: '-1.25rem'
+  // });
 
   gsap.to(key, {
     height: "100dvh",
