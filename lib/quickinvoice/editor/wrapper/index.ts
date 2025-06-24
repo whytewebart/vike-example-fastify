@@ -81,7 +81,7 @@ export class EditorWrapper extends EditorWrapperBase {
                       <div class="block" data-type="button" draggable="true">Button</div>
                       <div class="block" data-type="divider" draggable="true">Divider</div>
                       <div class="block" data-type="container" draggable="true">Container</div>
-                      <div class="block" data-type="columns" draggable="true">Columns (2)</div>
+                      <div class="block" data-type="test" draggable="true">Test Component</div>
                     </editor-panel>
                     <!-- CUSTOMIZATION -->
                     <editor-panel title="Editor">

@@ -1,5 +1,6 @@
 <template>
-
+  <!-- <editor-component-test></editor-component-test> -->
+  <!-- <InputText v-model="properties.title" /> -->
   <editor-wrapper class=" grid-col-start-[nav-start]! bk-col-root b-y-1 [contain:content]">
     <editor-canvas> </editor-canvas>
   </editor-wrapper>
@@ -17,7 +18,18 @@
   </div>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+const properties = ref({ title: "My Card Component" });
+
+watch(
+  () => properties.value.title,
+  (newvalue) => {
+    console.log(newvalue);
+    const elementComp = document.getElementsByTagName("editor-component")[0];
+    elementComp.setAttribute("properties", JSON.stringify(properties.value));
+  }
+);
+</script>
 
 <style lang="scss">
 #view-content {
@@ -27,6 +39,7 @@
 html,
 body {
   --at-apply: app-scrollbar;
+
   &::-webkit-scrollbar-track {
     --at-apply: bg-gray-200;
   }
@@ -50,14 +63,17 @@ body {
     &.panels-wrapper {
       --at-apply: grid @container / panelshello w-full;
     }
+
     &.panels {
       --at-apply: grid b-l divide-y min-w-21rem;
     }
+
     &.panels > div {
       --at-apply: ;
     }
   }
 }
+
 @container panelshello (min-width: 30rem) {
   div.panels {
     --at-apply: cols-2 divide-x divide-y-0;

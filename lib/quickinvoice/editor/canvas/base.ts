@@ -7,6 +7,49 @@ export interface EditorCanvasBase {
     // components: HTMLElement[]
 }
 
+const cardInstance: ComponentInstance = {
+    id: 'card-123',
+    type: 'card',
+    childrenIds: ['btn-save-456', 'btn-cancel-789', 'text-101'],
+
+    properties: {
+        title: 'User Settings',
+        description: 'Update your profile information',
+        showFooter: true
+    },
+
+    styles: {
+        'background-color': '#f8f9fa',
+        'width': '400px'
+    },
+
+    subElements: {
+        header: {
+            styles: {
+                'padding': '16px',
+                'border-bottom': '1px solid #eee'
+            }
+        },
+        body: {
+            styles: {
+                'padding': '24px'
+            }
+        },
+        footer: {
+            styles: {
+                'padding': '16px',
+                'border-top': '1px solid #eee'
+            }
+        }
+    },
+
+    meta: {
+        visible: true,
+        updatedAt: '2023-05-20T10:00:00Z',
+        createdAt: '2023-05-20T10:00:00Z',
+    }
+};
+
 /**
  * EDITOR CANVAS BASE CLASS
  * Contains core drag-and-drop functionality and editor state management
@@ -32,7 +75,7 @@ export class EditorCanvasBase extends MinzeElement {
     // ======================
     BLOCK_TYPES = [
         'heading', 'paragraph', 'image',
-        'button', 'divider', 'container'
+        'button', 'divider', 'container', 'test'
     ]
 
     CANVAS_ID = nanoid();
@@ -130,6 +173,8 @@ export class EditorCanvasBase extends MinzeElement {
 
                 const afterElement = this.dropzone.methods.dragafter(container, e.clientY)
 
+                // console.log('dropped', type, container, dropzoneId, this.isDraggingNewComponent, afterElement)
+
                 if (type === 'move') {
                     // Handle moving existing component
                     this.dropzone.methods.move(container, afterElement)
@@ -141,6 +186,8 @@ export class EditorCanvasBase extends MinzeElement {
                             type, undefined, undefined,
                             afterElement ? null : container
                         )!; // Append to end
+
+                    // console.log(component)
 
                     if (afterElement) {
                         container.insertBefore(component, afterElement);
@@ -163,11 +210,13 @@ export class EditorCanvasBase extends MinzeElement {
                 const placeholder = container.querySelector(placeholderSelector);
                 if (dropzoneId && placeholder) placeholder.classList.remove('highlight');
 
-                // Moving existing component
-                const component = this.select('.component.dragging') as HTMLElement;
-                if (!component) return;
+                // console.log("moving...", this.select('.component.dragging'), container)
 
-                console.log(component, afterElement)
+                // Moving existing component
+                let component = this.select('.component.dragging') as HTMLElement | null;
+                if (!component) return this.dispatch('canvas:component:dragging', { container, afterElement });
+
+                // console.log(component, afterElement)
 
                 if (afterElement) {
                     container.insertBefore(component, afterElement);
@@ -184,34 +233,63 @@ export class EditorCanvasBase extends MinzeElement {
                 component.style.left = '';
                 component.style.top = '';
             },
+
+            canvas: (e: DragEvent, selector: string = '[data-dropzone-id]') => {
+                let dropzone: HTMLElement | null = null;
+
+                // Try composedPath (more robust for nested targets)
+                if (typeof e.composedPath === 'function') {
+                    const path = e.composedPath();
+                    dropzone = path.find((el) =>
+                        // el instanceof HTMLElement && el.hasAttribute(selector)
+                        el instanceof HTMLElement && el.matches(selector)
+                    ) as HTMLElement | undefined || null;
+                }
+
+                // Fallback to closest if necessary
+                if (!dropzone && e.target instanceof HTMLElement) {
+                    dropzone = e.target.closest(selector);
+                }
+
+                return dropzone
+            }
         },
 
         handlers: {
             dropover: (e: any) => {
-                const canvas = e.target?.closest('[data-dropzone-id]');
-
+                // console.log("----------- 02")
+                // const canvas = e.target?.closest('[data-dropzone-id]');
+                e.stopPropagation();
+                const canvas = this.dropzone.methods.canvas(e)!;
+                // ================
                 if (e.dataTransfer?.types.includes('text/plain')) {
                     e.preventDefault();
                     this.dropzone.methods.dragover(canvas, e.clientY)
                 }
             },
             dragleave: (e: any) => {
-                const canvas = e.target?.closest('[data-dropzone-id]');
+                // const canvas = e.target?.closest('[data-dropzone-id]');
+                e.stopPropagation();
+                const canvas = this.dropzone.methods.canvas(e)!;
+                // ====================================
                 this.dropzone.methods.resetDropHighilght(canvas)
             },
             drop: (e: any) => {
-                const canvas = e.target?.closest('[data-dropzone-id]');
+                // const canvas = e.target?.closest('[data-dropzone-id]');
+                e.stopPropagation();
+                const canvas = this.dropzone.methods.canvas(e)!;
+                // ================================================
                 e.preventDefault();
                 this.dropzone.methods.resetDropHighilght(canvas)
                 this.dropzone.methods.drop(canvas, e)
             },
             click: (e: any) => {
                 const canvas = e.target?.closest('[data-dropzone-id]');
+                // console.log(canvas, e.target)
 
                 if (e.target === canvas) {
                     if (this.selectedComponent) {
-                        this.selectedComponent.classList.remove('selected');
-                        this.selectedComponent = null;
+                        this.components.select(null)
                     }
                 }
             }
@@ -251,10 +329,8 @@ export class EditorCanvasBase extends MinzeElement {
                 return null
             }
 
-            const canvas = this.select(`[data-dropzone-id=${this.CANVAS_ID}]`) as HTMLElement;
-
             // Create component container
-            const component = document.createElement('div')
+            var component = document.createElement('div')
             component.className = 'component'
             component.draggable = true
             component.dataset.type = type;
@@ -262,14 +338,24 @@ export class EditorCanvasBase extends MinzeElement {
             // Add content based on type
             this.components.define(component, type)
 
-            component.addEventListener('click', this.components.handlers.click);
-            component.addEventListener('dragstart', this.components.handlers.dragstart);
-            component.addEventListener('dragend', this.components.handlers.dragend);
+            if (type === 'test') {
+                // @ts-ignore
+                component = component.children[0]
+            }
+
+            // THIS LINE SHOULD BE ENABLED ON NON-EDITOR_COMPONENTS
+            if (type !== 'test') {
+                component.addEventListener('click', this.components.handlers.click);
+                component.addEventListener('dragstart', this.components.handlers.dragstart);
+                component.addEventListener('dragend', this.components.handlers.dragend);
+            }
 
             // Add to parent or canvas
             if (parentElement) {
                 parentElement.appendChild(component);
             } else {
+
+                const canvas = this.select(`[data-dropzone-id=${this.CANVAS_ID}]`) as HTMLElement;
                 // Position new component near the drop point
                 if (x && y) {
                     const rect = canvas.getBoundingClientRect();
@@ -280,7 +366,7 @@ export class EditorCanvasBase extends MinzeElement {
                     component.style.left = `${relativeX}px`;
                     component.style.top = `${relativeY}px`;
                 }
-                canvas.appendChild(component);
+                // canvas.appendChild(component);
             }
 
             this.components.select(component);
@@ -294,28 +380,41 @@ export class EditorCanvasBase extends MinzeElement {
                 paragraph: '<p contenteditable="false">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>',
                 image: '<img src="https://via.placeholder.com/300x200" style="max-width:100%;">',
                 button: '<button style="padding: 8px 16px; background: #4CAF50; color: white; border: none; border-radius: 4px;">Button</button>',
-                container: `<div class="component-container"><div class="component-placeholder">Drop components here</div></div>`
+                container: `<div dropzone class="component-container"><div class="component-placeholder">Drop components here</div></div>`,
+                test: `<editor-component
+                    type='${cardInstance.type}'
+                    properties='${JSON.stringify(cardInstance.properties)}'
+                    styles='${JSON.stringify(cardInstance.styles)}'
+                    subElements='${JSON.stringify(cardInstance.subElements)}'
+                    attr-instance='${JSON.stringify(cardInstance)}'
+                    data-type='${type}'
+                ></editor-component>`
             }
 
             component.innerHTML += store[type];
             component
-                .querySelectorAll('.component-container')
+                .querySelectorAll('[dropzone]')
                 .forEach((e: any) => this.dropzone.setup(e));
         },
 
-        select: (component: HTMLElement) => {
-            if (this.selectedComponent) {
-                this.selectedComponent.classList.remove('selected');
-            }
+        select: (component: HTMLElement | null) => {
+            // console.log(component, this.selectedComponent)
+            // REMOVE SELECTED CLASS
+            this.selectedComponent?.classList.remove('selected');
+            this.selectAll('.selected')?.forEach(el => {
+                el.classList.remove('selected')
+            })
 
             this.selectedComponent = component;
-            component.classList.add('selected');
+            this.dispatch('canvas:component:selected', { component: component })
+            component?.classList.add('selected');
         },
 
         handlers: {
             dragstart: (e: any) => {
-                const comp = e.target.closest('.component')
                 e.stopPropagation();
+                const comp = e.target.closest('.component')
+                this.components.select(comp);
                 comp.classList.add('dragging');
                 e.dataTransfer.setData('text/plain', 'move');
                 e.dataTransfer.effectAllowed = 'move';
@@ -323,6 +422,7 @@ export class EditorCanvasBase extends MinzeElement {
             },
 
             dragend: (e: any) => {
+                // e.stopPropagation();
                 const comp = e.target.closest('.component')
                 comp.classList.remove('dragging');
             },
@@ -330,20 +430,26 @@ export class EditorCanvasBase extends MinzeElement {
             click: (e: any) => {
                 const comp = e.target.closest('.component')
                 if (e.target.closest('.component-btn')) return;
+                e.stopPropagation();
                 this.components.select(comp);
             }
         }
     }
 
     protected baseEventListeners: EventListeners = [
-        ['[data-dropzone-id]', 'dragover', this.dropzone.handlers.dropover],
-        ['[data-dropzone-id]', 'dragleave', this.dropzone.handlers.dragleave],
-        ['[data-dropzone-id]', 'drop', this.dropzone.handlers.drop],
+        // CLICK CANVAS - DESELECT COMPONENTS
         ['[data-dropzone-id]', 'click', this.dropzone.handlers.click],
-
+        // CANVAS - COMPONENT LISTENERS
+        ["#canvas", 'dragover', this.dropzone.handlers.dropover],
+        ["#canvas", 'dragleave', this.dropzone.handlers.dragleave],
+        ["#canvas", 'drop', this.dropzone.handlers.drop],
+        // CANVAS EVENTS
         [window, 'canvas:component:dragstart', (e) => {
             this.isDraggingNewComponent = e.detail.isDraggingNewComponent
-        }]
+        }],
+        [window, 'canvas:component:selected', (e) => {
+            this.selectedComponent = e.detail.component
+        }],
     ]
 
     protected handlers = {
