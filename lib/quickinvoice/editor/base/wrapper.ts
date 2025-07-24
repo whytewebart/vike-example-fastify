@@ -67,12 +67,16 @@ export abstract class EditorWrapperBase extends MinzeElement {
         </div>
     `
 
-    tabsButton = (id: string, title: string, icon: string) => /*HTML*/`
-        <button
-            data-wrapper-tab="${id}"
-            title="${title}">
-            <span class="${icon}"></span>
-        </button>
+    tabsButton = (id: string, title: string, icon: string, template?: string) => /*HTML*/`
+        <div style="position: relative; z-index: 10;">
+            <button
+                data-wrapper-tab="${id}"
+                title="${title}">
+                <span class="${icon}"></span>
+            </button>
+
+            ${template ? template : ''}
+        </div>
     `
 
     // Core methods
@@ -243,7 +247,7 @@ export abstract class EditorWrapperBase extends MinzeElement {
             const button = event.target.closest('[data-wrapper-tab]');
             const tabId = button.getAttribute('data-wrapper-tab');
             // @ts-ignore // RUN FUNCTION
-            this.TABS[tabId]?.action()
+            this.TABS[tabId]?.action(this)
         }],
     ]
 }

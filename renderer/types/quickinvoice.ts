@@ -13,6 +13,10 @@ interface ComponentCapabilities {
   isContainer?: boolean;
 }
 
+interface ComponentOverride {
+  definition?: boolean; // If true, the component's definition is overridden by attrDefinition
+}
+
 // Style configuration
 interface StyleSettings {
   allowedProperties?: CSSProperty[]; // Specific allowed CSS properties
@@ -22,7 +26,7 @@ interface StyleSettings {
 }
 
 // Property types
-type PropertyType = 
+type PrimitiveType =
   | 'text'
   | 'number'
   | 'color'
@@ -32,7 +36,12 @@ type PropertyType =
   | 'url'
   | 'rich-text';
 
-interface ComponentProperty {
+type PropertyType =
+  | PrimitiveType
+  | { type: 'array'; itemType: PropertyType }
+  | { type: 'object'; shape: ObjectField[] };
+
+interface ObjectField {
   name: string;
   type: PropertyType;
   defaultValue: any;
@@ -40,7 +49,11 @@ interface ComponentProperty {
   options?: string[]; // For select type
   editable?: boolean;
   group?: string;
+  helptext?: string; // Help text for the property
+  description?: string; // Description for the property
 }
+
+interface ComponentProperty extends ObjectField { }
 
 // Sub-element definition
 interface SubElement {
@@ -68,8 +81,10 @@ interface ComponentDefinition {
   defaultChildren?: ComponentDefinition[]; // Default child components
   acceptsChildrenTypes?: string[] | 'all'; // Which component types can be children
   renderTemplate?: (properties: Record<string, any>) => string; // HTML template
+  // mockTemplate?: string; // HTML template
   script?: string; // Component-specific JS
-  selector?: string // SELECTOR TO APPEND COMPONENT
+  selector?: string; // SELECTOR TO APPEND COMPONENT
+  override?: ComponentOverride;
 }
 
 // Component instance
@@ -114,4 +129,29 @@ interface EditorState {
     past: ComponentLibrary[];
     future: ComponentLibrary[];
   };
+}
+
+declare namespace DB {
+  interface Session {
+    type: string,
+    id: string,
+    properties: Record<string, any>,
+    dropzone: string,
+    dropzones: Record<string, string>,
+    key: string,
+    index: number,
+    order: number,
+    sessionId: string,
+    subElements?: Record<string, {
+      styles?: Record<string, string>;
+      properties?: Record<string, any>;
+    }>,
+    styles?: Record<string, any>
+  }
+
+  interface Space {
+    id: string,
+    properties?: Record<string, any>,
+    lastSession: "true" | "false"
+  }
 }

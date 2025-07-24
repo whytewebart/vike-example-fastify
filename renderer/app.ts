@@ -16,7 +16,7 @@ import {
   objectAssign,
   objectReplace,
 } from "./utils";
-import { Component } from "./types";
+import { Component } from "./types/index";
 import PageShell from "./PageShell.vue";
 
 import unHeadPlugin from "./plugins/unhead";

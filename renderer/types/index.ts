@@ -65,4 +65,8 @@ declare global {
   type PageContextWithApp = PageContext & {
     app: NonNullable<PageContext["app"]>;
   };
+
+  interface Window {
+    stretchDropzone?: string
+  }
 }

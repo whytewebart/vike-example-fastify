@@ -1,0 +1,519 @@
+[
+    {
+        "label": "Dimensions",
+        "description": "Controls for setting the width and height of the invoice container.",
+        "fields": [
+            {
+                "prop": "width",
+                "type": "number",
+                "label": "Width",
+                "default": "100%",
+                "description": "Set width (e.g., 100%, 800px)",
+                "class": "dimension-input",
+                "requiresUnit": true,
+                "unit": "px"
+            },
+            {
+                "prop": "height",
+                "type": "number",
+                "label": "Height",
+                "default": "",
+                "description": "Set height (e.g., auto, 100vh)",
+                "class": "dimension-input",
+                "requiresUnit": true,
+                "unit": "px"
+            }
+        ]
+    },
+    {
+        "label": "Typography",
+        "description": "Controls for font styling across the invoice.",
+        "fields": [
+            {
+                "prop": "fontFamily",
+                "type": "select",
+                "label": "Font Family",
+                "default": "Arial",
+                "options": [
+                    "Arial",
+                    "Times New Roman",
+                    "Helvetica",
+                    "Courier New",
+                    "Georgia"
+                ],
+                "description": "Choose a font family.",
+                "class": "font-select"
+            },
+            {
+                "prop": "fontSize",
+                "type": "number",
+                "label": "Font Size",
+                "default": "14",
+                "description": "Set base font size (e.g., 14px, 1em)",
+                "class": "font-size-input",
+                "requiresUnit": true,
+                "unit": "px"
+            },
+            {
+                "prop": "fontWeight",
+                "type": "select",
+                "label": "Font Weight",
+                "default": "400",
+                "options": [
+                    "100",
+                    "200",
+                    "300",
+                    "400",
+                    "500",
+                    "600",
+                    "700",
+                    "800",
+                    "900",
+                    "bold",
+                    "normal",
+                    "lighter",
+                    "bolder"
+                ],
+                "description": "Set text thickness",
+                "class": "font-weight-select"
+            },
+            {
+                "prop": "fontStyle",
+                "type": "select",
+                "label": "Font Style",
+                "default": "normal",
+                "options": [
+                    "normal",
+                    "italic",
+                    "oblique"
+                ],
+                "description": "Set text style (e.g., italic)",
+                "class": "font-style-select"
+            },
+            {
+                "prop": "textDecoration",
+                "type": "select",
+                "label": "Text Decoration",
+                "default": "none",
+                "options": [
+                    "none",
+                    "underline",
+                    "overline",
+                    "line-through"
+                ],
+                "description": "Add decoration to text",
+                "class": "text-decoration-select"
+            },
+            {
+                "prop": "textTransform",
+                "type": "select",
+                "label": "Text Transform",
+                "default": "none",
+                "options": [
+                    "none",
+                    "uppercase",
+                    "lowercase",
+                    "capitalize"
+                ],
+                "description": "Transform text case",
+                "class": "text-transform-select"
+            },
+            {
+                "prop": "lineHeight",
+                "type": "text",
+                "label": "Line Height",
+                "default": "1.5",
+                "description": "Set vertical line spacing (e.g., 1.5, 24px)",
+                "class": "line-height-input"
+            },
+            {
+                "prop": "letterSpacing",
+                "type": "text",
+                "label": "Letter Spacing",
+                "default": "normal",
+                "description": "Adjust spacing between letters (e.g., 1px)",
+                "class": "letter-spacing-input",
+                "requiresUnit": true,
+                "unit": "px"
+            },
+            {
+                "prop": "color",
+                "type": "color",
+                "label": "Font Color",
+                "default": "#000000",
+                "description": "Set the text color.",
+                "class": "color-picker"
+            }
+        ]
+    },
+    {
+        "label": "Spacing - Margin & Padding",
+        "description": "Control outer and inner spacing for each side.",
+        "fields": [
+            {
+                "prop": "margin",
+                "type": "number",
+                "label": "Margin (All)",
+                "default": "20",
+                "description": "Set outer margin",
+                "class": "spacing-input",
+                "requiresUnit": true,
+                "unit": "px"
+            },
+            {
+                "prop": "paddingTop",
+                "type": "number",
+                "label": "Padding Top",
+                "default": "20",
+                "description": "Top padding",
+                "class": "spacing-input",
+                "requiresUnit": true,
+                "unit": "px"
+            },
+            {
+                "prop": "paddingRight",
+                "type": "number",
+                "label": "Padding Right",
+                "default": "20",
+                "description": "Right padding",
+                "class": "spacing-input",
+                "requiresUnit": true,
+                "unit": "px"
+            },
+            {
+                "prop": "paddingBottom",
+                "type": "number",
+                "label": "Padding Bottom",
+                "default": "20",
+                "description": "Bottom padding",
+                "class": "spacing-input",
+                "requiresUnit": true,
+                "unit": "px"
+            },
+            {
+                "prop": "paddingLeft",
+                "type": "number",
+                "label": "Padding Left",
+                "default": "20",
+                "description": "Left padding",
+                "class": "spacing-input",
+                "requiresUnit": true,
+                "unit": "px"
+            }
+        ]
+    },
+    {
+        "label": "Border - Width",
+        "description": "Control border width for each side.",
+        "fields": [
+            {
+                "prop": "borderTopWidth",
+                "type": "number",
+                "label": "Top",
+                "default": "1",
+                "description": "Top border width",
+                "class": "border-input",
+                "requiresUnit": true,
+                "unit": "px"
+            },
+            {
+                "prop": "borderRightWidth",
+                "type": "number",
+                "label": "Right",
+                "default": "1",
+                "description": "Right border width",
+                "class": "border-input",
+                "requiresUnit": true,
+                "unit": "px"
+            },
+            {
+                "prop": "borderBottomWidth",
+                "type": "number",
+                "label": "Bottom",
+                "default": "1",
+                "description": "Bottom border width",
+                "class": "border-input",
+                "requiresUnit": true,
+                "unit": "px"
+            },
+            {
+                "prop": "borderLeftWidth",
+                "type": "number",
+                "label": "Left",
+                "default": "1",
+                "description": "Left border width",
+                "class": "border-input",
+                "requiresUnit": true,
+                "unit": "px"
+            }
+        ]
+    },
+    {
+        "label": "Border - Style",
+        "description": "Choose border style per side.",
+        "fields": [
+            {
+                "prop": "borderTopStyle",
+                "type": "select",
+                "label": "Top",
+                "default": "solid",
+                "options": [
+                    "solid",
+                    "dashed",
+                    "dotted",
+                    "none"
+                ],
+                "description": "Top border style",
+                "class": "border-style-select"
+            },
+            {
+                "prop": "borderRightStyle",
+                "type": "select",
+                "label": "Right",
+                "default": "solid",
+                "options": [
+                    "solid",
+                    "dashed",
+                    "dotted",
+                    "none"
+                ],
+                "description": "Right border style",
+                "class": "border-style-select"
+            },
+            {
+                "prop": "borderBottomStyle",
+                "type": "select",
+                "label": "Bottom",
+                "default": "solid",
+                "options": [
+                    "solid",
+                    "dashed",
+                    "dotted",
+                    "none"
+                ],
+                "description": "Bottom border style",
+                "class": "border-style-select"
+            },
+            {
+                "prop": "borderLeftStyle",
+                "type": "select",
+                "label": "Left",
+                "default": "solid",
+                "options": [
+                    "solid",
+                    "dashed",
+                    "dotted",
+                    "none"
+                ],
+                "description": "Left border style",
+                "class": "border-style-select"
+            }
+        ]
+    },
+    {
+        "label": "Border - Color",
+        "description": "Set border color per side.",
+        "fields": [
+            {
+                "prop": "borderTopColor",
+                "type": "color",
+                "label": "Top",
+                "default": "#ddd",
+                "description": "Top border color",
+                "class": "color-picker"
+            },
+            {
+                "prop": "borderRightColor",
+                "type": "color",
+                "label": "Right",
+                "default": "#ddd",
+                "description": "Right border color",
+                "class": "color-picker"
+            },
+            {
+                "prop": "borderBottomColor",
+                "type": "color",
+                "label": "Bottom",
+                "default": "#ddd",
+                "description": "Bottom border color",
+                "class": "color-picker"
+            },
+            {
+                "prop": "borderLeftColor",
+                "type": "color",
+                "label": "Left",
+                "default": "#ddd",
+                "description": "Left border color",
+                "class": "color-picker"
+            }
+        ]
+    },
+    {
+        "label": "Border - Radius",
+        "description": "Control border curvature.",
+        "fields": [
+            {
+                "prop": "borderRadius",
+                "type": "text",
+                "label": "Border Radius",
+                "default": "4px",
+                "description": "Set border radius (e.g., 4px, 0.25rem)",
+                "class": "border-radius-input",
+                "requiresUnit": true,
+                "unit": "px"
+            }
+        ]
+    },
+    {
+        "label": "Background",
+        "description": "Set background appearance.",
+        "fields": [
+            {
+                "prop": "backgroundColor",
+                "type": "color",
+                "label": "Background Color",
+                "default": "#ffffff",
+                "description": "Set background color of the invoice area.",
+                "class": "color-picker"
+            }
+        ]
+    },
+    {
+        "label": "Alignment",
+        "description": "Text and component alignment within the invoice panel.",
+        "fields": [
+            {
+                "prop": "textAlign",
+                "type": "select",
+                "label": "Text Alignment",
+                "default": "left",
+                "options": [
+                    "left",
+                    "center",
+                    "right",
+                    "justify"
+                ],
+                "description": "Set text alignment.",
+                "class": "align-select"
+            },
+            {
+                "prop": "verticalAlign",
+                "type": "select",
+                "label": "Vertical Alignment",
+                "default": "top",
+                "options": [
+                    "top",
+                    "middle",
+                    "bottom"
+                ],
+                "description": "Align content vertically.",
+                "class": "align-select"
+            }
+        ]
+    },
+    {
+        "label": "Flexbox Layout",
+        "description": "Enable flex layout and control alignment.",
+        "fields": [
+            {
+                "prop": "display",
+                "type": "select",
+                "label": "Display",
+                "default": "block",
+                "options": [
+                    "block",
+                    "inline-block",
+                    "flex",
+                    "inline-flex",
+                    "none"
+                ],
+                "description": "Choose the display mode.",
+                "class": "display-select"
+            },
+            {
+                "prop": "flexDirection",
+                "type": "select",
+                "label": "Flex Direction",
+                "default": "row",
+                "options": [
+                    "row",
+                    "row-reverse",
+                    "column",
+                    "column-reverse"
+                ],
+                "description": "Main axis direction",
+                "class": "flex-select"
+            },
+            {
+                "prop": "justifyContent",
+                "type": "select",
+                "label": "Justify Content",
+                "default": "flex-start",
+                "options": [
+                    "flex-start",
+                    "flex-end",
+                    "center",
+                    "space-between",
+                    "space-around",
+                    "space-evenly"
+                ],
+                "description": "Main axis alignment",
+                "class": "flex-select"
+            },
+            {
+                "prop": "alignItems",
+                "type": "select",
+                "label": "Align Items",
+                "default": "stretch",
+                "options": [
+                    "stretch",
+                    "flex-start",
+                    "flex-end",
+                    "center",
+                    "baseline"
+                ],
+                "description": "Cross-axis alignment",
+                "class": "flex-select"
+            },
+            {
+                "prop": "flexWrap",
+                "type": "select",
+                "label": "Flex Wrap",
+                "default": "nowrap",
+                "options": [
+                    "nowrap",
+                    "wrap",
+                    "wrap-reverse"
+                ],
+                "description": "Allow flex items to wrap",
+                "class": "flex-select"
+            }
+        ]
+    },
+    {
+        "label": "Flex Gap",
+        "description": "Set gap between flex items.",
+        "fields": [
+            {
+                "prop": "rowGap",
+                "type": "number",
+                "label": "Row Gap",
+                "default": "0",
+                "description": "Spacing between rows",
+                "class": "gap-input",
+                "requiresUnit": true,
+                "unit": "px"
+            },
+            {
+                "prop": "columnGap",
+                "type": "number",
+                "label": "Column Gap",
+                "default": "0",
+                "description": "Spacing between columns",
+                "class": "gap-input",
+                "requiresUnit": true,
+                "unit": "px"
+            }
+        ]
+    }
+]

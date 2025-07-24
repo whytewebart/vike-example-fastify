@@ -89,19 +89,10 @@ div[section="panels"] div[section="content"] {
     z-index: 10;
     --at-apply: bg-white b-l-1 app-scrollbar;
 }
-
-
-/* ==========================================
-   Slotted Panels
-========================================== */
-::slotted([slot=tabs]) * {
-    --at-apply: bg-red;
-}
-
 /* TABS */
 
 div[section="panels"] div[section="tabs"] {
-    --at-apply: flex;
+    --at-apply: hidden;
     button[data-wrapper-tab] {
         --at-apply: bg-gray-100 hover:bg-stone-50 transition-colors border px-2 py-1.8 flex w-full justify-center transition duration-700 relative focus:z-1 [&_span]:text-2xl;
     
@@ -152,7 +143,7 @@ editor-panel[title=Components] {
     }
 
     :host {
-        grid-template-columns: 1fr minmax(21rem, 42rem);
+        grid-template-columns: 1fr minmax(21rem, 25rem);
         height: 100vh;
     }
 
@@ -171,7 +162,7 @@ editor-panel[title=Components] {
     /* Panels ≥ 27rem */
     @container panels (min-width: 27rem) {
         div[section="panels"] div[section="content"] {
-            --at-apply: grid cols-2 [&_slot[name=panels]]:divide-x;
+            /* --at-apply: grid cols-2 [&_slot[name=panels]]:divide-x; */
         }
     }
 }

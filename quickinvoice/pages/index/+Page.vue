@@ -1,7 +1,5 @@
 <template>
-  <!-- <editor-component-test></editor-component-test> -->
-  <!-- <InputText v-model="properties.title" /> -->
-  <editor-wrapper class=" grid-col-start-[nav-start]! bk-col-root b-y-1 [contain:content]">
+  <editor-wrapper class="bk-col-nav b-y-1 [contain:content]">
     <editor-canvas> </editor-canvas>
   </editor-wrapper>
 
@@ -19,16 +17,6 @@
 </template>
 
 <script lang="ts" setup>
-const properties = ref({ title: "My Card Component" });
-
-watch(
-  () => properties.value.title,
-  (newvalue) => {
-    console.log(newvalue);
-    const elementComp = document.getElementsByTagName("editor-component")[0];
-    elementComp.setAttribute("properties", JSON.stringify(properties.value));
-  }
-);
 </script>
 
 <style lang="scss">

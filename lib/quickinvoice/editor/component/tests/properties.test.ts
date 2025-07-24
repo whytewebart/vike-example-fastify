@@ -30,7 +30,7 @@ const cardInstance: ComponentInstance = {
         },
         body: {
             styles: {
-                'padding': '24px'
+                'padding': '34px'
             }
         },
         footer: {
@@ -50,35 +50,45 @@ const cardInstance: ComponentInstance = {
 
 export class EditorComponentTest extends MinzeElement {
     reactive: Reactive = [
-        ['properties', cardInstance.properties]
+        ['properties', {
+            title: 'User Settings',
+            description: 'Update your profile information',
+            showFooter: false
+        }]
     ]
 
     html = () => `
-        <editor-component
-            type='${cardInstance.type}'
-            properties='${JSON.stringify(this.properties)}'
-            styles='${JSON.stringify(cardInstance.styles)}'
-            subElements='${JSON.stringify(cardInstance.subElements)}'
-            component-instance='${JSON.stringify(cardInstance)}'
-        ></editor-component>
+        <!-- <editor-component
+            type='card'
+            properties=''
+            styles=''
+            subElements=''
+            component-instance=''
+        ></editor-component> -->
         <input
             property="title"
             placeholder="Title Property"
             value="${this.properties.title}"
         />
 
-        <input type="checkbox" />
+        <input type="checkbox" checked="${this.properties.showFooter}" />
     `
 
     eventListeners: EventListeners = [
-        ['[property="title"]', 'input', (event: InputEvent) => {
+        ['input[property="title"]', 'input', (event: InputEvent) => {
             const inputEl = this.select('[property="title"]') as HTMLInputElement;
-            this.properties.title = inputEl.value
+            this.properties.title = inputEl.value;
+
+            const p = document.getElementsByTagName('editor-component');
+            this.dispatch(`component:${p.item(0)?.id}:properties`, { title: inputEl.value })
         }],
         [
             'input[type="checkbox"]', 'input', (event) => {
                 const inputEl = this.select('input[type="checkbox"]') as HTMLInputElement;
                 this.properties.showFooter = inputEl.checked;
+
+                const p = document.getElementsByTagName('editor-component');
+                this.dispatch(`component:${p.item(0)?.id}:properties`, { showFooter: inputEl.checked })
             }
         ]
     ]

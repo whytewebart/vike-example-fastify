@@ -1,0 +1,142 @@
+.canvas-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.canvas {
+    flex: 1;
+    padding: 20px;
+    overflow: auto;
+    background: #fff;
+    position: relative;
+}
+
+.droppable {
+    min-height: 100%;
+    outline: 1px dashed transparent;
+    transition: outline 0.2s;
+}
+
+.droppable.highlight {
+    outline: 1px dashed #4CAF50;
+}
+
+.component-toolbar {
+    position: absolute;
+    top: -15px;
+    right: 5px;
+    display: none;
+}
+
+.component.selected .component-toolbar {
+    display: flex;
+}
+
+.component-btn {
+    width: 20px;
+    height: 20px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    margin-left: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+
+.properties-panel {
+    width: 250px;
+    background: #f5f5f5;
+    padding: 10px;
+    border-left: 1px solid #ddd;
+    overflow-y: auto;
+}
+
+.prop-group {
+    margin-bottom: 15px;
+}
+
+.prop-group h4 {
+    margin-bottom: 5px;
+}
+
+.prop-item {
+    margin-bottom: 8px;
+}
+
+.prop-item label {
+    display: block;
+    margin-bottom: 3px;
+    font-size: 12px;
+}
+
+.prop-item input,
+.prop-item select,
+.prop-item textarea {
+    width: 100%;
+    padding: 5px;
+}
+
+.component-placeholder.highlight {
+    background: rgba(76, 175, 80, 0.1);
+    border-color: #4CAF50;
+}
+
+/* START STYLING */
+.component:not([dropzone]) {
+    position: relative;
+    transition: background-color 0.2s ease, outline 0.2s ease;
+}
+
+/* Hover (light gray background) */
+.component:not([dropzone]):not(.selected):hover {
+    background-color: rgba(0, 0, 0, 0.03);
+    /* @apply: ring-1 ring-offset-2 ring-blue z-1; */
+}
+
+/* Selected (light blue border or background) */
+.component:not([dropzone]).selected {
+    /* outline: 1px solid rgba(59, 130, 246, 0.4); */
+    background-color: rgba(59, 130, 246, 0.05);
+    @apply: ring-1 ring-indigo ring-offset-3 ;
+}
+
+[dropzone] {
+    border: 1.5px dashed rgba(0, 0, 0, 0.08);
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+/* Empty state */
+[dropzone]:empty {
+    min-height: 60px;
+    /* border: 1px dashed rgba(0, 0, 0, 0.08); */
+}
+
+[dropzone]:empty::before {
+    content: "Drop content here";
+    color: rgba(0, 0, 0, 0.3);
+    font-size: 0.875rem;
+    font-style: italic;
+}
+
+/* When focused */
+[dropzone]:focus {
+    border-color: rgba(99, 102, 241, 0.3);
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+[dropzone]:not(:has(.selected)):hover {
+    background-color: rgba(85, 147, 247, 0.03);
+}
+
+/* If a nested element is selected */
+[dropzone]:has(.selected) {
+    border-color: rgba(59, 130, 246, 0.4);
+    background-color: rgba(59, 130, 246, 0.03);
+}

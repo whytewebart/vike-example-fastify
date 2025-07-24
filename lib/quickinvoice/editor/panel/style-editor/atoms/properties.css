@@ -1,0 +1,22 @@
+.header {
+    @apply: p-2 px-4 bg-gray-50 border-b border-b-gray-200 grid font-sans;
+
+    span {
+        @apply: bg-indigo-50 p-1 px-2 text-sm border rounded-xl font-sans;
+    }
+
+    h3 {
+        @apply: font-space-mono font-semibold text-lg capitalize relative -left-1;
+    }
+}
+
+details {
+    @apply: p-2 px-4 bg-gray-50 border-b border-b-gray-200 grid font-sans;
+    summary {
+        @apply: font-space-mono text-lg font-semibold;
+    }
+
+    .content {
+        @apply: mt-2;
+    }
+}
