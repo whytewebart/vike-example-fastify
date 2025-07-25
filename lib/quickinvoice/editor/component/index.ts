@@ -151,8 +151,8 @@ export class EditorComponent extends EditorCanvasBase {
             100% { background-position: -200% 0; }
         }
         </style>
-
     `
+
     html = () => /*html*/`
         ${this.type === 'dropzone' ? this.handle : ''}
         ${this.template()}
@@ -172,25 +172,22 @@ export class EditorComponent extends EditorCanvasBase {
 
             // CHECK FOR MISSING KEYS AND REPLACE WITH DEFAULT VALUES
             const missingKeys = definitionKeys.filter(key => !keys.includes(key));
+            var propertiesToUpdate = { ...this.properties };
+            // Remove invalid keys from properties
+            invalidKeys.forEach(invalidKey => { delete propertiesToUpdate[invalidKey] });
             if (missingKeys.length > 0 && this.definition?.properties) {
                 missingKeys.forEach(missingKey => {
                     const def = this.definition!.properties!
                         .find(d => d.name === missingKey);
-                    if (def) {
-                        const properties: typeof this.properties = {
-                            ...this.properties,
+                    if (def)
+                        propertiesToUpdate = {
+                            ...propertiesToUpdate,
                             [missingKey]: def.defaultValue
                         };
-                        // Remove invalid keys from properties
-                        invalidKeys.forEach(invalidKey => {
-                            delete properties[invalidKey];
-                        });
-
-                        // Set default value for missing property
-                        this.setAttribute('properties', JSON.stringify(properties));
-                    }
                 });
 
+                // Set default value for missing property
+                this.setAttribute('properties', JSON.stringify(propertiesToUpdate));
                 console.info('Added missing property keys with default values:', this.id, missingKeys);
             }
         },
@@ -212,6 +209,12 @@ export class EditorComponent extends EditorCanvasBase {
                 case "drop":
                     // Use capabilities attribute in canvas
                     capabilities = JSON.parse(canvas.getAttribute('capabilities'))
+
+                    if (!capabilities) {
+                        callback?.();
+                        break;
+                    }
+
                     // Check if component can have children at all
                     if (
                         capabilities.canHaveChildren === false ||
@@ -333,8 +336,7 @@ export class EditorComponent extends EditorCanvasBase {
 
     store = async () => {
         // OPEN DATABASE
-        await this.session.open();
-        await this.space.open();
+        await Promise.all([this.session.open(), this.space.open()]);
         // GET KEY
         const key = `component-${this.type}-${this.id}`
         const dropzone = this.closest('[data-dropzone-id]')
@@ -352,7 +354,8 @@ export class EditorComponent extends EditorCanvasBase {
                 properties: this.properties,
                 sessionId: session.id,
                 index,
-                order: index
+                order: index,
+                styles: this.styles
             };
 
             // @ts-ignore GET DROPZONE ROOT ELEMENT
@@ -540,7 +543,7 @@ export class EditorComponent extends EditorCanvasBase {
                 /* IF CONTAINER USE GSAP TO ADD BOTTOM HEIGHT TO "this" */              if (capabilities?.isContainer) {
                     // this.dispatch(`container:resize:dragover:${window?.stretchDropzone}`)
                     if (window.stretchDropzone !== c.id) {
-                    // if (canvas.getAttribute('stretch-dropzone') !== 'stretch' || window.stretchDropzone !== c.id) {
+                        // if (canvas.getAttribute('stretch-dropzone') !== 'stretch' || window.stretchDropzone !== c.id) {
                         window.stretchDropzone = c.id;
                         useGsap(({ gsap }) => {
                             gsap.to(canvas, {
@@ -735,6 +738,9 @@ export class EditorComponent extends EditorCanvasBase {
                 })
 
                 window.stretchDropzone = undefined;
+            },
+            select: () => {
+                this.components.select(this)
             }
         };
         // ADD LISTENERS
@@ -743,6 +749,7 @@ export class EditorComponent extends EditorCanvasBase {
         Minze.listen(`component:${this.id}:styles`, handlers.updateStyles)
         Minze.listen(`component:${this.id}:rerender`, () => this.rerender())
         Minze.listen(`component:${this.id}:properties`, handlers.update)
+        Minze.listen(`component:${this.id}:select`, handlers.select)
         Minze.listen(`component:${this.id}:state:load`, async () => {
             console.log("Loading component state for", this.id);
             // SAVE TO LOCAL STORAGE

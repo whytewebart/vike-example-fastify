@@ -80,11 +80,11 @@ export class EditorLayers extends MinzeElement {
     }
 
     html = () => /*html*/`
-        <div part="root" style="height: 0px; overflow: clip; opacity: 0" class="app-scrollbar shadow">
-            <div class="py-1.8 bg-gray-100 border-b">
+        <div part="root" style="height: 0px; overflow: clip; opacity: 0" class="app-scrollbar shadow- max-h-60">
+            <div class="py-1.8 bg-white border-b sticky top-0 z-10">
                 <p class="font-mono font-semibold text-base px-2">Layers</p>
             </div>
-            <div section="panel-content" part="content" class="h-40">
+            <div section="panel-content" part="content" class="bg-gray-50">
                 ${this.recursiveRender(this.structure)}
             </div>
         </div>
@@ -97,12 +97,12 @@ export class EditorLayers extends MinzeElement {
             .map(comp =>
             /*html*/`
                 <div part="component" id="${comp.id}" class="border-t first:border-0">
-                    <div class="transition-all relative" flex="~ justify-between items-center" hover="bg-gray-50 cursor-pointer font-bold shadow-sm z-1">
+                    <div class="transition-all relative" flex="~ justify-between items-center" hover="bg-gray-50 cursor-pointer font-900 shadow-sm z-1 [&_>_p]:ml-3">
                         <p
-                            class="font-mono text-sm px-${layer * 3} py-1.5 capitalize"
+                            class="transition-all font-mono text-sm px-${layer * 3} py-1.5 capitalize"
                             
                         >
-                            ${comp.key.split('-')[1]}
+                           ${comp.components ? '<span class="i-solar-paperclip-rounded-2-outline"></span>' : ''} ${comp.key.split('-')[1]}
                         </p>
                         ${comp.components && comp.components.length > 0 ? /*html*/`<button
                                 class="flex p-2 rounded transition mr-2"

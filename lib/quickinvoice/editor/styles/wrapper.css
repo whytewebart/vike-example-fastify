@@ -13,7 +13,7 @@
     display: grid;
     overflow: clip;
 
-    --at-apply: app-scrollbar;
+    @apply: app-scrollbar;
 
     /* Scaled Dimensions */
     --calc-height-scale: calc(var(--canvas-height) * var(--canvas-scale));
@@ -36,9 +36,10 @@
     Wrapper Warning
 ============================================*/
 .warning {
-    --at-apply: h-screen w-screen flex items-center justify-center;
+    @apply: h-screen w-screen flex items-center justify-center;
+
     p {
-        --at-apply: px-4 py-1 rounded-xl text-red-500 text-sm font-semibold font-urbanist bg-red-100;
+        @apply: px-4 py-1 rounded-xl text-red-500 text-sm font-semibold font-urbanist bg-red-100;
     }
 }
 
@@ -76,31 +77,57 @@
 /* ==========================================
    Panels Container
 ========================================== */
-div[section="panels"] {
-    display: block;
-    container-type: inline-size;
-    container-name: panels;
+
+div[section=panels] {
+    @apply: bg-white;
 }
 
-div[section="panels"] div[section="content"] {
-    overflow-y: auto;
-    top: 0;
-    right: 0;
-    z-index: 10;
-    --at-apply: bg-white b-l-1 app-scrollbar;
+div[section="blocks-panel"], div[section="tabs"] {
+    @apply: hidden;
 }
+
+@media (min-width: 1000px) {
+    :host {
+        display: grid;
+        grid-template-columns: 1fr minmax(20rem, 50rem);
+        height: 100vh;
+
+        div[section="panels"] {
+            container-type: inline-size;
+            container-name: panels;
+
+            div[section="content"] {
+                @apply: grid cols-[0px_1fr] h-full;
+            }
+
+            div[section="blocks-panel"] {
+                @apply: block;
+            }
+
+            div[section="content"] div[section="panels_grid"] {
+                @apply: overflow-y-auto max-h-screen app-scrollbar b-l-1;
+            }
+        }
+    }
+
+    div[section="panels"] div[section="tabs"] {
+        @apply: block absolute top-20 right-0;
+    }
+}
+
+
 /* TABS */
 
 div[section="panels"] div[section="tabs"] {
-    --at-apply: hidden;
+
     button[data-wrapper-tab] {
-        --at-apply: bg-gray-100 hover:bg-stone-50 transition-colors border px-2 py-1.8 flex w-full justify-center transition duration-700 relative focus:z-1 [&_span]:text-2xl;
-    
+        @apply: bg-gray-100 hover:bg-stone-50 transition-colors border px-2 py-1.8 flex w-full justify-center transition duration-700 relative focus:z-1 [&_span]:text-2xl;
+
         &:hover {
             border-bottom-color: rgb(99, 102, 241) !important;
             border-bottom-width: 2px !important;
         }
-    
+
         &:focus {
             border-bottom-color: rgb(99, 102, 241) !important;
             border-bottom-width: 3px !important;
@@ -110,59 +137,43 @@ div[section="panels"] div[section="tabs"] {
 }
 
 editor-panel[title=Components] {
-    --at-apply: divide-y;
-    & > div.block {
-        --at-apply: transition-all px-4 relative;
+    @apply: divide-y;
+
+    &>div.block {
+        @apply: transition-all px-4 relative;
+
         &:hover {
-            --at-apply: bg-gray-100 cursor-grab b-b-2 tracking-.8 font-bold shadow-sm z-1;
+            @apply: bg-gray-100 cursor-grab b-b-2 tracking-.8 font-bold shadow-sm z-1;
         }
     }
 }
-
 
 /* ==========================================
    Container Query: Panels <= 21rem
 ========================================== */
-@media (min-width: 24rem) {
-    @container panels (max-width: 21rem) {
-        div[section="panels"] div[section="content"] {
-            width: 21rem;
-            position: absolute !important;
-            height: 100% !important;
-        }
-    }
-}
+@container panels (min-width: 500px) {
+    div[section="panels"] {
+        div[section="content"] div[section="panels_grid"] {
+            @apply: grid cols-2;
+            display: grid;
 
-/* ==========================================
-   Media Query: ≥ 820px
-========================================== */
-@media (min-width: 820px) {
-    [section="canvas"] {
-        min-width: calc(var(--calc-width-scale) + var(--handle-padding));
-        /* max-height: 100vh !important; */
-    }
+            editor-panel[title=Editor] {
+                max-height: 100vh;
+                overflow-y: auto;
+                @apply: app-scrollbar;
 
-    :host {
-        grid-template-columns: 1fr minmax(21rem, 25rem);
-        height: 100vh;
-    }
-
-    div[section="panels"] div[section="tabs"] {
-        --at-apply: fixed top-18.2 -translate-x-full grid divide-y;
-    }
-
-    /* Panels ≥ 21rem */
-    @container panels (min-width: 21rem) {
-        div[section="panels"] div[section="content"] {
-            height: 100dvh;
-            position: sticky;
+                &::part(root) {
+                    @apply: bg-white! b-r-2!;
+                }
+            }
         }
     }
 
-    /* Panels ≥ 27rem */
-    @container panels (min-width: 27rem) {
-        div[section="panels"] div[section="content"] {
-            /* --at-apply: grid cols-2 [&_slot[name=panels]]:divide-x; */
+    div[section="panels"] div[section="blocks-panel"] {
+        @apply: bg-white b-r-1 app-scrollbar overflow-y-auto max-h-screen [&::-webkit-scrollbar]:bg-white! *:b-r-1;
+
+        &::-webkit-scrollbar-track {
+            @apply: bg-white! b-l-2!;
         }
     }
 }

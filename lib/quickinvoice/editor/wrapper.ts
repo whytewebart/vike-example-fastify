@@ -66,50 +66,66 @@ export class EditorWrapper extends EditorWrapperBase {
   // TABS
   TABS = tabs;
 
+  canvasTemplate = () => /*html*/`
+    <div section="canvas">
+      <div id="canvas-container">
+          <slot></slot>
+      </div>
+    </div>
+  `
+
+  tabsPanel = () => /*html*/`
+    <!-- TABS SECTION -->
+    <div class="tabs-container relative">
+      <div section="tabs">
+        ${Object.entries(this.TABS)
+        .map(([_, tab], index) =>
+          this.tabsButton(_, tab.title, tab.icon, tab?.template)
+        )
+        .join(" ")}
+      </div>
+    </div>
+  `
+
+  blocksPanel = () => /*html*/`
+    <div section="blocks-panel">
+      <!-- BLOCKS -->
+      <editor-panel title="Components" class="*:font-space-mono">
+        <div class="block" data-type="heading" draggable="true">Heading</div>
+        <div class="block" data-type="paragraph" draggable="true">Paragraph</div>
+        <div class="block" data-type="image" draggable="true">Image</div>
+        <div class="block" data-type="button" draggable="true">Button</div>
+        <div class="block" data-type="divider" draggable="true">Divider</div>
+        <div class="block" data-type="dropzone" draggable="true">Container</div>
+        <div class="block" data-type="card" draggable="true">Card</div>
+        <slot name="blocks-slot"></slot>
+      </editor-panel>
+      <!-- LAYOUTS -->
+      <editor-panel title="Layouts" class="grid-col-span-2 border-y">
+        <div class="min-h-4xl"></div>
+      </editor-panel>
+    </div>
+  `
+
   wrapper = /*html*/ `
         <!-- CANVAS SECTION -->
-        <div section="canvas">
-            <div id="canvas-container">
-                <slot></slot>
-            </div>
-        </div>
+        ${this.canvasTemplate()}
         <!-- PANELS SECTION -->
         <div section="panels" part="panels">
             <div section="content" part="content">
                 <!-- TABS SLOT -->
                 <slot slot="tabs" name="tabs">
-                    <!-- TABS SECTION -->
-                    <div section="tabs">
-                      ${Object.entries(this.TABS)
-                        .map(([_, tab], index) =>
-                          this.tabsButton(_, tab.title, tab.icon, tab?.template)
-                        )
-                        .join(" ")}
-                    </div>
+                    ${this.tabsPanel()}
                 </slot>
                 <!-- PANELS SLOT -->
                 <slot name="panels">
-                    <div>
-                      <!-- BLOCKS -->
-                      <editor-panel title="Components" class="*:font-space-mono">
-                        <div class="block" data-type="heading" draggable="true">Heading</div>
-                        <div class="block" data-type="paragraph" draggable="true">Paragraph</div>
-                        <div class="block" data-type="image" draggable="true">Image</div>
-                        <div class="block" data-type="button" draggable="true">Button</div>
-                        <div class="block" data-type="divider" draggable="true">Divider</div>
-                        <div class="block" data-type="dropzone" draggable="true">Container</div>
-                        <div class="block" data-type="card" draggable="true">Card</div>
-                        <slot name="blocks-slot"></slot>
-                      </editor-panel>
-                      <!-- LAYOUTS -->
-                      <editor-panel title="Layouts" class="grid-col-span-2 border-y">
-                        <div class="min-h-4xl"></div>
+                    <div section="panels_grid">
+                      ${this.blocksPanel()}
+                      <!-- CUSTOMIZATION -->
+                      <editor-panel title="Editor">
+                        <style-editor></style-editor>
                       </editor-panel>
                     </div>
-                    <!-- CUSTOMIZATION -->
-                    <editor-panel title="Editor">
-                      <style-editor></style-editor>
-                    </editor-panel>
                   </slot>
               </div>
           </div>
@@ -128,29 +144,21 @@ export class EditorWrapper extends EditorWrapperBase {
 
         [data-type] { padding: 10px; }
 
-        @media (min-width: ${this.canvas.dimension.width! +
-    this.CANVAS_PADDING +
-    this.HANDLE_PADDING
-    }px) {
+        @media (min-width: ${this.canvas.dimension.width! + this.CANVAS_PADDING + this.HANDLE_PADDING}px) {
             #canvas-container {
               width: fit-content;
               height: var(--canvas-height);
             }
 
             [section="canvas"] {
-              /* height: var(--calc-h-scale); */
-              /* height: calc(var(--canvas-height) + var(--canvas-padding) + var(--canvas-padding)); */
               min-height: calc(var(--canvas-height) + var(--canvas-padding) + var(--canvas-padding));
               min-width: calc(var(--canvas-min-width) + var(--handle-padding) + var(--handle-padding));
             }
         }
 
         @media (min-height: ${this.canvas.dimension.height}px) {
-            [section="canvas"] {
-              /* height: var(--calc-handles); */
-              min-height: var(--calc-handles);
-            }
-            div[section="panels"] { max-height: var(--calc-handles); }
+            /* [section="canvas"] { min-height: var(--calc-handles); }
+            div[section="panels"] { max-height: var(--calc-handles); } */
         }
     `;
 

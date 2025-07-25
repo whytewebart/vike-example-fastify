@@ -216,6 +216,10 @@ export class DimensionEditor extends MinzeElement {
             gap: .75rem;
             margin-top: .5rem;
         }
+
+        :host {
+            padding-bottom: 5em;
+        }
     `
 
     onReady() {

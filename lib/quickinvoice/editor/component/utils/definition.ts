@@ -253,8 +253,7 @@ const card: ComponentDefinition = {
                 {
                     name: 'variant',
                     type: 'select',
-                    defaultValue: 'primary',
-                    options: ['primary', 'secondary']
+                    defaultValue: 'clear',
                 },
                 {
                     name: 'label',
@@ -264,8 +263,8 @@ const card: ComponentDefinition = {
             ],
             styleSettings: {
                 defaultStyles: {
-                    // 'background-color': '#4CAF50',
-                    // 'color': '#fff'
+                    'background-color': '#791e07ff',
+                    'color': '#fff'
                 }
             },
             selector: '.card-footer',
@@ -278,7 +277,6 @@ const card: ComponentDefinition = {
                     name: 'variant',
                     type: 'select',
                     defaultValue: 'secondary',
-                    options: ['primary', 'secondary']
                 },
                 {
                     name: 'label',
@@ -357,7 +355,7 @@ const button: ComponentDefinition = {
             name: 'variant',
             type: 'select',
             defaultValue: 'primary',
-            options: ['primary', 'secondary', 'text']
+            options: ['primary', 'secondary', 'text', 'clear']
         },
         {
             name: 'disabled',

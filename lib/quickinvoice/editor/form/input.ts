@@ -106,14 +106,14 @@ export class EditorInput extends MinzeElement {
             <select
                 name="${this.label}"
                 id="${this.label}-select"
-                class="w-full px-3 py-2 border border-gray-300 rounded-none text-sm text-gray-800 focus:outline-none focus:ring-offset-2 focus:ring-2 focus:ring-gray-200 font-urbanist appearance-none w-full"
+                class="w-full px-3 py-2 border border-gray-300 rounded-none text-sm text-gray-800 focus:outline-none focus:ring-offset-2 focus:ring-2 focus:ring-gray-200 font-urbanist appearance-none w-full capitalize"
             >
                 <option value="" disabled selected>Select ${this.label}</option>
                 ${this.selectOptions.map(opt => /*html*/`
                 <option value="${opt}" class="uppercase" ${opt === this.defaultValue ? 'selected' : ''}>${opt}</option>
                 `).join('')}
             </select>
-            <span class="i-solar-alt-arrow-down-outline ml-1 absolute top-2.2 right-4 text-slate-700 text-xl -z-1"></span>
+            <span class="i-solar-alt-arrow-down-outline ml-1 absolute top-2.2 right-4 text-slate-700 text-xl z-1"></span>
         `
         // CHECKBOX INPUT
         const svgIcon = /*html*/`
