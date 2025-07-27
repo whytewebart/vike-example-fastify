@@ -55,7 +55,7 @@ const tabs: Record<string, {
     icon: "i-solar-download-minimalistic-outline",
     action: () => {
       console.log("Download Invoice");
-      channel.postMessage("Download Invoice");
+      channel.postMessage("download");
     },
   },
 };
@@ -97,6 +97,7 @@ export class EditorWrapper extends EditorWrapperBase {
         <div class="block" data-type="button" draggable="true">Button</div>
         <div class="block" data-type="divider" draggable="true">Divider</div>
         <div class="block" data-type="dropzone" draggable="true">Container</div>
+        <div class="block" data-type="qrcode" draggable="true">QR Code</div>
         <div class="block" data-type="card" draggable="true">Card</div>
         <slot name="blocks-slot"></slot>
       </editor-panel>

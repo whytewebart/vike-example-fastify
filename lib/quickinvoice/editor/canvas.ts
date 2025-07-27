@@ -181,6 +181,7 @@ export class EditorCanvas extends EditorCanvasBase {
                     }
                     this.session.delete(this.selectedComponent.id);
                     this.selectedComponent.remove();
+                    this.components.select(null)
                 }
             }
         ],

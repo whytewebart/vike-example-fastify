@@ -140,6 +140,9 @@ const print = async () => {
 
     // REMOVE ALL SLOTS
     divToDownload.querySelectorAll('slot').forEach(slot => slot.remove())
+    divToDownload.style.width = '535px';
+    divToDownload.style.height = '760px';
+    divToDownload.style.background = 'white'
     // console.log(divToDownload)
     document.body.appendChild(divToDownload)
 }
@@ -149,5 +152,9 @@ db.listen();
 const channel = new BroadcastChannel("wrapper-tabs");
 channel.addEventListener("message", (event) => {
     const { data } = event;
-    print()
+    
+    if (data === 'download') {
+        print()
+    }
+
 });

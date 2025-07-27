@@ -101,79 +101,79 @@ const card: ComponentDefinition = {
             defaultValue: true,
             group: 'Footer'
         },
-        {
-            name: 'users',
-            type: {
-                type: 'array',
-                itemType: {
-                    type: 'object',
-                    shape: [
-                        {
-                            name: 'name',
-                            type: 'text',
-                            defaultValue: 'John Doe'
-                        },
-                        {
-                            name: 'age',
-                            type: 'number',
-                            defaultValue: 30
-                        },
-                        {
-                            name: 'profilePicture',
-                            type: 'image',
-                            defaultValue: ''
-                        },
-                        {
-                            name: "friends",
-                            type: {
-                                type: 'array',
-                                itemType: {
-                                    type: 'object',
-                                    shape: [
-                                        {
-                                            name: 'name',
-                                            type: 'text',
-                                            defaultValue: 'Jane Doe'
-                                        },
-                                        {
-                                            name: 'age',
-                                            type: 'number',
-                                            defaultValue: 28
-                                        }
-                                    ]
-                                }
-                            },
-                            defaultValue: []
-                        },
-                        {
-                            name: 'family',
-                            type: {
-                                type: 'object',
-                                shape: [
-                                    {
-                                        name: 'father',
-                                        type: 'text',
-                                        defaultValue: 'John Sr.'
-                                    },
-                                    {
-                                        name: 'mother',
-                                        type: 'text',
-                                        defaultValue: 'Jane Sr.'
-                                    }
-                                ]
-                            },
-                            defaultValue: {
-                                father: 'John Sr.',
-                                mother: 'Jane Sr.'
-                            }
-                        }
-                    ]
-                }
-            },
-            group: 'Data',
-            description: 'List of users to display in the card.',
-            defaultValue: []
-        },
+        // {
+        //     name: 'users',
+        //     type: {
+        //         type: 'array',
+        //         itemType: {
+        //             type: 'object',
+        //             shape: [
+        //                 {
+        //                     name: 'name',
+        //                     type: 'text',
+        //                     defaultValue: 'John Doe'
+        //                 },
+        //                 {
+        //                     name: 'age',
+        //                     type: 'number',
+        //                     defaultValue: 30
+        //                 },
+        //                 {
+        //                     name: 'profilePicture',
+        //                     type: 'image',
+        //                     defaultValue: ''
+        //                 },
+        //                 {
+        //                     name: "friends",
+        //                     type: {
+        //                         type: 'array',
+        //                         itemType: {
+        //                             type: 'object',
+        //                             shape: [
+        //                                 {
+        //                                     name: 'name',
+        //                                     type: 'text',
+        //                                     defaultValue: 'Jane Doe'
+        //                                 },
+        //                                 {
+        //                                     name: 'age',
+        //                                     type: 'number',
+        //                                     defaultValue: 28
+        //                                 }
+        //                             ]
+        //                         }
+        //                     },
+        //                     defaultValue: []
+        //                 },
+        //                 {
+        //                     name: 'family',
+        //                     type: {
+        //                         type: 'object',
+        //                         shape: [
+        //                             {
+        //                                 name: 'father',
+        //                                 type: 'text',
+        //                                 defaultValue: 'John Sr.'
+        //                             },
+        //                             {
+        //                                 name: 'mother',
+        //                                 type: 'text',
+        //                                 defaultValue: 'Jane Sr.'
+        //                             }
+        //                         ]
+        //                     },
+        //                     defaultValue: {
+        //                         father: 'John Sr.',
+        //                         mother: 'Jane Sr.'
+        //                     }
+        //                 }
+        //             ]
+        //         }
+        //     },
+        //     group: 'Data',
+        //     description: 'List of users to display in the card.',
+        //     defaultValue: []
+        // },
         {
             name: 'hobbies',
             type: {
@@ -198,6 +198,11 @@ const card: ComponentDefinition = {
                         name: "email",
                         type: "text",
                         defaultValue: "john@email.com"
+                    },
+                    {
+                        name: "phone",
+                        type: "tel",
+                        defaultValue: ""
                     },
                     {
                         name: "active",
@@ -296,6 +301,14 @@ const card: ComponentDefinition = {
                     <span data-text="{properties.title}"></span>
                 </h3>
                 <p data-if="{!properties.hideDescription}" data-text="{properties.description}"></p>
+            </div>
+
+            <div id="client">
+                <h3>Client</h3>
+                <h4 data-text="{properties.client?.name}"></h4>
+                <p data-text="{properties.client?.email}"></p>
+                <p data-text="{properties.client?.phone}"></p>
+                <p data-text="{properties.client?.active ? 'Active' : 'Inactive'}"></p></h4>
             </div>
             
             <ul id="userList">
@@ -733,4 +746,102 @@ const image: ComponentDefinition = {
     `
 }
 
-export default { card, button, dropzone, heading, paragraph, divider, image }
+// ADD QRCODE COMPONENT
+const qrcode: ComponentDefinition = {
+    type: 'qrcode',
+    name: 'QR Code',
+    category: 'Media',
+    icon: '📱',
+
+    capabilities: {
+        canHaveChildren: false,
+        canAcceptStyles: true,
+        canBeDeleted: true
+    },
+
+    properties: [
+        {
+            name: 'value',
+            type: 'text',
+            defaultValue: 'https://example.com',
+            description: 'The data to encode in the QR code.'
+        },
+        {
+            name: 'size',
+            type: 'number',
+            defaultValue: 128,
+            description: 'The size of the QR code in pixels (width and height).'
+        },
+        {
+            name: 'margin',
+            type: 'number',
+            defaultValue: 1
+        },
+        {
+            name: 'foreground',
+            type: 'color',
+            defaultValue: '#000000',
+        },
+        {
+            name: 'background',
+            type: 'color',
+            defaultValue: '#ffffff',
+        }
+    ],
+
+    styleSettings: {
+        allowedProperties: [
+            'width',
+            'height',
+            'padding',
+            'background-color',
+            'border-radius'
+        ],
+        defaultStyles: {
+            // 'width': '128px',
+            // 'height': '128px',
+            // 'padding': '10px',
+            // 'background-color': '#ffffff',
+            // 'border-radius': '0px'
+        },
+        css: (properties) => /*css*/`
+            :host {
+                display: inline-block;
+                box-sizing: content-box;
+            }
+            canvas {
+                display: block;
+            }
+        `
+    },
+
+    renderTemplate: (properties) => {
+        // canvas
+        const canvas = /*html*/`
+            <canvas
+                styles="host"
+                data-attr-data.prop.dark.color="{properties.foreground}"
+                data-attr-data.prop.light.color="{properties.background}"
+                data-attr-data.prop.width="{properties.size}"
+                data-attr-data.prop.margin="{properties.margin}"
+                data-qrcode="{properties.value}"
+            ></canvas>
+        `;
+        // img
+        const img = /*html*/`
+            <img
+                styles="host"
+                data-attr-data.prop.dark.color="{properties.foreground}"
+                data-attr-data.prop.light.color="{properties.background}"
+                data-attr-data.prop.width="{properties.size}"
+                data-attr-data.prop.margin="{properties.margin}"
+                data-attr-alt="{properties.value}"  
+                data-qrcode="{properties.value}"
+            />
+        `
+        return img
+    }
+}
+
+
+export default { card, button, dropzone, heading, paragraph, divider, image, qrcode }

@@ -3,6 +3,8 @@ import Minze, { MinzeElement } from 'minze'
 import { IndexedDBWrapper } from '../component/utils/state';
 import Compressor from 'compressorjs';
 import { nanoid } from "nanoid"
+import clm from "country-locale-map"
+import parsePhoneNumber, { getCountryCallingCode } from 'libphonenumber-js';
 
 export interface EditorInput {
     type: PropertyType; // Type of the input (text, number, select, etc.)
@@ -41,6 +43,22 @@ export class EditorInput extends MinzeElement {
     static observedAttributes = ['checked', 'default-value']
     get splitLabel() {
         return this.label.replace(/([a-z])([A-Z])/g, '$1 $2')
+    }
+
+    countries = () => {
+        return clm.getAllCountries().map(country => {
+            var code;
+            try {
+                code = getCountryCallingCode(country.alpha2);
+            } catch (error) {
+
+            }
+
+            return {
+                ...country,
+                callingCode: code
+            }
+        }).filter(d => d.callingCode)
     }
 
     protected session = new IndexedDBWrapper<DB.Session>(this.DB_NAME, 'session', this.DB_VERSION)
@@ -137,6 +155,35 @@ export class EditorInput extends MinzeElement {
                 <label for="check" class="text-base font-semibold text-gray-700 capitalize font-space-mono">${this.splitLabel}</label>
             </div>
         `
+        // PHONE NUMBER
+        const phone = /*html*/`
+            <div
+                class="flex rounded-md- shadow-smp font-sans"
+                focus-within="outline-none ring-2 ring-gray-200 ring-offset-2"
+            >
+                <div relative>
+                    <select
+                        class="block rounded-l- border border-r-0 border-gray-200 bg-gray-50 text-gray-700 text-sm px-2 py-2 focus:outline-none appearance-none w-25"
+                        name="countryCode"
+                    >
+                        ${this.countries().map((country) => /*html*/`
+                                <option value="${country.alpha2}"> ${country.alpha2} +${country.callingCode} </option>
+                            `).join('')
+            }
+                    </select>
+
+                    <span class="i-solar-alt-arrow-down-outline ml-1 absolute top-2.2 right-2 text-slate-700 text-xl z-1"></span>
+                </div>
+                <input
+                    type="tel"
+                    name="phone"
+                    id="phone"
+                    class="px-3 py-2 border border-gray-300 rounded-r- text-sm text-gray-800 w-full outline-none"
+                    placeholder="123-456-7890"
+                    value="${this.defaultValue}"
+                >
+            </div>
+        `
         // TEXTAREA INPUT
         const textarea = /*html*/`
             <textarea
@@ -182,11 +229,10 @@ export class EditorInput extends MinzeElement {
                     
                 `).join('')}
 
-                ${
-                    Array.from(this.entries).length > 0 ? /*html*/`
+                ${Array.from(this.entries).length > 0 ? /*html*/`
                         <div class="h-[calc(100%_-_2rem)] w-4 absolute left-4 top-5" border="2 r-0 gray-500"></div>
                     ` : ''
-                }
+            }
             </div>
         `
 
@@ -212,10 +258,9 @@ export class EditorInput extends MinzeElement {
                         label="${opt.name}"
                         type='${JSON.stringify(opt.type)}'
                         select-options='${JSON.stringify(opt.options) || []}'
-                        ${
-                            opt.type === 'boolean' &&
-                            this.defaultValue[opt.name] === true ? 'checked="true"' : ''
-                        }
+                        ${opt.type === 'boolean' &&
+                    this.defaultValue[opt.name] === true ? 'checked="true"' : ''
+                }
                         default-value='${stringify(this.defaultValue[opt.name] || opt.defaultValue)}'
                         save-btn="hide"
                         ${localType?.type ? `nested="true"` : ''}
@@ -241,6 +286,8 @@ export class EditorInput extends MinzeElement {
                 return wrapper(textarea);
             case "image":
                 return wrapper(image);
+            case "tel":
+                return wrapper(phone);
             default:
                 return wrapper(fallback);
         }
@@ -259,11 +306,11 @@ export class EditorInput extends MinzeElement {
     };
 
     validateType = (val: string) => {
-        if(val === 'true') {
+        if (val === 'true') {
             return true;
         }
 
-        if(val === 'false') {
+        if (val === 'false') {
             return false;
         }
 
@@ -355,11 +402,23 @@ export class EditorInput extends MinzeElement {
 
     eventListeners?: EventListeners = [
         [
-            "input:not([type=file]), textarea, select",
+            "input:not([type=file]), textarea, select:not([name=countryCode])",
             "input",
             (e: InputEvent) => {
                 const input = e.target as HTMLInputElement;
-                const value = this.type == 'boolean' ? input?.checked : input?.value || '';
+                var value = this.type == 'boolean' ? input?.checked : input?.value || '';
+
+                var countryCode;
+                if (this.type === 'tel') {
+                    // get select
+                    const select = <HTMLSelectElement>this.select('select[name=countryCode]')!;
+                    countryCode = select.value;
+                    // @ts-ignore
+                    const phoneNumber = parsePhoneNumber(value, countryCode);
+                    if (phoneNumber) {
+                        value = phoneNumber.formatInternational()
+                    }
+                }
 
                 if (this.componentId && !this.repeater) {
                     this.dispatch(`component:${this.componentId}:properties`, {
@@ -407,6 +466,31 @@ export class EditorInput extends MinzeElement {
                         console.log(err.message);
                     },
                 });
+            }
+        ],
+
+        [
+            'select[name=countryCode]', 'input', (e: InputEvent) => {
+                const select = e.target as HTMLInputElement;
+                const input = this.select('input[name=phone]') as HTMLInputElement;
+
+                const countryCode = select.value
+                var value = input.value;
+
+                const phoneNumber = parsePhoneNumber(value, countryCode);
+                if (phoneNumber) {
+                    value = phoneNumber.formatInternational()
+                }
+
+                if (this.componentId && !this.repeater) {
+                    this.dispatch(`component:${this.componentId}:properties`, {
+                        data: {
+                            [this.label]: value
+                        }
+                    });
+                }
+
+                this.setAttribute('default-value', value.toString());
             }
         ],
 

@@ -34,6 +34,7 @@ type PrimitiveType =
   | 'boolean'
   | 'image'
   | 'url'
+  | 'tel'
   | 'rich-text';
 
 type PropertyType =

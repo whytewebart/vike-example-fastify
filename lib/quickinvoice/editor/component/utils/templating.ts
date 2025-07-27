@@ -1,4 +1,5 @@
 import { MinzeElement } from "minze";
+import qrcode from 'qrcode';
 
 type DirectiveMap = Record<string, (el: HTMLElement, val: any) => void>;
 
@@ -9,6 +10,33 @@ const directiveMap: DirectiveMap = {
   'data-show': (el, val) => el.style.display = val ? '' : 'none',
   'data-if': (el, val) => {
     el.style.display = val ? '' : 'none';
+  },
+  'data-qrcode': (el, val) => {
+    const dataset = el.dataset;
+    const opts = {
+      width: Number(dataset.propWidth!),
+      margin: dataset.propMargin!,
+      color: {
+        dark: dataset.propDarkColor!,
+        light: dataset.propLightColor!
+      },
+    }
+
+    // if element is canvas
+    if (el.tagName === 'CANVAS') {
+      // @ts-ignore
+      qrcode.toCanvas(el, val, opts, function (error) {
+        if (error) console.error(error);
+      })
+    }
+
+    else if (el.tagName === 'IMG') {
+      qrcode.toDataURL(val, opts, (err, url) => {
+        if (err) console.error(err);
+        el.setAttribute('src', url)
+      })
+    }
+
   }
 };
 
@@ -31,7 +59,7 @@ function evaluateSyntax(
   const query = type == 'clone' ? 'querySelectorAll' : 'selectAll'
   // @ts-ignore QUERY ELEMENTS
   const elements = parent?.[query]
-    ('[data-each], [data-text], [data-html], [data-class], [data-show], [data-if], [data-bind]');
+    (attributes.map(attr => `[${attr}]`).join(', '));
 
   elements?.forEach((el_: any) => {
     // SELECT ELEMENT
@@ -55,16 +83,16 @@ function evaluateSyntax(
           const raw = el.getAttribute(attr);
           const expr = raw?.match(/\{(.+?)\}/)?.[1];
           if (!expr) continue;
-          
+
           const isLoop = el.closest('[data-key]')
           const validKey = context[isLoop?.getAttribute('data-key')!]
 
-          if(isLoop && !validKey)
+          if (isLoop && !validKey)
             continue;
 
           const val = evaluate(expr, context);
           const attrName = attr.split('-')[2];
-          el.setAttribute(attrName, val);
+          el.setAttribute(attrName.replaceAll('.', '-').toLowerCase(), val);
         }
         continue;
       };
@@ -133,7 +161,9 @@ const attributes = [
   // 'data-on:click',
   // 'data-key',
   // 'data-attr:*',
-  'data-each'
+  'data-each',
+  'data-bind',
+  'data-qrcode'
 ]
 
 export default {
