@@ -1,15 +1,14 @@
 <template>
   <div class="quickinvoice">
     <header
-      class="bk-col-full py-4 px-2 bg-white rounded-lg"
-      flex="~ col gap-y-4 justify-between wrap"
-      sm="my-4 py-2 flex-row items-center"
+      class="bk-col-full py-2 px-2 bg-white my-4 rounded-lg mx-4"
+      flex="~ items-center justify-between wrap"
     >
       <img src="../assets/invoicespace.brandmark.svg" width="60" alt="" />
 
       <nav flex="~ items-center gap-2 wrap">
         <Button icon="i-heroicons-arrow-uturn-left-solid" pt:root="flex! py-1.5!" severity="secondary" size="small" href="/" as="a" />
-        <Button label="Share Your Thoughts" severity="secondary" size="small" />
+        <Button label="Share Your Thoughts" severity="secondary" size="small" pt:root="hidden! sm:flex!" />
         <Button label="Work With Me" size="small" icon-pos="right" icon="i-solar-arrow-right-outline" />
       </nav>
     </header>
