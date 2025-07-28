@@ -231,7 +231,7 @@ export abstract class EditorWrapperBase extends MinzeElement {
 
     protected baseEventListeners: EventListeners = [
         // Mouse events
-        // [window, 'mousemove', this.handlers.drag.move],
+        [window, 'mousemove', this.handlers.drag.move],
         [window, 'canvas:startdrag', (_) => this.handlers.drag.start(_.detail)],
         [window, 'canvas:enddrag', this.handlers.drag.end],
         // Touch events - Not implemented yet
