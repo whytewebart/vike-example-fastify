@@ -1,21 +1,48 @@
 <template>
   <div class="quickinvoice">
-    <!-- <header class="py-4 bk-col-nav px-4 lg:px-6 space-y-2">
-      <h3 class="font-space-mono tracking-tight text-xl font-semibold">InvoiceSpace.</h3>
-      <p class="font-space-mono text-sm max-w-sm">Drag. Drop. Done. Create and customize professional invoices, download them as PDF, or email them to clients — all right here.</p>
-      <Button rounded size="small" pt:label="font-space-mono" label="Get in Touch." severity="secondary" />
-    </header> -->
+    <header
+      class="bk-col-full py-4 px-2 bg-white rounded-lg"
+      flex="~ col gap-y-4 justify-between wrap"
+      sm="my-4 py-2 flex-row items-center"
+    >
+      <img src="../assets/invoicespace.brandmark.svg" width="60" alt="" />
+
+      <nav flex="~ items-center gap-2 wrap">
+        <Button icon="i-heroicons-arrow-uturn-left-solid" pt:root="flex! py-1.5!" severity="secondary" size="small" href="/" as="a" />
+        <Button label="Share Your Thoughts" severity="secondary" size="small" />
+        <Button label="Work With Me" size="small" icon-pos="right" icon="i-solar-arrow-right-outline" />
+      </nav>
+    </header>
     <slot />
   </div>
 </template>
 
-<script lang="ts" setup>
-
-</script>
+<script lang="ts" setup></script>
 
 <style lang="scss">
-.quickinvoice {
-  --at-apply: viewport;
-  --gap: 0em
+// html,
+body:has(.quickinvoice) {
+  --at-apply: app-scrollbar;
+
+  &::-webkit-scrollbar-track {
+    --at-apply: bg-gray-200;
+  }
+
+  &::-webkit-scrollbar-button {
+    --at-apply: bg-red;
+  }
+
+  #view-content {
+    all: unset;
+  }
+  :not(:defined) {
+    visibility: hidden;
+  }
+
+  .quickinvoice {
+    --at-apply: viewport;
+    --at-apply: [--full-val:_1200px_!important];
+    --gap: 0em
+  }
 }
 </style>

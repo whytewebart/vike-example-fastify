@@ -13,8 +13,8 @@ const primary = {
   800: "#422830",
   900: "#2c141b",
   950: "#16080e",
-  contrast: "var(--p-primary-contrast-color)",
-  emphasis: "var(--p-primary-active-color)",
+  contrast: "#f7f5f6",
+  emphasis: "#9b818a",
 };
 
 const surface = {
