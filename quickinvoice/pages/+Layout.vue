@@ -1,8 +1,9 @@
 <template>
   <div class="quickinvoice">
     <header
-      class="bk-col-full py-2 px-2 bg-white my-4 rounded-lg mx-4"
+      class="bk-col-full py-2 px-2 bg-white m-4 rounded-lg"
       flex="~ items-center justify-between wrap"
+      sm="mx-0"
     >
       <img src="../assets/invoicespace.brandmark.svg" width="60" alt="" />
 
