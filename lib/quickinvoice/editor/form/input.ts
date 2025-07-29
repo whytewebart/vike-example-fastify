@@ -49,6 +49,7 @@ export class EditorInput extends MinzeElement {
         return clm.getAllCountries().map(country => {
             var code;
             try {
+                // @ts-ignore
                 code = getCountryCallingCode(country.alpha2);
             } catch (error) {
 
@@ -476,7 +477,7 @@ export class EditorInput extends MinzeElement {
                 const select = e.target as HTMLInputElement;
                 const input = this.select('input[name=phone]') as HTMLInputElement;
 
-                const countryCode = select.value
+                const countryCode = <any>select.value
                 var value = input.value;
 
                 const phoneNumber = parsePhoneNumber(value, countryCode);
