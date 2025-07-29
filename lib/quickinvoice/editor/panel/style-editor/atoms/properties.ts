@@ -1,7 +1,7 @@
 import Minze, { EventListeners, MinzeElement } from "minze";
 import { nanoid } from "nanoid";
 import css from "./properties.css?inline"
-import definition from "../../../component/utils/definition";
+import definition from "@/quickinvoice/definition/components";
 
 // @unocss-include
 // DIMENSION TYPE DEFINITION
@@ -15,6 +15,7 @@ interface PropertyEditor {
     // LAYER INSTANCE
     componentId: string;
     componentType: string;
+    componentName?: string;
     styleEditor?: MinzeElement;
     html: () => string;
 }
@@ -53,9 +54,10 @@ class PropertyEditor {
     }
 
     // SET COMPONENT ID
-    setComponent({ id, type }: { id: string, type: string }) {
+    setComponent({ id, type, name }: { id: string, type: string, name?: string }) {
         this.componentId = id;
         this.componentType = type;
+        this.componentName = name
     }
 
     // SET PROPERTIES
@@ -105,7 +107,7 @@ class PropertyEditor {
         return this.componentId && this.componentId !== 'unset' ? /*html*/`
             <div class="header">
                 <!-- <span>${this.componentId}</span> -->
-                <h3>[${this.componentType}] component </h3>
+                <h3>[${this.componentName}] component </h3>
                 <p>${this.description}</p>
             </div>
 

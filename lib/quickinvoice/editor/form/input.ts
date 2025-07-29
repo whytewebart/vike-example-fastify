@@ -87,12 +87,14 @@ export class EditorInput extends MinzeElement {
             ${this.getAttribute('save-btn') == 'hide'
                 ? '' :
                 // @ts-ignore
+                // this.type?.type === 'object' || this.repeater ?
                 this.type?.type === 'object' || this.repeater ?
                 /*html*/`
                     <!-- SAVE BUTTON -->
                     <div class="grid sticky bottom-0 z-1">
                         <button id="save-entries" class="px-4 py-1 font-urbanist bg-blue-600 text-white text-sm hover:bg-blue-700 transition-colors ${this.repeater ? 'w-fit' : 'w-full'} rounded-none capitalize">
-                            ${this.repeater ? `Add new <b class="uppercase">[${this.label}]</b> entry` : 'Save ' + this.label}
+                            <!-- ${this.repeater ? `Add new <b class="uppercase">[${this.label}]</b> entry` : 'Save ' + this.label} -->
+                            ${this.repeater ? `Update <b class="uppercase">[${Number(this.dataset.entryIndex) + 1}]</b> entry` : 'Save ' + this.label}
                         </button>
                     </div>
                 `
@@ -211,7 +213,7 @@ export class EditorInput extends MinzeElement {
                         type='${JSON.stringify(localType?.itemType || this.type)}'
                         component-id="${this.componentId}"
                         repeater="${i === 0 ? 'label' : ''}"
-                        default-value='${!localType?.itemType?.type ? entry.value : JSON.stringify(entry)}'
+                        default-value='${!localType?.itemType?.type ? (entry?.value || entry) : JSON.stringify(entry)}'
                         ${entry.id ? `entry-id="${entry.id}"` : ''}
                         data-entry-index="${i}"
                         ${this.getAttribute('save-btn') ? `save-btn="${this.getAttribute('save-btn')}"` : ''}
@@ -314,7 +316,7 @@ export class EditorInput extends MinzeElement {
             return false;
         }
 
-        return val
+        return this.parseType(val)
     }
 
     parseEditorInput = (el: HTMLElement, labelOverride?: string): any => {

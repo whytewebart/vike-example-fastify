@@ -98,11 +98,11 @@ export class EditorWrapper extends EditorWrapperBase {
         <div class="block" data-type="divider" draggable="true">Divider</div>
         <div class="block" data-type="dropzone" draggable="true">Container</div>
         <div class="block" data-type="qrcode" draggable="true">QR Code</div>
-        <div class="block" data-type="card" draggable="true">Card</div>
+        <div class="block" data-type="dynamic-table" draggable="true">Table</div>
         <slot name="blocks-slot"></slot>
       </editor-panel>
       <!-- LAYOUTS -->
-      <editor-panel title="Layouts" class="grid-col-span-2 border-y">
+      <editor-panel title="Layouts" class="grid-col-span-2 border-y" panel-status="closed">
         <div class="min-h-4xl"></div>
       </editor-panel>
     </div>
@@ -158,8 +158,9 @@ export class EditorWrapper extends EditorWrapperBase {
         }
 
         @media (min-height: ${this.canvas.dimension.height}px) {
-            /* [section="canvas"] { min-height: var(--calc-handles); }
-            div[section="panels"] { max-height: var(--calc-handles); } */
+            /* [section="canvas"] { min-height: var(--calc-handles); } */
+            [section="canvas"] { max-height: var(--calc-handles); }
+            div[section="panels"] { max-height: var(--calc-handles); }
         }
     `;
 

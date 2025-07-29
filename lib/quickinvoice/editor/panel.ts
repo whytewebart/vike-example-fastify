@@ -11,6 +11,11 @@ export class EditorPanel extends MinzeElement {
         ['panelStatus', 'open']
     ]
 
+    beforeRender() {
+        // @ts-ignore
+        this.panelStatus = this.getAttribute('panel-status') || this.panelStatus
+    }
+
     watch: Watch = [
         ['panelStatus', (newValue, oldValue, key, target) => {
             if (newValue === 'open') {

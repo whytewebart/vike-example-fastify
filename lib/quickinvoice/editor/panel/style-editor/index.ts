@@ -59,7 +59,7 @@ export class StyleEditor extends MinzeElement {
     // SELECT INPUT
     elementSelect = () =>/*html*/`
         <div class="bg-gray-50 px-4 py-2">
-            <h3 class="font-space-mono font-semibold text-lg capitalize relative -left-1 mb-1 ${!this.component ? 'hidden' : ''}">[${this.component?.type}] component </h3>
+            <h3 class="font-space-mono font-semibold text-lg capitalize relative -left-1 mb-1 ${!this.component ? 'hidden' : ''}">[${this.component?.dataset.name}] component </h3>
             <div class="relative bg-white">
                 <select
                     name="subElement"
@@ -125,12 +125,13 @@ export class StyleEditor extends MinzeElement {
                 this.property.setComponent({
                     id: componentId,
                     type: componentType!,
+                    name: this.component?.dataset.name,
                 });
 
                 this.property.setProperties(JSON.parse(componentProps || '{}'))
                 // this.dimensions.setComponent(this.component!)
                 // SET STYLES
-                await import('../../component/utils/definition')
+                await import('@/quickinvoice/definition/components')
                     .then((response) => {
                         const definition = Object.values(response.default)
                             .find(def => def.type == componentType!);

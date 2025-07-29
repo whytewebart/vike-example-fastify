@@ -434,7 +434,7 @@ export class EditorComponent extends EditorCanvasBase {
         if (this.definition) return;
 
         // IMPORT DEFINITION
-        _definition = await import('./utils/definition');
+        _definition = await import('@/quickinvoice/definition/components');
         this.definition = Object.values(_definition.default)
             .find(def => def.type == this.type)!;
 
@@ -453,6 +453,7 @@ export class EditorComponent extends EditorCanvasBase {
         // REMOVE REACTIVITY
         this.template = (() => this.definition!.renderTemplate!(this.properties));
         this.dataset.type = this.definition?.type?.toLowerCase() || 'unknown';
+        this.dataset.name = this.definition.name
     }
 
     async onReady() {

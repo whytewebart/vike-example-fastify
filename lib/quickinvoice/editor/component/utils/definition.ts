@@ -461,15 +461,6 @@ const dropzone: ComponentDefinition = {
                 font-size: 0.875rem;
                 font-style: italic;
             }
-
-            /* UNSET ALL DROPZONE STYLES IF NO SLOT */
-            /* [dropzone]:not(:has(slot)) {
-                all: unset
-            }
-
-            [dropzone]:not(:has(slot))::before {
-                all: unset
-            } */
         `
     },
 
@@ -516,25 +507,12 @@ const heading: ComponentDefinition = {
             'margin-top',
             'margin-bottom'
         ],
-        defaultStyles: {
-            // 'font-size': '40px',
-            // 'font-weight': 'bold',
-            // 'color': '#333',
-            'text-align': 'left',
-            'margin-top': '0.5em',
-            'margin-bottom': '0.5em'
-        },
+        defaultStyles: {},
         css: (properties) => /*css*/`
             :host, h1, h2, h3, h4, h5, h6 {
                 display: block;
                 font-family: 'Urbanist';
             }
-            /* h1 { font-size: 2.5em; }
-            h2 { font-size: 2em; }
-            h3 { font-size: 1.75em; }
-            h4 { font-size: 1.5em; }
-            h5 { font-size: 1.25em; }
-            h6 { font-size: 1em; } */
             h1, [tag="h1"] { font-size: 32px; }
             h2, [tag="h2"] { font-size: 24px; }
             h3, [tag="h3"] { font-size: 16px; }
@@ -580,12 +558,6 @@ const paragraph: ComponentDefinition = {
             'margin-bottom'
         ],
         defaultStyles: {
-            'font-size': '1em',
-            'color': '#333',
-            'text-align': 'left',
-            'line-height': '1.5',
-            'margin-top': '0.5em',
-            'margin-bottom': '0.5em',
         },
         css: (properties) => /*css*/`
             :host, p {
@@ -595,6 +567,9 @@ const paragraph: ComponentDefinition = {
 
             p {
                 white-space: pre-wrap;
+                line-height: 1.5,
+                color: #333333;
+                font-size: 10pt;
             }
         `
     },
@@ -671,7 +646,7 @@ const divider: ComponentDefinition = {
         <div styles="host">
             <hr style="
                 border: none;
-                border-top-width: ${properties.thickness}px;
+                border-top-width: ${properties.thickness}pt;
                 border-top-color: ${properties.color};
                 border-top-style: ${properties.style};
                 width: ${properties.width}${properties.unit};
@@ -697,7 +672,7 @@ const image: ComponentDefinition = {
         {
             name: 'src',
             type: 'image',
-            defaultValue: ''
+            defaultValue: 'https://placehold.co/200'
         },
         {
             name: 'alt',
@@ -718,22 +693,12 @@ const image: ComponentDefinition = {
             'border-radius',
             'box-shadow'
         ],
-        defaultStyles: {
-            'width': '100%',
-            'height': 'auto',
-            'border-radius': '0',
-            'box-shadow': 'none'
-        },
+        defaultStyles: {},
         css: (properties) => /*css*/`
-            :host, img {
-                display: block;
+            img[src=""] {
+                background-color: #f0f0f0;
                 max-width: 100%;
                 height: auto;
-            }
-
-            img[src=""] {
-                height: 100px;
-                background-color: #f0f0f0;
             }
         `
     },
@@ -790,25 +755,14 @@ const qrcode: ComponentDefinition = {
     ],
 
     styleSettings: {
-        allowedProperties: [
-            'width',
-            'height',
-            'padding',
-            'background-color',
-            'border-radius'
-        ],
-        defaultStyles: {
-            // 'width': '128px',
-            // 'height': '128px',
-            // 'padding': '10px',
-            // 'background-color': '#ffffff',
-            // 'border-radius': '0px'
-        },
+        allowedProperties: [],
+        defaultStyles: {},
         css: (properties) => /*css*/`
             :host {
                 display: inline-block;
                 box-sizing: content-box;
             }
+            
             canvas {
                 display: block;
             }
