@@ -516,7 +516,7 @@ export class EditorInput extends MinzeElement {
                     entries.value = this.getAttribute('default-value')
                 }
 
-                console.log("🧠 Final structured data:", this.label, this.type, entries);
+                // console.log("🧠 Final structured data:", this.label, this.type, entries);
                 if (this.componentId) {
                     this.dispatch(`component:${this.componentId}:properties`, {
                         data: {

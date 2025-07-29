@@ -122,30 +122,31 @@ function evaluateSyntax(
         const key = el.getAttribute('data-key') || 'index';
         const parent = el.parentElement;
 
+        // REMOVE EXISTING SIMILAR ELEMENTS
+        parent?.querySelectorAll(`[data-key=${key}]:not([data-each])`)
+          .forEach(clone => clone.remove());
+
+        // parent?.removeChild(el); // prevent infinite loop
+        array.forEach((item, index) => {
+          const clone = el.cloneNode(true) as HTMLElement;
+          const tempCtx = { ...context, [key]: item, [key + "index"]: index };
+
+          parent?.insertBefore(clone, el);
+          evaluateSyntax(tempCtx, clone, 'clone');
+          // REMOVE DATASET ATTRIBUTES
+          attributes.forEach(attr => clone.removeAttribute(attr));
+        });
+
+        
         // HIDE ELEMENT
         el.style.display = 'none';
         el.style.height = '0';
         el.style.opacity = '0';
         el.style.pointerEvents = 'none';
 
-        // REMOVE EXISTING SIMILAR ELEMENTS
-        parent?.querySelectorAll(`[data-key=${key}]:not([data-each])`)
-          .forEach(clone => clone.remove());
-
-        parent?.removeChild(el); // prevent infinite loop
-        array.forEach((item, index) => {
-          const clone = el.cloneNode(true) as HTMLElement;
-          const tempCtx = { ...context, [key]: item, [key + "index"]: index };
-
-          clone.setAttribute('style', '')
-          parent?.appendChild(clone);
-          evaluateSyntax(tempCtx, clone, 'clone');
-          // REMOVE DATASET ATTRIBUTES
-          attributes.forEach(attr => clone.removeAttribute(attr));
-        });
-
         // ADD THE ORIGINAL TEMPLATE
-        parent?.appendChild(el);
+        // parent?.removeChild(el); // prevent infinite loop
+        // parent?.appendChild(el);
         break;
       }
     }

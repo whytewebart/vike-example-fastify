@@ -449,6 +449,125 @@ const qrcode: ComponentDefinition = {
     }
 }
 
+const fixedTable: ComponentDefinition = {
+    type: 'fixed-table',
+    name: 'Invoice Table',
+    category: 'Layout',
+    icon: '📋',
+
+    capabilities: {
+        canHaveChildren: false,
+        canAcceptStyles: true,
+        canBeDeleted: true,
+        isContainer: false,
+    },
+
+    properties: [
+        {
+            name: 'entries',
+            type: {
+                type: 'array',
+                itemType: {
+                    type: 'object',
+                    shape: [
+                        { name: 'item', type: 'text', defaultValue: 'Service', required: true },
+                        { name: 'qty', type: 'number', defaultValue: 1 },
+                        { name: 'price', type: 'number', defaultValue: 100 },
+                        // { name: 'total', type: 'number', defaultValue: 100 }
+                    ]
+                }
+            },
+            defaultValue: [],
+            description: 'Invoice table rows'
+        },
+        {
+            name: 'currency',
+            type: 'text',
+            defaultValue: '$'
+        }
+    ],
+
+    styleSettings: {
+        allowedProperties: ['padding', 'margin', 'border', 'background', 'font-size', 'color'],
+        defaultStyles: {
+            width: '100%',
+            borderCollapse: 'collapse'
+        },
+        css: () => /*css*/`
+         table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            th, td {
+                border: 1px solid black;
+            }
+
+            td {
+                padding: 0px 8px;
+                text-align: left;
+            }
+
+            tr[footer] {
+                font-weight: 700
+            }
+        `
+    },
+
+    subElements: [
+        {
+            key: 'thead',
+            selector: 'thead',
+            name: 'Table Header Columns',
+        },
+        {
+            key: 'column',
+            selector: 'th',
+            name: 'Header Column',
+        },
+        {
+            key: 'body',
+            selector: 'tbody',
+            name: 'Table Body',
+        },
+        {
+            key: 'row',
+            selector: 'tr',
+            name: 'Table Row',
+        },
+    ],
+
+    renderTemplate: ({ entries }) => {
+        return /*html*/`
+      <table>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Qty</th>
+            <th>Price</th>
+            <th>SubTotal</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr data-each="{properties.entries}" data-key="entry">
+                <td data-text="{entry.item}"></td>
+                <td data-text="{entry.qty}"></td>
+                <td data-text="{properties.currency + '' + entry.price}"></td>
+                <td data-text="{properties.currency + '' + (Number(entry.qty) * Number(entry.price))}"></td>
+            </tr>
+            <tr footer>
+                <td style="border: 0;"></td>
+                <td style="border: 0;"></td>
+                <td>Total:</td>
+                <td data-text="{properties.currency + '' + properties.entries.reduce((sum, item) => sum + (Number(item.price) * Number(item.qty)), 0)}"></td>
+            </tr>
+        </tbody>
+      </table>
+    `;
+    }
+};
+
+
 const dynamicTable: ComponentDefinition = {
     type: 'dynamic-table',
     name: 'Dynamic Table',
@@ -510,26 +629,8 @@ const dynamicTable: ComponentDefinition = {
             defaultValue: [
                 {
                     id: '01',
-                    // row: [
-                    //     {
-                    //         id: '11',
-                    //         value: 'Design'
-                    //     },
-                    //     {
-                    //         id: '22',
-                    //         value: '2',
-                    //     },
-                    //     {
-                    //         id: '33',
-                    //         value: '150'
-                    //     },
-                    //     {
-                    //         id: '44',
-                    //         value: '300'
-                    //     },
-                    // ]
                     row: [
-                        "Design",
+                        "Stationery",
                         "2",
                         "150",
                         "300"
@@ -565,29 +666,29 @@ const dynamicTable: ComponentDefinition = {
 
     renderTemplate: ({ columns, rows }) => {
         const header = /*html*/`
-      <thead>
-        <tr>
-            <th
-                data-each="{properties.column}"
-                data-key="column"
-            > <span data-text="{column?.value}"></span> </th>
-        </tr>
-      </thead>
-    `;
+            <thead>
+                <tr>
+                    <th
+                        data-each="{properties.column}"
+                        data-key="column"
+                    > <span data-text="{column?.value}"></span> </th>
+                </tr>
+            </thead>
+        `;
 
         const body = /*html*/`
-      <tbody>
-        <tr data-each="{properties.entries}" data-key="entry">
-            <td data-each="{entry.row}" data-key="cell">
-                <span data-text="{cell?.value || cell}"></span>
-            </td>
-        </tr>
-      </tbody>
-    `;
+            <tbody>
+                <tr data-each="{properties.entries}" data-key="entry">
+                    <td data-each="{entry.row}" data-key="cell">
+                        <span data-text="{cell?.value || cell}"></span>
+                    </td>
+                </tr>
+            </tbody>
+        `;
 
         return `<table>${header}${body}</table>`;
     }
 };
 
 
-export default { button, dropzone, heading, paragraph, divider, image, qrcode, dynamicTable }
+export default { button, dropzone, heading, paragraph, divider, image, qrcode, dynamicTable, fixedTable }

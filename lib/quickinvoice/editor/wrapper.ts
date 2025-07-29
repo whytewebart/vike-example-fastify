@@ -98,7 +98,8 @@ export class EditorWrapper extends EditorWrapperBase {
         <div class="block" data-type="divider" draggable="true">Divider</div>
         <div class="block" data-type="dropzone" draggable="true">Container</div>
         <div class="block" data-type="qrcode" draggable="true">QR Code</div>
-        <div class="block" data-type="dynamic-table" draggable="true">Table</div>
+        <div class="block" data-type="fixed-table" draggable="true">Items Table</div>
+        <div class="block" data-type="dynamic-table" draggable="true">Dynamic Table</div>
         <slot name="blocks-slot"></slot>
       </editor-panel>
       <!-- LAYOUTS -->
