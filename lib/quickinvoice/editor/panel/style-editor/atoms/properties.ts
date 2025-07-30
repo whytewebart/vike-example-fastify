@@ -107,7 +107,7 @@ class PropertyEditor {
         return this.componentId && this.componentId !== 'unset' ? /*html*/`
             <div class="header">
                 <!-- <span>${this.componentId}</span> -->
-                <h3>[${this.componentName}] component </h3>
+                <h3>[${this.componentType}] component </h3>
                 <p>${this.description}</p>
             </div>
 

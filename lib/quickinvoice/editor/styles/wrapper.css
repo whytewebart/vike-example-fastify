@@ -136,7 +136,7 @@ div[section="panels"] div[section="tabs"] {
     }
 }
 
-editor-panel[title=Components] {
+div[section=blocks-panel] editor-panel {
     @apply: divide-y;
 
     &>div.block {

@@ -194,16 +194,46 @@ export class EditorCanvasBase extends MinzeElement {
                     // MOVE COMPONENT
                     this.dropzone.methods.move(container, afterElement)
                 } else if (type && this.isDraggingNewComponent) {
-                    // CREATE NEW COMPONENT
-                    const component = this.components
-                        .create(
-                            type, undefined, undefined,
-                            afterElement ? null : container
-                        )!; // Append to end
+                    // CHECK IF LAYOUT
+                    if (type.startsWith('layout')) {
+                        import('@/quickinvoice/definition/layouts')
+                            .then(ctx => {
+                                const layout = Object.values(ctx.default)
+                                    .find(def => def.id === type.slice('layout-'.length))!;
 
-                    if (afterElement)
-                        container.insertBefore(component, afterElement);
-                    this.components.select(component)
+                                if (layout) {
+                                    const doc = document.createElement('div');
+                                    doc.innerHTML = layout.html;
+
+                                    if (afterElement) {
+                                        Array.from(doc.children)
+                                            .forEach(child => {
+                                                container.insertBefore(child, afterElement)
+                                            })
+                                    }
+
+                                    else {
+                                        Array.from(doc.children)
+                                            .forEach(child => {
+                                                container.appendChild(child)
+                                            })
+                                    }
+                                }
+
+                            })
+                    }
+                    else {
+                        // CREATE NEW COMPONENT
+                        const component = this.components
+                            .create(
+                                type, undefined, undefined,
+                                afterElement ? null : container
+                            )!; // Append to end
+
+                        if (afterElement)
+                            container.insertBefore(component, afterElement);
+                        this.components.select(component)
+                    }
                 }
 
                 this.isDraggingNewComponent = false

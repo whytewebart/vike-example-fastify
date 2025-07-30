@@ -30,7 +30,7 @@
         />
       </nav>
     </header>
-    <h1 class="font-epilogue font-400 text-primary-800">
+    <h1 class="font-epilogue sm:font-400 text-primary-800">
       Simple, Professional <br />
       <span>[ Invoicing for Creatives ]</span> <br />
       and Small Teams
@@ -65,7 +65,7 @@
 <script lang="ts" setup>
 import gsap from 'gsap';
 
-// const { x, y } = useMouse();
+const bus = useEventBus('editor-w')
 function scrollToEditor() {
   document.querySelector('editor-wrapper')?.scrollIntoView({
     behavior: 'smooth'
@@ -92,6 +92,8 @@ onMounted(() => {
             height: 0,
             overflow: 'hidden'
           })
+
+          // bus.emit('open-editor')
         } else {
           gsap.to(target, {
             height: 'auto'
@@ -131,16 +133,21 @@ body:has(.quickinvoice) {
   }
 
   .quickinvoice {
-    --at-apply: viewport;
+    --at-apply: viewport max-md:bg-surface-100;
     --gap: 1em;
     --full-val: 1200px;
 
     h1 {
-      font-size: clamp(40px, 5vw, 60px);
+      // font-size: clamp(40px, 5vw, 60px);
+      font-size: clamp(30px, 12vw - 1rem , 60px);
       letter-spacing: -0.09em;
       line-height: 1;
       text-align: center;
       grid-column: max !important;
+
+      @screen xs {
+        font-size: clamp(30px, 5vw + 1rem, 60px);
+      }
     }
   }
 }

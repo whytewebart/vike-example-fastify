@@ -15,9 +15,11 @@
       <InvoiceTemplate />
       <InvoiceTemplate />
     </div>
+
+    <Button label="[ Show Editor ]" @click="toggleTemplates = !toggleTemplates" fluid pt:root="mt-4 lg:hidden" severity="secondary" v-if="toggleTemplates" />
   </div>
 
-  <editor-wrapper class="bk-col-root xxl:bk-col-nav sm:b-y-1">
+  <editor-wrapper class="bk-col-root xxl:bk-col-nav sm:b-y-1" :class="{ 'temp-open': toggleTemplates }">
     <editor-canvas> </editor-canvas>
   </editor-wrapper>
 </template>
@@ -26,7 +28,6 @@
 import { SetupContext } from "vue";
 
 const toggleTemplates = ref(false);
-
 const InvoiceTemplate = (props: any, ctx: SetupContext) => {
   return (
     <div
@@ -75,5 +76,9 @@ div[invoice-temp-grid] {
   div[invoice-temp-grid] > div {
     // --at-apply: grid-cols-3
   }
+}
+
+.temp-open {
+  --at-apply: max-lg:h-0 max-lg:overflow-hidden;
 }
 </style>

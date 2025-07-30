@@ -260,6 +260,9 @@ export class EditorComponent extends EditorCanvasBase {
     registerDefaults = async () => {
         if (!this.definition) return console.error('Definition not loaded');
         if (this.getAttribute('state') === "loaded") return;
+
+        var storeOpts = {}
+
         // CONFIGURE ELEMENTS
         this.definition.subElements?.forEach(element => {
             const el = this.select(element.selector) as HTMLElement;
@@ -322,7 +325,23 @@ export class EditorComponent extends EditorCanvasBase {
                 dropzone?.setAttribute('data-dropzone-id',
                     this.entry.dropzones['default'])
             }
+            
+            // APPEND SLOT CONTENT TO DROPZONE
+            const slot = <HTMLSlotElement>this.select("slot");
+            if (slot) {
+                const nodes = slot.assignedElements({ flatten: true });
+                nodes.forEach(el => {
+                    dropzone?.appendChild(el)
+                    setTimeout(() => {
+                        this.dispatch(`component:${el.id}:state:load`, {
+                            force: true
+                        })
+                    }, 1000)
+                })
+            }
         }
+
+
 
         // SET PROPERTIES
         templating.evaluateSyntax({ properties: this.properties }, this)
@@ -334,7 +353,7 @@ export class EditorComponent extends EditorCanvasBase {
         this.dispatch(`component:${this.id}:state:load`)
     }
 
-    store = async () => {
+    store = async (force: boolean = false) => {
         // OPEN DATABASE
         await Promise.all([this.session.open(), this.space.open()]);
         // GET KEY
@@ -344,7 +363,7 @@ export class EditorComponent extends EditorCanvasBase {
         const index = children.indexOf(this);
         const session = (await this.space.findByIndex('latest', "true"))[0];
 
-        if (!this.entry) {
+        if (!this.entry || force) {
             if (!session) return;
             // CREATE ENTRY
             const payload = {
@@ -370,7 +389,7 @@ export class EditorComponent extends EditorCanvasBase {
                 dropzones[name] = el.getAttribute('data-dropzone-id')!
             })
 
-            await this.session.add({
+            await this.session[force ? 'update' : 'add']({
                 ...payload,
                 dropzone: dropzone?.getAttribute('data-dropzone-id')!,
                 dropzones,
@@ -751,10 +770,10 @@ export class EditorComponent extends EditorCanvasBase {
         Minze.listen(`component:${this.id}:rerender`, () => this.rerender())
         Minze.listen(`component:${this.id}:properties`, handlers.update)
         Minze.listen(`component:${this.id}:select`, handlers.select)
-        Minze.listen(`component:${this.id}:state:load`, async () => {
-            console.log("Loading component state for", this.id);
+        Minze.listen(`component:${this.id}:state:load`, async (event: EventDetail) => {
+            // console.log("Loading component state for", this.id, event.detail);
             // SAVE TO LOCAL STORAGE
-            await this.store();
+            await this.store(event.detail?.force);
         })
     }
 

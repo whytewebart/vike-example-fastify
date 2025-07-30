@@ -120,7 +120,7 @@ const dropzone: ComponentDefinition = {
     subElements: [],
     defaultChildren: [],
     renderTemplate: (properties) => /*html*/`
-        <div styles="host" dropzone><slot name="children"></slot></div>
+        <div styles="host" dropzone><slot></slot></div>
     `
 };
 
@@ -481,6 +481,44 @@ const fixedTable: ComponentDefinition = {
             description: 'Invoice table rows'
         },
         {
+            name: 'chargesSummary',
+            type: {
+                type: 'array',
+                itemType: {
+                    type: 'object',
+                    shape: [
+                        {
+                            name: 'title',
+                            type: "text",
+                            defaultValue: 'Shipping'
+                        },
+                        {
+                            name: 'value',
+                            type: 'number',
+                            defaultValue: 200
+                        },
+                        {
+                            name: 'applyAs',
+                            type: 'select',
+                            options: [
+                                'flat',
+                                'percentage'
+                            ],
+                            defaultValue: 'flat'
+                        }
+                    ]
+                }
+            },
+            defaultValue: [
+                {
+                    id: nanoid(),
+                    title: 'shipping',
+                    value: 500,
+                    applyAs: 'flat'
+                }
+            ]
+        },
+        {
             name: 'currency',
             type: 'text',
             defaultValue: '$'
@@ -511,6 +549,14 @@ const fixedTable: ComponentDefinition = {
             tr[footer] {
                 font-weight: 700
             }
+
+            .charges > *:nth-child(1), .charges > *:nth-child(2) {
+                border: none !important;
+            }
+
+            .charges > *:nth-child(3), .charges > *:nth-child(4) {
+                background-color: #ecececff
+            }
         `
     },
 
@@ -539,31 +585,46 @@ const fixedTable: ComponentDefinition = {
 
     renderTemplate: ({ entries }) => {
         return /*html*/`
-      <table>
-        <thead>
-          <tr>
-            <th>Item</th>
-            <th>Qty</th>
-            <th>Price</th>
-            <th>SubTotal</th>
-          </tr>
-        </thead>
-        <tbody>
-            <tr data-each="{properties.entries}" data-key="entry">
-                <td data-text="{entry.item}"></td>
-                <td data-text="{entry.qty}"></td>
-                <td data-text="{properties.currency + '' + entry.price}"></td>
-                <td data-text="{properties.currency + '' + (Number(entry.qty) * Number(entry.price))}"></td>
-            </tr>
-            <tr footer>
-                <td style="border: 0;"></td>
-                <td style="border: 0;"></td>
-                <td>Total:</td>
-                <td data-text="{properties.currency + '' + properties.entries.reduce((sum, item) => sum + (Number(item.price) * Number(item.qty)), 0)}"></td>
-            </tr>
-        </tbody>
-      </table>
-    `;
+            <table>
+                <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr data-each="@expr[properties.entries]@end" data-key="entry">
+                        <td data-text="@expr[entry.item]@end"></td>
+                        <td data-text="@expr[entry.qty]@end"></td>
+                        <td data-text="@expr[properties.currency + '' + entry.price]@end"></td>
+                        <td data-text="@expr[properties.currency + '' + (Number(entry.qty) * Number(entry.price))]@end"></td>
+                    </tr>
+                    <tr data-each="@expr[properties.chargesSummary]@end" data-key="charge" class="charges">
+                        <td></td>
+                        <td></td>
+                        <td data-text="@expr[charge.title]@end"></td>
+                        <td data-text="@expr[(charge.applyAs == 'flat' ? properties.currency : '') + charge.value + (charge.applyAs == 'percentage' ? '%' : '')]@end"></td>
+                    </tr>
+                    <tr footer>
+                        <td style="border: 0;"></td>
+                        <td style="border: 0;"></td>
+                        <td>SubTotal:</td>
+                        <td data-text="@expr[
+                        properties.currency + ' ' + (
+  properties.entries.reduce((sum, item) => sum + (Number(item.price) * Number(item.qty)), 0) +
+  properties.chargesSummary.reduce((sum, item) => {
+    const subtotal = properties.entries.reduce((s, i) => s + (Number(i.price) * Number(i.qty)), 0);
+    return sum + (item.applyAs === 'flat' ? Number(item.value) : subtotal * (Number(item.value) / 100));
+  }, 0)
+)
+
+                            ]@end"></td>
+                    </tr>
+                </tbody>
+            </table>
+        `;
     }
 };
 
@@ -669,18 +730,18 @@ const dynamicTable: ComponentDefinition = {
             <thead>
                 <tr>
                     <th
-                        data-each="{properties.column}"
+                        data-each="@expr[properties.column]@end"
                         data-key="column"
-                    > <span data-text="{column?.value}"></span> </th>
+                    > <span data-text="@expr[column?.value]@end"></span> </th>
                 </tr>
             </thead>
         `;
 
         const body = /*html*/`
             <tbody>
-                <tr data-each="{properties.entries}" data-key="entry">
-                    <td data-each="{entry.row}" data-key="cell">
-                        <span data-text="{cell?.value || cell}"></span>
+                <tr data-each="@expr[properties.entries]@end" data-key="entry">
+                    <td data-each="@expr[entry.row]@end" data-key="cell">
+                        <span data-text="@expr[cell?.value || cell]@end"></span>
                     </td>
                 </tr>
             </tbody>

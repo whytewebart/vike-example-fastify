@@ -31,7 +31,7 @@ const directiveMap: DirectiveMap = {
     }
 
     else if (el.tagName === 'IMG') {
-      qrcode.toDataURL(val, opts, (err, url) => {
+      qrcode.toDataURL(val, opts, function (err, url) {
         if (err) console.error(err);
         el.setAttribute('src', url)
       })
@@ -71,7 +71,7 @@ function evaluateSyntax(
         // Events: data-on:click="{someFunc}"
         if (attr.startsWith('data-on:')) {
           const raw = el.getAttribute(attr);
-          const expr = raw?.match(/\{(.+?)\}/)?.[1];
+          const expr = raw?.match(/@expr\s*\[\s*([\s\S]*?)\s*\]\s*@end/)?.[1];
           if (!expr) continue;
 
           const eventName = attr.split(':')[1];
@@ -81,7 +81,7 @@ function evaluateSyntax(
         // Dynamic attributes: data-attr-href="{link}"
         if (attr.startsWith('data-attr-')) {
           const raw = el.getAttribute(attr);
-          const expr = raw?.match(/\{(.+?)\}/)?.[1];
+          const expr = raw?.match(/@expr\s*\[\s*([\s\S]*?)\s*\]\s*@end/)?.[1];
           if (!expr) continue;
 
           const isLoop = el.closest('[data-key]')
@@ -98,7 +98,7 @@ function evaluateSyntax(
       };
       // FILTER OUT INVALID EXPRESSION
       const raw = el.getAttribute(attr);
-      const expr = raw?.match(/\{(.+?)\}/)?.[1];
+      const expr = raw?.match(/@expr\s*\[\s*([\s\S]*?)\s*\]\s*@end/)?.[1];
       if (!expr) continue;
 
       const isLoop = el.closest('[data-key]')
@@ -122,6 +122,12 @@ function evaluateSyntax(
         const key = el.getAttribute('data-key') || 'index';
         const parent = el.parentElement;
 
+        // HIDE ELEMENT
+        el.style.display = 'none';
+        el.style.height = '0';
+        el.style.opacity = '0';
+        el.style.pointerEvents = 'none';
+
         // REMOVE EXISTING SIMILAR ELEMENTS
         parent?.querySelectorAll(`[data-key=${key}]:not([data-each])`)
           .forEach(clone => clone.remove());
@@ -131,18 +137,12 @@ function evaluateSyntax(
           const clone = el.cloneNode(true) as HTMLElement;
           const tempCtx = { ...context, [key]: item, [key + "index"]: index };
 
+          clone.removeAttribute('style')
           parent?.insertBefore(clone, el);
           evaluateSyntax(tempCtx, clone, 'clone');
           // REMOVE DATASET ATTRIBUTES
           attributes.forEach(attr => clone.removeAttribute(attr));
         });
-
-        
-        // HIDE ELEMENT
-        el.style.display = 'none';
-        el.style.height = '0';
-        el.style.opacity = '0';
-        el.style.pointerEvents = 'none';
 
         // ADD THE ORIGINAL TEMPLATE
         // parent?.removeChild(el); // prevent infinite loop

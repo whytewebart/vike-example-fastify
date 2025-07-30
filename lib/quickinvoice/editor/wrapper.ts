@@ -103,8 +103,8 @@ export class EditorWrapper extends EditorWrapperBase {
         <slot name="blocks-slot"></slot>
       </editor-panel>
       <!-- LAYOUTS -->
-      <editor-panel title="Layouts" class="grid-col-span-2 border-y" panel-status="closed">
-        <div class="min-h-4xl"></div>
+      <editor-panel title="Layouts" class="grid-col-span-2 border-y">
+        <div class="block" data-category="layout" data-type="header-first" draggable="true">Header [01]</div>
       </editor-panel>
     </div>
   `
@@ -179,8 +179,9 @@ export class EditorWrapper extends EditorWrapperBase {
       "dragstart",
       (e) => {
         const element = e.target?.closest(".block");
+        const content = element.dataset.category ? `${element.dataset.category}-${element.dataset.type}` : element.dataset.type;
 
-        e.dataTransfer.setData("text/plain", element.dataset.type);
+        e.dataTransfer.setData("text/plain", content);
         e.dataTransfer.effectAllowed = "copy";
         this.dispatch("canvas:component:dragstart", {
           isDraggingNewComponent: true,
