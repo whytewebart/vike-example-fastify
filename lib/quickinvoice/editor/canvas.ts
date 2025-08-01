@@ -171,14 +171,13 @@ export class EditorCanvas extends EditorCanvasBase {
                         return console.warn('Component cannot be deleted');
 
                     /* CHECK IF COMPONENT IS CONTAINER */
-                    if (capabilities?.isContainer) {
-                        const root = this.selectedComponent.shadowRoot
-                        Array.from(root?.querySelectorAll('editor-component') || [])
-                            .forEach(child => {
-                                this.session.delete(child.id);
-                                child.remove();
-                            })
-                    }
+                    const root = this.selectedComponent.shadowRoot
+                    Array.from(root?.querySelectorAll('editor-component') || [])
+                        .forEach(child => {
+                            this.session.delete(child.id);
+                            child.remove();
+                        });
+                        
                     this.session.delete(this.selectedComponent.id);
                     this.selectedComponent.remove();
                     this.components.select(null)

@@ -103,7 +103,7 @@
 .component:not([dropzone]).selected {
     /* outline: 1px solid rgba(59, 130, 246, 0.4); */
     background-color: rgba(59, 130, 246, 0.05);
-    @apply: ring-1 ring-indigo ring-offset-3 ;
+    @apply: ring-1 ring-indigo ring-offset-3;
 }
 
 [dropzone] {
@@ -113,12 +113,18 @@
 }
 
 /* Empty state */
-[dropzone]:empty {
+/* [dropzone]:empty {
     min-height: 60px;
-    /* border: 1px dashed rgba(0, 0, 0, 0.08); */
 }
 
 [dropzone]:empty::before {
+    content: "Drop content here";
+    color: rgba(0, 0, 0, 0.3);
+    font-size: 0.875rem;
+    font-style: italic;
+} */
+
+[dropzone]:not(:has(editor-component)):has(slot)::before {
     content: "Drop content here";
     color: rgba(0, 0, 0, 0.3);
     font-size: 0.875rem;

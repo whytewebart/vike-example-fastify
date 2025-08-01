@@ -69,12 +69,12 @@ export class StyleEditor extends MinzeElement {
                     <option
                         value=""
                         disabled
-                        selected
                     >Select Sub-Element</option>
 
-                    <!-- <option
+                    <option
                         value="host"
-                    >Root</option> -->
+                        selected
+                    >Root</option>
                     
                     ${this.subElements?.map(opt => `<option value="${opt.key}" class="">${opt.name}</option>`).join('')}
                 </select>

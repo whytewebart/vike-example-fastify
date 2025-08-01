@@ -324,7 +324,7 @@ const image: ComponentDefinition = {
         {
             name: 'src',
             type: 'image',
-            defaultValue: 'https://placehold.co/200'
+            defaultValue: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjAwIDIwMCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iI0RERERERCIvPjxwYXRoIGZpbGw9IiM5OTk5OTkiIGQ9Ik00Ni42OCAxMDYuNjZoNS4wMXEuNTQgMCAuODYuM3QuMzIuOHYySDM5LjQ4di0xLjExcTAtLjMzLjE0LS43MS4xNC0uMzcuNDUtLjY2bDUuOTMtNS45NHEuNzQtLjc2IDEuMzMtMS40NS41OC0uNjkuOTctMS4zNi40LS42OC42LTEuMzcuMjEtLjcuMjEtMS40NyAwLS43LS4yLTEuMjMtLjItLjU0LS41Ny0uOXQtLjg5LS41NXEtLjUyLS4xOC0xLjE3LS4xOC0uNTkgMC0xLjEuMTd0LS45LjQ3cS0uMzkuMzEtLjY2LjcxLS4yNy40MS0uNDEuODktLjIyLjYyLS41OS44My0uMzYuMi0xLjA1LjA5bC0xLjc2LS4zMXEuMjEtMS40Ljc5LTIuNDZ0MS40NS0xLjc3IDEuOTktMS4wN3ExLjEzLS4zNiAyLjQzLS4zNiAxLjM1IDAgMi40Ny40dDEuOTIgMS4xM3EuNzkuNzMgMS4yNCAxLjc1LjQ0IDEuMDMuNDQgMi4yOCAwIDEuMDgtLjMxIDItLjMyLjkyLS44NSAxLjc2LS41NC44NC0xLjI1IDEuNjItLjcyLjc4LTEuNSAxLjU5bC00LjQgNC41cS42My0uMTkgMS4yNi0uMjl0MS4xOS0uMU02OS4wOSAxMDBxMCAyLjU1LS41NCA0LjQzLS41NSAxLjg5LTEuNTEgMy4xMi0uOTcgMS4yMi0yLjI5IDEuODMtMS4zMS42LTIuODQuNi0xLjUyIDAtMi44My0uNi0xLjMtLjYxLTIuMjYtMS44My0uOTYtMS4yMy0xLjUtMy4xMi0uNTQtMS44OC0uNTQtNC40MyAwLTIuNTcuNTQtNC40NC41NC0xLjg4IDEuNS0zLjExdDIuMjYtMS44M3ExLjMxLS42IDIuODMtLjYgMS41MyAwIDIuODQuNiAxLjMyLjYgMi4yOSAxLjgzLjk2IDEuMjMgMS41MSAzLjExLjU0IDEuODcuNTQgNC40NG0tMy40NCAwcTAtMi4xMi0uMzEtMy41MXQtLjgzLTIuMjFxLS41Mi0uODMtMS4xOS0xLjE2LS42OC0uMzMtMS40MS0uMzMtLjcxIDAtMS4zOC4zM3QtMS4xOCAxLjE2cS0uNTIuODItLjgyIDIuMjF0LS4zIDMuNTEuMyAzLjUxLjgyIDIuMjFxLjUxLjgzIDEuMTggMS4xNnQxLjM4LjMzcS43MyAwIDEuNDEtLjMzLjY3LS4zMyAxLjE5LTEuMTYuNTItLjgyLjgzLTIuMjF0LjMxLTMuNTFtMTkuMSAwcTAgMi41NS0uNTQgNC40My0uNTUgMS44OS0xLjUxIDMuMTItLjk3IDEuMjItMi4yOSAxLjgzLTEuMzEuNi0yLjg0LjYtMS41MiAwLTIuODMtLjYtMS4zLS42MS0yLjI2LTEuODMtLjk2LTEuMjMtMS41LTMuMTItLjU0LTEuODgtLjU0LTQuNDMgMC0yLjU3LjU0LTQuNDQuNTQtMS44OCAxLjUtMy4xMXQyLjI2LTEuODNxMS4zMS0uNiAyLjgzLS42IDEuNTMgMCAyLjg0LjYgMS4zMi42IDIuMjkgMS44My45NiAxLjIzIDEuNTEgMy4xMS41NCAxLjg3LjU0IDQuNDRtLTMuNDQgMHEwLTIuMTItLjMxLTMuNTF0LS44My0yLjIxcS0uNTItLjgzLTEuMTktMS4xNi0uNjgtLjMzLTEuNDEtLjMzLS43MSAwLTEuMzguMzN0LTEuMTggMS4xNnEtLjUyLjgyLS44MiAyLjIxdC0uMyAzLjUxLjMgMy41MS44MiAyLjIxcS41MS44MyAxLjE4IDEuMTZ0MS4zOC4zM3EuNzMgMCAxLjQxLS4zMy42Ny0uMzMgMS4xOS0xLjE2LjUyLS44Mi44My0yLjIxdC4zMS0zLjUxbTI0Ljg4IDUuMjktMS43NyAxLjc0LTQuNTctNC41Ny00LjYyIDQuNi0xLjc3LTEuNzQgNC42Mi00LjYzLTQuNC00LjQgMS43NS0xLjc2IDQuNCA0LjQgNC4zOC00LjM3IDEuNzggMS43NS00LjM5IDQuMzl6bTE2LjI2IDEuMzdoNXEuNTQgMCAuODYuM3QuMzIuOHYyaC0xMy4zOXYtMS4xMXEwLS4zMy4xNC0uNzEuMTQtLjM3LjQ1LS42Nmw1LjkzLTUuOTRxLjc0LS43NiAxLjMzLTEuNDUuNTgtLjY5Ljk4LTEuMzYuMzktLjY4LjYtMS4zNy4yMS0uNy4yMS0xLjQ3IDAtLjctLjIxLTEuMjMtLjItLjU0LS41Ny0uOXQtLjg5LS41NXEtLjUyLS4xOC0xLjE3LS4xOC0uNTkgMC0xLjEuMTd0LS45LjQ3cS0uMzkuMzEtLjY2LjcxLS4yNy40MS0uNC44OS0uMjMuNjItLjYuODMtLjM2LjItMS4wNS4wOWwtMS43Ni0uMzFxLjIxLTEuNC43OS0yLjQ2dDEuNDUtMS43NyAyLTEuMDdxMS4xMi0uMzYgMi40Mi0uMzYgMS4zNSAwIDIuNDcuNHQxLjkyIDEuMTNxLjc5LjczIDEuMjQgMS43NS40NCAxLjAzLjQ0IDIuMjggMCAxLjA4LS4zMSAyLS4zMi45Mi0uODUgMS43Ni0uNTQuODQtMS4yNSAxLjYyLS43Mi43OC0xLjUgMS41OWwtNC40IDQuNXEuNjMtLjE5IDEuMjYtLjI5dDEuMi0uMW0yMi40MS02LjY2cTAgMi41NS0uNTUgNC40My0uNTUgMS44OS0xLjUxIDMuMTItLjk3IDEuMjItMi4yOCAxLjgzLTEuMzIuNi0yLjg1LjYtMS41MiAwLTIuODItLjYtMS4zMS0uNjEtMi4yNy0xLjgzLS45NS0xLjIzLTEuNDktMy4xMi0uNTQtMS44OC0uNTQtNC40MyAwLTIuNTcuNTQtNC40NC41NC0xLjg4IDEuNDktMy4xMS45Ni0xLjIzIDIuMjctMS44MyAxLjMtLjYgMi44Mi0uNiAxLjUzIDAgMi44NS42IDEuMzEuNiAyLjI4IDEuODMuOTYgMS4yMyAxLjUxIDMuMTEuNTUgMS44Ny41NSA0LjQ0bS0zLjQ1IDBxMC0yLjEyLS4zMS0zLjUxdC0uODMtMi4yMXEtLjUyLS44My0xLjE5LTEuMTYtLjY4LS4zMy0xLjQxLS4zMy0uNzEgMC0xLjM4LjMzdC0xLjE4IDEuMTZxLS41MS44Mi0uODIgMi4yMS0uMyAxLjM5LS4zIDMuNTF0LjMgMy41MXEuMzEgMS4zOS44MiAyLjIxLjUxLjgzIDEuMTggMS4xNnQxLjM4LjMzcS43MyAwIDEuNDEtLjMzLjY3LS4zMyAxLjE5LTEuMTYuNTItLjgyLjgzLTIuMjF0LjMxLTMuNTFtMTkuMTEgMHEwIDIuNTUtLjU1IDQuNDMtLjU1IDEuODktMS41MSAzLjEyLS45NyAxLjIyLTIuMjggMS44My0xLjMyLjYtMi44NS42LTEuNTIgMC0yLjgyLS42LTEuMzEtLjYxLTIuMjctMS44My0uOTUtMS4yMy0xLjQ5LTMuMTItLjU0LTEuODgtLjU0LTQuNDMgMC0yLjU3LjU0LTQuNDQuNTQtMS44OCAxLjQ5LTMuMTEuOTYtMS4yMyAyLjI3LTEuODMgMS4zLS42IDIuODItLjYgMS41MyAwIDIuODUuNiAxLjMxLjYgMi4yOCAxLjgzLjk2IDEuMjMgMS41MSAzLjExLjU1IDEuODcuNTUgNC40NG0tMy40NSAwcTAtMi4xMi0uMzEtMy41MXQtLjgzLTIuMjFxLS41Mi0uODMtMS4xOS0xLjE2LS42OC0uMzMtMS40MS0uMzMtLjcxIDAtMS4zOC4zM3QtMS4xOCAxLjE2cS0uNTEuODItLjgyIDIuMjEtLjMgMS4zOS0uMyAzLjUxdC4zIDMuNTFxLjMxIDEuMzkuODIgMi4yMS41MS44MyAxLjE4IDEuMTZ0MS4zOC4zM3EuNzMgMCAxLjQxLS4zMy42Ny0uMzMgMS4xOS0xLjE2LjUyLS44Mi44My0yLjIxdC4zMS0zLjUxIi8+PC9zdmc+'
         },
         {
             name: 'alt',
@@ -356,8 +356,8 @@ const image: ComponentDefinition = {
     },
 
     renderTemplate: (properties) => /*html*/`
-        <figure styles="host">
-            <img src="${properties.src}" alt="${properties.alt}" />
+        <figure>
+            <img styles="host" src="${properties.src}" alt="${properties.alt}" />
             ${properties.caption ? `<figcaption>${properties.caption}</figcaption>` : ''}
         </figure>
     `
@@ -426,23 +426,23 @@ const qrcode: ComponentDefinition = {
         const canvas = /*html*/`
             <canvas
                 styles="host"
-                data-attr-data.prop.dark.color="{properties.foreground}"
-                data-attr-data.prop.light.color="{properties.background}"
-                data-attr-data.prop.width="{properties.size}"
-                data-attr-data.prop.margin="{properties.margin}"
-                data-qrcode="{properties.value}"
+                data-attr-data.prop.dark.color="@expr[properties.foreground]@end"
+                data-attr-data.prop.light.color="@expr[properties.background]@end"
+                data-attr-data.prop.width="@expr[properties.size]@end"
+                data-attr-data.prop.margin="@expr[properties.margin]@end"
+                data-qrcode="@expr[properties.value]@end"
             ></canvas>
         `;
         // img
         const img = /*html*/`
             <img
                 styles="host"
-                data-attr-data.prop.dark.color="{properties.foreground}"
-                data-attr-data.prop.light.color="{properties.background}"
-                data-attr-data.prop.width="{properties.size}"
-                data-attr-data.prop.margin="{properties.margin}"
-                data-attr-alt="{properties.value}"  
-                data-qrcode="{properties.value}"
+                data-attr-data.prop.dark.color="@expr[properties.foreground]@end"
+                data-attr-data.prop.light.color="@expr[properties.background]@end"
+                data-attr-data.prop.width="@expr[properties.size]@end"
+                data-attr-data.prop.margin="@expr[properties.margin]@end"
+                data-attr-alt="@expr[properties.value}"]@end 
+                data-qrcode="@expr[properties.value]@end"
             />
         `
         return img
@@ -751,5 +751,118 @@ const dynamicTable: ComponentDefinition = {
     }
 };
 
+// 2 Column Grid
+const columnGrid: ComponentDefinition = {
+    type: 'column-grid',
+    name: 'Column Grid',
+    category: 'Layout',
+    icon: '🖼️',
+    
+    capabilities: {
+        canHaveChildren: false,
+        canAcceptStyles: true,
+        canBeDeleted: true,
+        isContainer: false
+    },
 
-export default { button, dropzone, heading, paragraph, divider, image, qrcode, dynamicTable, fixedTable }
+    properties: [
+        {
+            name: 'direction',
+            type: 'select',
+            options: [
+                'column',
+                'row'
+            ],
+            defaultValue: 'row'
+        },
+
+        {
+            name: 'gap',
+            type: 'number',
+            defaultValue: 10
+        },
+
+        {
+            name: 'justify',
+            type: 'select',
+            options: [
+                'start',
+                'center',
+                'end',
+                'space-between',
+                'space-around'
+            ],
+            defaultValue: 'start'
+        },
+        
+        {
+            name: 'alignment',
+            type: 'select',
+            options: [
+                'stretch',
+                'start',
+                'center',
+                'end'
+            ],
+            defaultValue: 'stretch'
+        }
+    ],
+
+    subElements: [
+        {
+            key: 'columna',
+            selector: '[dropzone-column-1]',
+            name: 'Column 1',
+            capabilities: {
+                isContainer: true,
+                canBeDeleted: true,
+                canHaveChildren: true
+            }
+        },
+        {
+            key: 'columnb',
+            selector: '[dropzone-column-2]',
+            name: 'Column 2',
+            capabilities: {
+                isContainer: true,
+                canBeDeleted: true,
+                canHaveChildren: true
+            }
+        }
+    ],
+
+    styleSettings: {
+        css(properties) {
+            return /*css*/`
+                [styles=host] {
+                    display: flex;
+                    flex-direction: ${properties.direction};
+                    justify-content: ${properties.justify};
+                    align-items: ${properties.alignment};
+                    gap: ${properties.gap}px;
+                    margin: 10px
+                }
+
+                [dropzone-column-1], [dropzone-column-2] {
+                    background-color: #f4f4f5;
+                    flex: 1;
+                    padding: 10px;
+                }
+            `
+        },
+    },
+
+    renderTemplate: (properties) => {
+        return /*html*/`
+            <div
+                styles="host"
+            >
+                <div dropzone-column-1><slot name="columna"></slot></div>
+                <div dropzone-column-2><slot name="columnb"></slot></div>
+            </div>
+        `
+    }
+}
+
+
+export default { button, dropzone, heading, paragraph, divider, image, qrcode, dynamicTable, fixedTable, columnGrid }

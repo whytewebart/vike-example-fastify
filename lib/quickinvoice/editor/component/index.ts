@@ -325,11 +325,16 @@ export class EditorComponent extends EditorCanvasBase {
                 dropzone?.setAttribute('data-dropzone-id',
                     this.entry.dropzones['default'])
             }
-            
-            // APPEND SLOT CONTENT TO DROPZONE
-            const slot = <HTMLSlotElement>this.select("slot");
-            if (slot) {
-                const nodes = slot.assignedElements({ flatten: true });
+        }
+
+        // APPEND SLOT CONTENT TO DROPZONE
+        const slots = <NodeListOf<HTMLSlotElement>>this.selectAll("slot");
+        slots.forEach(slot => {
+            const target = slot.getAttribute('name')!
+            const nodes = slot.assignedElements({ flatten: true });
+            const dropzone = this.select(`[dropzone="${target ?? ''}"]`);
+
+            if (dropzone) {
                 nodes.forEach(el => {
                     dropzone?.appendChild(el)
                     setTimeout(() => {
@@ -339,9 +344,8 @@ export class EditorComponent extends EditorCanvasBase {
                     }, 1000)
                 })
             }
-        }
 
-
+        })
 
         // SET PROPERTIES
         templating.evaluateSyntax({ properties: this.properties }, this)
@@ -374,7 +378,8 @@ export class EditorComponent extends EditorCanvasBase {
                 sessionId: session.id,
                 index,
                 order: index,
-                styles: this.styles
+                styles: this.styles,
+                subElements: this.subElements
             };
 
             // @ts-ignore GET DROPZONE ROOT ELEMENT

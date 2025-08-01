@@ -12,23 +12,23 @@ const tabs: Record<string, {
   action: (container: MinzeElement) => void;
   template?: string
 }> = {
-  info: {
-    title: "Onboarding",
-    icon: "i-solar-info-circle-outline",
-    action: () => {
-      console.log("Preparing Onboarding");
-      channel.postMessage("Preparing Onboarding");
-    },
-  },
+  // info: {
+  //   title: "Onboarding",
+  //   icon: "i-solar-info-circle-outline",
+  //   action: () => {
+  //     console.log("Preparing Onboarding");
+  //     channel.postMessage("Preparing Onboarding");
+  //   },
+  // },
 
-  hide: {
-    title: "Hide Layout",
-    icon: "i-solar-alt-arrow-right-outline",
-    action: () => {
-      console.log("Hide Layout");
-      channel.postMessage("Hide Layout");
-    },
-  },
+  // hide: {
+  //   title: "Hide Layout",
+  //   icon: "i-solar-alt-arrow-right-outline",
+  //   action: () => {
+  //     console.log("Hide Layout");
+  //     channel.postMessage("Hide Layout");
+  //   },
+  // },
 
   items: {
     title: "Layers",
@@ -104,7 +104,8 @@ export class EditorWrapper extends EditorWrapperBase {
       </editor-panel>
       <!-- LAYOUTS -->
       <editor-panel title="Layouts" class="grid-col-span-2 border-y">
-        <div class="block" data-category="layout" data-type="header-first" draggable="true">Header [01]</div>
+        <div class="block" data-category="layout" data-type="header-first" draggable="true">Header</div>
+        <div class="block" data-type="column-grid" draggable="true">2 Column Grid</div>
       </editor-panel>
     </div>
   `
