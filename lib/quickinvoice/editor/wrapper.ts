@@ -139,7 +139,7 @@ export class EditorWrapper extends EditorWrapperBase {
                         <style-editor></style-editor>
                       </editor-panel>
                       <div class="lg:hidden w-full sticky bottom-0 z-30">
-                        <button class="py-2 px-4 text-center bg-primary-700 text-primary-100 w-full font-sans font-semibold transition-all" hover="bg-primary-600">Download Invoice</button>
+                        <button id="download-invoice" class="py-2 px-4 text-center bg-primary-700 text-primary-100 w-full font-sans font-semibold transition-all" hover="bg-primary-600">Download Invoice</button>
                       </div>
                     </div>
                   </slot>
@@ -218,6 +218,13 @@ export class EditorWrapper extends EditorWrapperBase {
       "click",
       () => {
         this.dispatch("layers:mobiletab:toggle")
+      }
+    ],
+    [
+      "#download-invoice",
+      "click",
+      () => {
+        channel.postMessage("download")
       }
     ]
   ];
