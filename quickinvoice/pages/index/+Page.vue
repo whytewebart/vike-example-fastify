@@ -33,8 +33,8 @@
     modal
     :pt="{
       content:
-        'bg-slate-200! p-0! app-scrollbar rounded-none! border-none! overflow-x-hidden',
-      root: 'rounded-none! overflow-clip  border-none!',
+        'bg-slate-200! p-0! app-scrollbar rounded-none! border-none! lg:overflow-x-hidden',
+      root: 'rounded-none! overflow-clip  border-none! max-w-full',
       mask: 'bg-surface-50/70!'
     }"
     @show="getPrint"
