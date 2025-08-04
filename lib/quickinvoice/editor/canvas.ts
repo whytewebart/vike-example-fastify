@@ -117,7 +117,7 @@ export class EditorCanvas extends EditorCanvasBase {
 
     html = () => /*html*/`
         ${this.handle}
-        <div id="canvas" data-dropzone-id="${this.CANVAS_ID}" class="bg-white relative border shadow flex flex-col">
+        <div id="canvas" data-dropzone-id="${this.CANVAS_ID}" class="shadow">
         </div>
     `
 

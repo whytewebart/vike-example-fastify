@@ -13,7 +13,7 @@
     display: grid;
     overflow: clip;
 
-    @apply: app-scrollbar;
+    @apply app-scrollbar;
 
     /* Scaled Dimensions */
     --calc-height-scale: calc(var(--canvas-height) * var(--canvas-scale));
@@ -32,14 +32,14 @@
     --calc-w-scale: calc(var(--canvas-min-width) + var(--calc-w-diff));
 }
 
-/* ============================================
-    Wrapper Warning
-============================================*/
+/* ==========================================
+   Wrapper Warning
+========================================== */
 .warning {
-    @apply: h-screen w-screen flex items-center justify-center;
+    @apply h-screen w-screen flex items-center justify-center;
 
     p {
-        @apply: px-4 py-1 rounded-xl text-red-500 text-sm font-semibold font-urbanist bg-red-100;
+        @apply px-4 py-1 rounded-xl text-red-500 text-sm font-semibold font-urbanist bg-red-100;
     }
 }
 
@@ -71,21 +71,25 @@
     overflow: hidden;
     position: relative;
     top: 0;
+
     /* background-color: #F8F8F8; */
 }
 
 /* ==========================================
    Panels Container
 ========================================== */
-
-div[section=panels] {
-    @apply: bg-white;
+div[section="panels"] {
+    @apply bg-white;
 }
 
-div[section="blocks-panel"], div[section="tabs"] {
-    @apply: hidden;
+div[section="blocks-panel"],
+div[section="tabs"] {
+    @apply hidden;
 }
 
+/* ==========================================
+   Layout for Large Screens
+========================================== */
 @media (min-width: 1000px) {
     :host {
         display: grid;
@@ -97,31 +101,30 @@ div[section="blocks-panel"], div[section="tabs"] {
             container-name: panels;
 
             div[section="content"] {
-                @apply: grid cols-[0px_1fr] h-full;
+                @apply grid cols-[0px_1fr] h-full;
             }
 
             div[section="blocks-panel"] {
-                @apply: block;
+                @apply block;
             }
 
             div[section="content"] div[section="panels_grid"] {
-                @apply: overflow-y-auto max-h-screen app-scrollbar b-l-1;
+                @apply overflow-y-auto max-h-screen app-scrollbar b-l-1;
             }
         }
     }
 
     div[section="panels"] div[section="tabs"] {
-        @apply: block absolute top-20 right-0;
+        @apply block absolute top-20 right-0;
     }
 }
 
-
-/* TABS */
-
+/* ==========================================
+   Tabs
+========================================== */
 div[section="panels"] div[section="tabs"] {
-
     button[data-wrapper-tab] {
-        @apply: bg-gray-100 hover:bg-stone-50 transition-colors border px-2 py-1.8 flex w-full justify-center transition duration-700 relative focus:z-1 [&_span]:text-2xl;
+        @apply bg-gray-100 hover:bg-stone-50 transition-colors border px-2 py-1.8 flex w-full justify-center transition duration-700 relative focus:z-1 [&_span]:text-2xl;
 
         &:hover {
             border-bottom-color: rgb(99, 102, 241) !important;
@@ -136,14 +139,17 @@ div[section="panels"] div[section="tabs"] {
     }
 }
 
-div[section=blocks-panel] editor-panel {
-    @apply: divide-y;
+/* ==========================================
+   Blocks Panel
+========================================== */
+div[section="blocks-panel"] editor-panel {
+    @apply divide-y;
 
     &>div.block {
-        @apply: transition-all px-4 relative;
+        @apply transition-all px-4 relative;
 
         &:hover {
-            @apply: bg-gray-100 cursor-grab b-b-2 tracking-.8 font-bold shadow-sm z-1;
+            @apply bg-gray-100 cursor-grab b-b-2 tracking-.8 font-bold shadow-sm z-1;
         }
     }
 }
@@ -154,26 +160,26 @@ div[section=blocks-panel] editor-panel {
 @container panels (min-width: 500px) {
     div[section="panels"] {
         div[section="content"] div[section="panels_grid"] {
-            @apply: grid cols-2;
+            @apply grid cols-2;
             display: grid;
 
-            editor-panel[title=Editor] {
+            editor-panel[title="Editor"] {
                 max-height: 100vh;
                 overflow-y: auto;
-                @apply: app-scrollbar;
+                @apply app-scrollbar;
 
                 &::part(root) {
-                    @apply: bg-white! b-r-2!;
+                    @apply bg-white b-r-2;
                 }
             }
         }
     }
 
     div[section="panels"] div[section="blocks-panel"] {
-        @apply: bg-white b-r-1 app-scrollbar overflow-y-auto max-h-screen [&::-webkit-scrollbar]:bg-white! *:b-r-1;
+        @apply bg-white b-r-1 app-scrollbar overflow-y-auto max-h-screen [&::-webkit-scrollbar]:bg-white *:b-r-1;
 
         &::-webkit-scrollbar-track {
-            @apply: bg-white! b-l-2!;
+            @apply bg-white b-l-2;
         }
     }
 }

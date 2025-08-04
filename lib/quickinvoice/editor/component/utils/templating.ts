@@ -99,7 +99,21 @@ function evaluateSyntax(
       // FILTER OUT INVALID EXPRESSION
       const raw = el.getAttribute(attr);
       const expr = raw?.match(/@expr\s*\[\s*([\s\S]*?)\s*\]\s*@end/)?.[1];
-      if (!expr) continue;
+      if (!expr) {
+        if (attr === 'data-attr') {
+          const target = el.getAttribute('data-attr');
+          if (!target) continue;
+
+          const raw  = el.getAttribute('attr-'+target);
+          const expr = raw?.match(/@expr\s*\[\s*([\s\S]*?)\s*\]\s*@end/)?.[1];
+          if (!expr) continue;
+
+          const val = evaluate(expr, context);
+          el.setAttribute(target, val);
+        }
+        
+        continue;
+      };
 
       const isLoop = el.closest('[data-key]')
       // CHECK IF ATTR IS NOT "data-each"
@@ -164,7 +178,8 @@ const attributes = [
   // 'data-attr:*',
   'data-each',
   'data-bind',
-  'data-qrcode'
+  'data-qrcode',
+  'data-attr'
 ]
 
 export default {

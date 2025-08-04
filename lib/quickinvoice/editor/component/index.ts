@@ -3,6 +3,7 @@ import Minze, { MinzeElement } from 'minze'
 import { EditorCanvasBase } from '../base/canvas';
 
 import componentCss from '../styles/component.css?inline'
+import dropzoneCss from "../styles/component.dropzone.css?inline"
 import resetcss from "@unocss/reset/tailwind-compat.css?inline"
 
 import { nanoid } from 'nanoid';
@@ -535,6 +536,7 @@ export class EditorComponent extends EditorCanvasBase {
         return /*css*/`
             ${resetcss}
             ${componentCss}
+            ${dropzoneCss}
             ${this.privateCss()}
         `;
     }

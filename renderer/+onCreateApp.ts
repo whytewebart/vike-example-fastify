@@ -15,7 +15,8 @@ const onCreateApp = async (pageContext: PageContextWithApp) => {
     ripple: true,
     unstyled: true,
 
-    pt: await usePt(['button', 'progressbar', 'select']),
+    // pt: await usePt(['button', 'progressbar', 'select', 'dialog']),
+    pt: await usePt(),
     ptOptions: {
       mergeProps: true,
       // mergeSections: false,

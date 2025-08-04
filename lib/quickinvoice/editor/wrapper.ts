@@ -34,7 +34,6 @@ const tabs: Record<string, {
     title: "Layers",
     icon: "i-solar-layers-linear",
     action: (container) => {
-      const layers = container.select("editor-layers#layers");
       Minze.dispatch(`layers:tabs:toggle`)
     },
     template: /*html*/ `
@@ -100,10 +99,15 @@ export class EditorWrapper extends EditorWrapperBase {
         <div class="block" data-type="qrcode" draggable="true">QR Code</div>
         <div class="block" data-type="fixed-table" draggable="true">Items Table</div>
         <div class="block" data-type="dynamic-table" draggable="true">Dynamic Table</div>
+        <div class="block" data-type="signature" draggable="true">Signature</div>
         <slot name="blocks-slot"></slot>
       </editor-panel>
       <!-- LAYOUTS -->
       <editor-panel title="Layouts" class="grid-col-span-2 border-y">
+        <div class="block" data-category="layout" data-type="issued-by" draggable="true">Issued By</div>
+        <div class="block" data-category="layout" data-type="disclaimer" draggable="true">Disclaimer</div>
+        <div class="block" data-type="social-links" draggable="true">Social Links</div>
+        <div class="block" data-category="layout" data-type="payment-terms" draggable="true">Payment Terms</div>
         <div class="block" data-category="layout" data-type="header-first" draggable="true">Header</div>
         <div class="block" data-type="column-grid" draggable="true">2 Column Grid</div>
       </editor-panel>
@@ -122,12 +126,21 @@ export class EditorWrapper extends EditorWrapperBase {
                 </slot>
                 <!-- PANELS SLOT -->
                 <slot name="panels">
-                    <div section="panels_grid">
+                    <div class="relative" section="panels_grid">
                       ${this.blocksPanel()}
                       <!-- CUSTOMIZATION -->
+                      <div class="md:hidden relative min-h-41px">
+                        <div class="px-4 py-2 bg-white b-b-1 hover:cursor-pointer absolute top-0 left-0 right-0 z-20" layers-btn>
+                          <p class="font-space-mono font-semibold">Layers</p>
+                        </div>
+                        <editor-layers id="mobiletab"></editor-layers>
+                      </div>
                       <editor-panel title="Editor">
                         <style-editor></style-editor>
                       </editor-panel>
+                      <div class="lg:hidden w-full sticky bottom-0 z-30">
+                        <button class="py-2 px-4 text-center bg-primary-700 text-primary-100 w-full font-sans font-semibold transition-all" hover="bg-primary-600">Download Invoice</button>
+                      </div>
                     </div>
                   </slot>
               </div>
@@ -198,6 +211,13 @@ export class EditorWrapper extends EditorWrapperBase {
           /* console.log("Deselect component"); */
           this.dispatch("canvas:component:deselect");
         }
+      }
+    ],
+    [
+      "[layers-btn]",
+      "click",
+      () => {
+        this.dispatch("layers:mobiletab:toggle")
       }
     ]
   ];

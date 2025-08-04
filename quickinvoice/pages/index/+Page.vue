@@ -16,10 +16,51 @@
       <InvoiceTemplate />
     </div>
 
-    <Button label="[ Show Editor ]" @click="toggleTemplates = !toggleTemplates" fluid pt:root="mt-4 lg:hidden" severity="secondary" v-if="toggleTemplates" />
+    <Button
+      label="[ Show Editor ]"
+      @click="toggleTemplates = !toggleTemplates"
+      fluid
+      pt:root="mt-4 lg:hidden"
+      severity="secondary"
+      v-if="toggleTemplates"
+    />
   </div>
 
-  <editor-wrapper class="bk-col-root xxl:bk-col-nav sm:b-y-1" :class="{ 'temp-open': toggleTemplates }">
+  <Dialog
+    v-model:visible="visible"
+    :show-header="false"
+    dismissable-mask
+    modal
+    :pt="{
+      content:
+        'bg-slate-200! p-0! app-scrollbar rounded-none! border-none! overflow-x-hidden',
+      root: 'rounded-none! overflow-clip  border-none!',
+      mask: 'bg-surface-50/70!'
+    }"
+    @show="getPrint"
+  >
+    <div id="download-print"></div>
+
+    <div class="sticky bottom-0 left-0 right-0" grid="~ cols-2">
+      <Button
+        label="Download as PDF"
+        pt:root="rounded-none! bg-primary-700"
+        fluid
+      />
+      <Button
+        label="Close Window"
+        pt:root="rounded-none!"
+        severity="secondary"
+        fluid
+        @click="visible = false"
+      />
+    </div>
+  </Dialog>
+
+  <editor-wrapper
+    class="bk-col-root xxl:bk-col-nav sm:b-y-1"
+    :class="{ 'temp-open': toggleTemplates }"
+  >
     <editor-canvas> </editor-canvas>
   </editor-wrapper>
 </template>
@@ -27,6 +68,7 @@
 <script lang="tsx" setup>
 import { SetupContext } from "vue";
 
+const visible = ref(false);
 const toggleTemplates = ref(false);
 const InvoiceTemplate = (props: any, ctx: SetupContext) => {
   return (
@@ -45,6 +87,21 @@ const InvoiceTemplate = (props: any, ctx: SetupContext) => {
     </div>
   );
 };
+
+function getPrint() {
+  if (window.invoiceHTML) {
+    document.querySelector("#download-print")?.replaceWith(window.invoiceHTML);
+    visible.value = true;
+  }
+}
+
+onMounted(() => {
+  window.addEventListener("print-invoice", getPrint);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("print-invoice", getPrint);
+});
 </script>
 
 <style lang="scss">

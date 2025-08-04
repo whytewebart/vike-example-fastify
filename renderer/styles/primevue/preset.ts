@@ -32,10 +32,10 @@ export async function loadPrimeVuePreset(
 }
 
 export async function loadMultiplePrimeVuePresets(
-    componentNames: string[]
+    componentNames: string[] = []
 ): Promise<Record<string, any>> {
     const presets = <PresetImport>import.meta.glob('./aura/**/*.js');
-    const result: Record<string, any> = {};
+    var result: Record<string, any> = {};
 
     for (const componentName of componentNames) {
         const name = componentName.toLowerCase();
@@ -56,10 +56,14 @@ export async function loadMultiplePrimeVuePresets(
         result[name] = preset;
     }
 
+    if(componentNames.length === 0) {
+        result = (await import('./aura')).default
+    }
+
     return result;
 }
 
-export async function usePt(componentNames: string[]): Promise<PrimeVuePTOptions> {
+export async function usePt(componentNames?: string[]): Promise<PrimeVuePTOptions> {
     const globalStyles = import('./aura/global.js');
     const directives = {
         badge: (await import('./aura/badgedirective/index.js')).default,

@@ -113,6 +113,8 @@ export class EditorInput extends MinzeElement {
         `
         // IMAGE INPUT
         const image = /*html*/`
+            <img src="${this.defaultValue}" class="w-full h-32 object-contain rounded-none bg-slate-50 border border-gray-300 b-b-0" />
+
             <input
                 type="file"
                 accept="image/*"
@@ -120,7 +122,6 @@ export class EditorInput extends MinzeElement {
                 class="px-3 py-2 border border-gray-300 rounded-none text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-offset-2 w-full"
             />
             
-            <img src="${this.defaultValue}" class="w-full h-32 object-cover rounded-none" />
         `
         // SELECT INPUT
         const select = /*html*/`

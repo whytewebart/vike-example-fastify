@@ -144,7 +144,12 @@ const print = async () => {
     divToDownload.style.height = '760px';
     divToDownload.style.background = 'white'
     // console.log(divToDownload)
-    document.body.appendChild(divToDownload)
+    // document.body.appendChild(divToDownload)
+    // document.querySelector('#download-print')?.replaceWith(divToDownload)
+    window.invoiceHTML = divToDownload;
+    Minze.dispatch('print-invoice', {
+        toPrint: divToDownload,
+    })
 }
 
 // LISTEN

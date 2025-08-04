@@ -113,10 +113,14 @@ class PropertyEditor {
 
             <div>
                 ${propHtml}
+                <div class="spacer"></div>
             </div>
 
             <style>
                 ${css}
+                .spacer {
+                    padding: 10px 0;
+                }
             </style>
         ` : '';
     }

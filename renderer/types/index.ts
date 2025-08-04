@@ -67,6 +67,6 @@ declare global {
   };
 
   interface Window {
-    stretchDropzone?: string
+    invoiceHTML?: HTMLElement
   }
 }
