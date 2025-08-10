@@ -30,7 +30,7 @@ const config: UserConfig = {
         "vue",
         "@vueuse/core",
         {
-          primevue: ["useDialog"],
+          primevue: ["useDialog", "useConfirm", "useToast"],
           pinia: ["storeToRefs", "defineStore"],
         }
       ],

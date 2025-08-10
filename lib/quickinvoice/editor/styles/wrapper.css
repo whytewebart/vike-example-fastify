@@ -146,7 +146,7 @@ div[section="blocks-panel"] editor-panel {
     @apply divide-y;
 
     &>div.block {
-        @apply transition-all px-4 relative;
+        @apply transition-all px-4 relative bg-stone-50/20;
 
         &:hover {
             @apply bg-gray-100 cursor-grab b-b-2 tracking-.8 font-bold shadow-sm z-1;

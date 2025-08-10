@@ -95,14 +95,14 @@ export class IndexedDBWrapper<T = any> {
     });
   }
 
-  async update(value: T): Promise<IDBValidKey> {
+  async update(value: T, key?: string): Promise<IDBValidKey> {
     return new Promise((resolve, reject) => {
       if (!this.db) return reject(new Error('DB not opened'));
 
       const tx = this.db.transaction(this.storeName, 'readwrite');
       const store = tx.objectStore(this.storeName);
 
-      const request = store.put(value); // put updates if key exists, adds if not
+      const request = store.put(value, key); // put updates if key exists, adds if not
 
       request.onsuccess = () => resolve(request.result);
       request.onerror = () => reject(request.error);

@@ -55,22 +55,18 @@ const db = {
 const print = async () => {
     // INITIALIZE DB
     db.initialize();
-    /* GET ALL THE ELEMENTS & GET CURRENT SPACE */
-    var CURRENT;
     if (!indexeddb.space) {
         Minze.dispatch('indexeddb:space:request');
         return print()
-    }
-    const __spaces = await indexeddb.space?.findByIndex("latest", "true");
-    if (!(__spaces.length > 0))
-        return;
+    };
 
-    CURRENT = __spaces[0];
-    const editor = document.querySelector(`editor-canvas[editor-id="${CURRENT.id}"]`);
+    const spaces = await indexeddb.space?.findByIndex("latest", "true");
+    if (!(spaces.length > 0)) return;
+
+    const editor = document.querySelector(`editor-canvas[editor-id="${spaces[0].id}"]`);
     const editorDom = editor?.shadowRoot
 
-    if (!editor || !editorDom)
-        return;
+    if (!editor || !editorDom) return;
 
     const divToDownload = document.createElement('div');
     const canvas = editorDom.querySelector("#canvas")!
@@ -81,22 +77,13 @@ const print = async () => {
     function recurisveNestedFind(el: EditorComponent) {
         const element = document.createElement('div');
         // DEFINE UNIQUE IDS
-        const classId = _uniqueId()
         const hostId = _uniqueId()
         // DEFINE SANITIZED DOM
         const _html = el.shadowRoot?.innerHTML!.replaceAll(/(?<!:)\bhost\b/g, hostId)
         const _css = el.privateCss().replaceAll(/(?<!:)\bhost\b/g, hostId)
-
-        element.innerHTML = /*html*/`
-            <div class="${classId}">
-                ${_html}
-            </div>
-            <style>
-                @scope (.${classId}) {
-                    ${_css}
-                }
-            </style>
-        `;
+        // APPEND HTML
+        element.innerHTML += _html;
+        element.innerHTML += `<style>${_css}</style>`;
         // REMOVE DRAG HANDLE
         element.querySelector('button#handle')?.remove();
         element.querySelector('style[ref="button-handle"]')?.remove();
@@ -111,14 +98,13 @@ const print = async () => {
             const key = Object.keys(response)[0]
             const { html } = response[key];
 
-            nested.parentElement?.appendChild(document.createRange().createContextualFragment(html));
+            nested.parentElement?.appendChild(html);
             nested.remove();
         }
 
         return {
             [id]: {
-                html: element?.innerHTML,
-                stylesheet: el.privateCss().replaceAll(/(?<!:)\bhost\b/g, hostId)
+                html: document.createRange().createContextualFragment(element?.innerHTML)
             }
         }
     }
@@ -128,8 +114,10 @@ const print = async () => {
         .forEach(entry => {
             const key = Object.keys(entry)[0];
             const { html } = entry[key];
-            divToDownload.innerHTML += html
-        })
+
+            Array.from(html.children)
+                .forEach(el => divToDownload.innerHTML += el.outerHTML)
+        });
 
     divToDownload.innerHTML += /*html*/`
         <style>
@@ -140,15 +128,25 @@ const print = async () => {
 
     // REMOVE ALL SLOTS
     divToDownload.querySelectorAll('slot').forEach(slot => slot.remove())
-    divToDownload.style.width = '535px';
-    divToDownload.style.height = '760px';
-    divToDownload.style.background = 'white'
-    // console.log(divToDownload)
-    // document.body.appendChild(divToDownload)
-    // document.querySelector('#download-print')?.replaceWith(divToDownload)
-    window.invoiceHTML = divToDownload;
+    // SET INVOICE CONTAINER STYLES
+    const styles = {
+        width: '535px',
+        height: '760px',
+        display: 'flex',
+        'flex-direction': 'column',
+        background: 'white'
+    }
+    divToDownload
+        .setAttribute('style',
+            Object.entries(styles)
+                .map(([key, value]) => `${key}:${value}`)
+                .join(';')
+        )
+
+    window.invoiceHTML = document.createRange()
+        .createContextualFragment(divToDownload.outerHTML);
     Minze.dispatch('print-invoice', {
-        toPrint: divToDownload,
+        toPrint: window.invoiceHTML,
     })
 }
 
@@ -157,7 +155,7 @@ db.listen();
 const channel = new BroadcastChannel("wrapper-tabs");
 channel.addEventListener("message", (event) => {
     const { data } = event;
-    
+
     if (data === 'download') {
         print()
     }

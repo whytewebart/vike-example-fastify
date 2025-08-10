@@ -89,27 +89,38 @@ export class EditorWrapper extends EditorWrapperBase {
   blocksPanel = () => /*html*/`
     <div section="blocks-panel">
       <!-- BLOCKS -->
-      <editor-panel title="Components" class="*:font-space-mono">
+      <editor-panel title="Elements" class="*:font-space-mono">
+        <!-- <div class="block" data-type="card" draggable="true">card</div> -->
         <div class="block" data-type="heading" draggable="true">Heading</div>
         <div class="block" data-type="paragraph" draggable="true">Paragraph</div>
+        <div class="block" data-type="telephone" draggable="true">Telephone</div>
+        <div class="block" data-type="money" draggable="true">Localized Currency</div>
         <div class="block" data-type="image" draggable="true">Image</div>
         <div class="block" data-type="button" draggable="true">Button</div>
-        <div class="block" data-type="divider" draggable="true">Divider</div>
-        <div class="block" data-type="dropzone" draggable="true">Container</div>
         <div class="block" data-type="qrcode" draggable="true">QR Code</div>
         <div class="block" data-type="fixed-table" draggable="true">Items Table</div>
         <div class="block" data-type="dynamic-table" draggable="true">Dynamic Table</div>
         <div class="block" data-type="signature" draggable="true">Signature</div>
-        <slot name="blocks-slot"></slot>
       </editor-panel>
       <!-- LAYOUTS -->
-      <editor-panel title="Layouts" class="grid-col-span-2 border-y">
+      <editor-panel title="Layouts & Structure" class="*:font-space-mono">
+        <div class="block" data-type="dropzone" draggable="true">Container</div>
+        <div class="block" data-type="divider" draggable="true">Divider</div>
+        <div class="block" data-type="spacer" draggable="true">Spacer</div>
+        <div class="block" data-type="column-grid" draggable="true">2 Column Grid</div>
+      </editor-panel>
+      <!-- LAYOUTS -->
+      <editor-panel title="Components" class="grid-col-span-2 border-y">
+        <div class="block" data-type="recipient" draggable="true">Recipient</div>
         <div class="block" data-category="layout" data-type="issued-by" draggable="true">Issued By</div>
         <div class="block" data-category="layout" data-type="disclaimer" draggable="true">Disclaimer</div>
         <div class="block" data-type="social-links" draggable="true">Social Links</div>
         <div class="block" data-category="layout" data-type="payment-terms" draggable="true">Payment Terms</div>
+        <!-- <div class="block" data-category="layout" data-type="header-first" draggable="true">Header</div> -->
+        <!-- <div class="block" data-type="column-grid" draggable="true">2 Column Grid</div> -->
+      </editor-panel>
+      <editor-panel title="Stacks & Sections" class="grid-col-span-2 border-y">
         <div class="block" data-category="layout" data-type="header-first" draggable="true">Header</div>
-        <div class="block" data-type="column-grid" draggable="true">2 Column Grid</div>
       </editor-panel>
     </div>
   `

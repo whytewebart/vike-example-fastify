@@ -9,7 +9,12 @@
     }
 
     /* Empty Dropzone Indicator */
-    [dropzone]:not(:has(editor-component)):has(slot)::before {
+    /* [dropzone]:not(:has(editor-component)):has(slot)::before { */
+    [dropzone][empty-dropzone-indicator] {
+        min-height: 60px;
+    }
+
+    [dropzone][empty-dropzone-indicator]::before {
         content: "Drop content here";
         color: rgba(0, 0, 0, 0.3);
         font-size: 0.875rem;

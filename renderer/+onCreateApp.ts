@@ -2,7 +2,7 @@ export { onCreateApp };
 
 import PrimeVue from 'primevue/config';
 
-import { Ripple, Tooltip } from 'primevue';
+import { ConfirmationService, Ripple, ToastService, Tooltip } from 'primevue';
 import { createPinia } from "pinia";
 import { usePt } from './styles/primevue/preset';
 
@@ -10,6 +10,8 @@ import "virtual:uno.css";
 
 const onCreateApp = async (pageContext: PageContextWithApp) => {
   const { app } = pageContext;
+  // INSTANTIATE PINIA
+  const pinia = createPinia()
   // Add the UI plugin
   app.use(PrimeVue, {
     ripple: true,
@@ -23,7 +25,10 @@ const onCreateApp = async (pageContext: PageContextWithApp) => {
     }
   });
 
-  const pinia = createPinia()
+  app.use(ConfirmationService)
+  app.use(ToastService)
+
+
 
   app.use(pinia)
 

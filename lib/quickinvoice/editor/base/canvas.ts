@@ -178,6 +178,13 @@ export class EditorCanvasBase extends MinzeElement {
                 if (placeholder) placeholder.classList.remove('highlight');
                 // @ts-ignore
                 Array.from(container.children).forEach(c => c.style.borderTop = '')
+
+                const checkEmpty = container.querySelectorAll('editor-component');
+                if (checkEmpty.length >= 1) {
+                    container.removeAttribute('empty-dropzone-indicator')
+                } else if (checkEmpty.length === 0) {
+                    container.setAttribute('empty-dropzone-indicator', '')
+                }
             },
 
             /**
@@ -203,7 +210,7 @@ export class EditorCanvasBase extends MinzeElement {
 
                                 if (layout) {
                                     const doc = document.createElement('div');
-                                    doc.innerHTML = layout.html;
+                                    doc.innerHTML = layout.html!;
 
                                     if (afterElement) {
                                         Array.from(doc.children)
@@ -226,8 +233,7 @@ export class EditorCanvasBase extends MinzeElement {
                         // CREATE NEW COMPONENT
                         const component = this.components
                             .create(
-                                type, undefined, undefined,
-                                afterElement ? null : container
+                                type, afterElement ? null : container
                             )!; // Append to end
 
                         if (afterElement)
@@ -236,7 +242,7 @@ export class EditorCanvasBase extends MinzeElement {
                     }
                 }
 
-                this.isDraggingNewComponent = false
+                this.isDraggingNewComponent = false;
             },
 
             move: (container: HTMLElement, afterElement: HTMLElement) => {
@@ -320,14 +326,11 @@ export class EditorCanvasBase extends MinzeElement {
         /**
          * Create a new editor component
          * @param {string} type - Component type (heading, paragraph, etc.)
-         * @param {number} [x] - Optional x position for absolute positioning
-         * @param {number} [y] - Optional y position for absolute positioning
          * @param {HTMLElement} [parentElement] - Optional parent container
          * @returns {HTMLElement} The created component
          */
         create: (
             type: string,
-            x?: number, y?: number,
             parentElement: HTMLElement | null = null,
             attrs: Record<string, any> = {}
         ) => {
@@ -335,11 +338,12 @@ export class EditorCanvasBase extends MinzeElement {
             var component = document.createElement('editor-component')
             component.setAttribute('type', type);
             // SET EMPTY DEFAULTS
-            ["properties", "styles", "sub-elements", "attr-definition", "id"]
+            ["properties", "styles", "sub-elements", "id"]
                 .forEach(attr => {
                     let val = attrs[attr] || '';
                     typeof val !== 'string' ? val = JSON.stringify(val) : null;
-                    component.setAttribute(attr, val)
+                    if (attr == 'id') component.setAttribute(attr, val);
+                    else component.setAttribute('_'+attr, val)
                 })
 
             // ADD TO PARENT
@@ -363,18 +367,24 @@ export class EditorCanvasBase extends MinzeElement {
         handlers: {
             dragstart: (e: any) => {
                 e.stopPropagation();
+                const canvas = this.dropzone.methods.canvas(e)!;
                 const comp = e.target.closest('.component')
                 this.components.select(comp);
                 comp.classList.add('dragging');
                 e.dataTransfer.setData('text/plain', 'move');
                 e.dataTransfer.effectAllowed = 'move';
                 this.isDraggingNewComponent = false;
+
+                window.dragstartContainer = canvas
             },
 
             dragend: (e: any) => {
                 // e.stopPropagation();
                 const comp = e.target.closest('.component')
                 comp.classList.remove('dragging');
+                if(window.dragstartContainer) {
+                    this.dropzone.methods.resetDropHighilght(window.dragstartContainer)
+                }
             },
 
             click: (e: any) => {

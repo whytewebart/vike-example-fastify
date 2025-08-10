@@ -11,6 +11,7 @@ interface ComponentCapabilities {
   canBeDuplicated?: boolean;
   canAcceptStyles?: boolean;
   isContainer?: boolean;
+  enableHandle?: boolean
 }
 
 interface ComponentOverride {
@@ -19,7 +20,7 @@ interface ComponentOverride {
 
 // Style configuration
 interface StyleSettings {
-  allowedProperties?: CSSProperty[]; // Specific allowed CSS properties
+  allowedProperties?: ComponentStyleType[]; // Specific allowed CSS properties
   inheritable?: boolean; // Whether styles inherit to children
   defaultStyles?: Record<CSSProperty, string>;
   css?: (properties: Record<string, any>) => string;
@@ -35,7 +36,15 @@ type PrimitiveType =
   | 'image'
   | 'url'
   | 'tel'
+  // | 'email'
+  // | 'date'
+  // | 'time'
+  // | 'datetime'
+  | 'currency'
+  | 'currency-format'
   | 'rich-text';
+
+type ComponentStyleType = 'dimension-editor' | 'spacing-editor' | 'layout-editor' | 'typography-editor' | 'background-editor' | 'stack-editor';
 
 type PropertyType =
   | PrimitiveType
@@ -52,6 +61,7 @@ interface ObjectField {
   group?: string;
   helptext?: string; // Help text for the property
   description?: string; // Description for the property
+  singularLabel?: string; // Singular label for the property
 }
 
 interface ComponentProperty extends ObjectField { }

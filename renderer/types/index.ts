@@ -67,6 +67,9 @@ declare global {
   };
 
   interface Window {
-    invoiceHTML?: HTMLElement
+    invoiceHTML?: DocumentFragment | HTMLElement;
+    stretchDropzone?: string;
+    rerenderMap?: Map<string, HTMLElement>;
+    dragstartContainer?: HTMLElement
   }
 }

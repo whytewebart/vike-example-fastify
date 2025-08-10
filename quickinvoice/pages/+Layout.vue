@@ -1,4 +1,21 @@
 <template>
+
+  <Toast />
+  <ConfirmDialog :pt="{
+    header: 'py-2 px-3 hidden!',
+    headerActions: 'hidden!',
+    root: 'p-0! bg-transparent!',
+    content: 'bg-gray-50 px-4! py-2! rounded-t-lg!',
+    icon: 'hidden',
+    message: 'font-urbanist! text-sm text-gray-700',
+    footer: 'bg-gray-50 p-2! rounded-b-lg! grid! grid-cols-2 gap-2',
+    mask: 'bg-surface-50/20! backdrop-blur-sm!',
+  }">
+    <template #message="{ message }">
+      <span v-html="message.message"></span>
+    </template>
+  </ConfirmDialog>
+
   <div class="quickinvoice">
     <header
       class="py-2 px-2 bg-white my-4 mx-8 rounded-lg mt-12"

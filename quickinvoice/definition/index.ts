@@ -1,4 +1,5 @@
 import components from "./components";
 import layouts from "./layouts"
+import templates from "./templates";
 
-export { components, layouts }
+export { components, layouts, templates };

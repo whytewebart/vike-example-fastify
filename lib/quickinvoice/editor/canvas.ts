@@ -147,6 +147,20 @@ export class EditorCanvas extends EditorCanvasBase {
         }
     `
 
+    deleteComponentRecursively = async (component: HTMLElement) => {
+        const shadowRoot = component.shadowRoot;
+        const children = Array.from(
+            shadowRoot?.querySelectorAll('editor-component') || []
+        ) as HTMLElement[];
+
+        for (const child of children) {
+            await this.deleteComponentRecursively(child);
+        }
+
+        await this.session.delete(component.id);
+        component.remove();
+    };
+
     eventListeners: EventListeners = [
         ...this.handleEvents,
         [window, 'resize', this.scaleCanvas],
@@ -156,31 +170,25 @@ export class EditorCanvas extends EditorCanvasBase {
             /* this.rerender() */
         }],
         [
-            window, 'keyup', (e: KeyboardEvent) => {
+            window, 'keyup', async (e: KeyboardEvent) => {
                 if (e.key.toLowerCase() === 'delete' && this.selectedComponent) {
-                    // Get the canvas of the selected component
-                    const selectedCanvas = this.selectedComponent.closest('[data-dropzone-id]');
-                    const canvasCapabilities: ComponentCapabilities = JSON.parse(selectedCanvas?.getAttribute('capabilities') || '{}')
-                    const capabilities: ComponentCapabilities = JSON.parse(this.selectedComponent?.getAttribute('capabilities') || '{}')
+                    const selectedCanvas = this.selectedComponent.closest<HTMLElement>('[data-dropzone-id]');
+                    const canvasCapabilities: ComponentCapabilities = JSON.parse(
+                        selectedCanvas?.getAttribute('capabilities') || '{}'
+                    );
+                    const capabilities: ComponentCapabilities = JSON.parse(
+                        this.selectedComponent?.getAttribute('capabilities') || '{}'
+                    );
 
-                    /* console.log('Selected component\'s canvas:', selectedCanvas);
-                    console.log(capabilities) */
-
-                    /* CHECK IF CONTAINER ALLOWS TO DELETE */
-                    if (canvasCapabilities?.canBeDeleted === false)
+                    if (canvasCapabilities?.canBeDeleted === false) {
                         return console.warn('Component cannot be deleted');
+                    }
 
-                    /* CHECK IF COMPONENT IS CONTAINER */
-                    const root = this.selectedComponent.shadowRoot
-                    Array.from(root?.querySelectorAll('editor-component') || [])
-                        .forEach(child => {
-                            this.session.delete(child.id);
-                            child.remove();
-                        });
-                        
-                    this.session.delete(this.selectedComponent.id);
-                    this.selectedComponent.remove();
-                    this.components.select(null)
+                    // Recursive delete function
+                    await this.deleteComponentRecursively(this.selectedComponent);
+                    this.components.select(null);
+
+                    this.dropzone.methods.resetDropHighilght(selectedCanvas!)
                 }
             }
         ],
@@ -207,6 +215,25 @@ export class EditorCanvas extends EditorCanvasBase {
                     el.removeAttribute('state')
                 })
             }
+        ],
+        /* LISTEN TO WINDOW REGISTER TEMPLATE EVENT */
+        [
+            window, 'components:register-template', async (e: EventDetail) => {
+                const { template } = e.detail;
+                if (!template) return;
+
+                /* CLEAR THE CANVAS */
+                const canvas = this.select("#canvas") as HTMLElement;
+                const editors = canvas.querySelectorAll<HTMLElement>('editor-component');
+                
+                for (const editor of editors) {
+                    await this.deleteComponentRecursively(editor)
+                }
+
+                /* REGISTER THE TEMPLATE */
+                this.components.create(template.type, canvas!);
+                console.log(`Template ${template.type} registered successfully.`);
+            }
         ]
     ]
 
@@ -231,7 +258,7 @@ export class EditorCanvas extends EditorCanvasBase {
                     if (entry.dropzone !== active.id) return;
                     const rootElement = this.select(`[data-dropzone-id="${entry.dropzone}"]`);
 
-                    const component = this.components.create(entry.type, undefined, undefined, undefined, {
+                    const component = this.components.create(entry.type, undefined, {
                         properties: entry.properties,
                         id: entry.id,
                         "sub-elements": entry?.subElements,

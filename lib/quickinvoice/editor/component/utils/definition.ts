@@ -101,79 +101,79 @@ const card: ComponentDefinition = {
             defaultValue: true,
             group: 'Footer'
         },
-        // {
-        //     name: 'users',
-        //     type: {
-        //         type: 'array',
-        //         itemType: {
-        //             type: 'object',
-        //             shape: [
-        //                 {
-        //                     name: 'name',
-        //                     type: 'text',
-        //                     defaultValue: 'John Doe'
-        //                 },
-        //                 {
-        //                     name: 'age',
-        //                     type: 'number',
-        //                     defaultValue: 30
-        //                 },
-        //                 {
-        //                     name: 'profilePicture',
-        //                     type: 'image',
-        //                     defaultValue: ''
-        //                 },
-        //                 {
-        //                     name: "friends",
-        //                     type: {
-        //                         type: 'array',
-        //                         itemType: {
-        //                             type: 'object',
-        //                             shape: [
-        //                                 {
-        //                                     name: 'name',
-        //                                     type: 'text',
-        //                                     defaultValue: 'Jane Doe'
-        //                                 },
-        //                                 {
-        //                                     name: 'age',
-        //                                     type: 'number',
-        //                                     defaultValue: 28
-        //                                 }
-        //                             ]
-        //                         }
-        //                     },
-        //                     defaultValue: []
-        //                 },
-        //                 {
-        //                     name: 'family',
-        //                     type: {
-        //                         type: 'object',
-        //                         shape: [
-        //                             {
-        //                                 name: 'father',
-        //                                 type: 'text',
-        //                                 defaultValue: 'John Sr.'
-        //                             },
-        //                             {
-        //                                 name: 'mother',
-        //                                 type: 'text',
-        //                                 defaultValue: 'Jane Sr.'
-        //                             }
-        //                         ]
-        //                     },
-        //                     defaultValue: {
-        //                         father: 'John Sr.',
-        //                         mother: 'Jane Sr.'
-        //                     }
-        //                 }
-        //             ]
-        //         }
-        //     },
-        //     group: 'Data',
-        //     description: 'List of users to display in the card.',
-        //     defaultValue: []
-        // },
+        {
+            name: 'users',
+            type: {
+                type: 'array',
+                itemType: {
+                    type: 'object',
+                    shape: [
+                        {
+                            name: 'name',
+                            type: 'text',
+                            defaultValue: 'John Doe'
+                        },
+                        {
+                            name: 'age',
+                            type: 'number',
+                            defaultValue: 30
+                        },
+                        {
+                            name: 'profilePicture',
+                            type: 'image',
+                            defaultValue: ''
+                        },
+                        {
+                            name: "friends",
+                            type: {
+                                type: 'array',
+                                itemType: {
+                                    type: 'object',
+                                    shape: [
+                                        {
+                                            name: 'name',
+                                            type: 'text',
+                                            defaultValue: 'Jane Doe'
+                                        },
+                                        {
+                                            name: 'age',
+                                            type: 'number',
+                                            defaultValue: 28
+                                        }
+                                    ]
+                                }
+                            },
+                            defaultValue: []
+                        },
+                        {
+                            name: 'family',
+                            type: {
+                                type: 'object',
+                                shape: [
+                                    {
+                                        name: 'father',
+                                        type: 'text',
+                                        defaultValue: 'John Sr.'
+                                    },
+                                    {
+                                        name: 'mother',
+                                        type: 'text',
+                                        defaultValue: 'Jane Sr.'
+                                    }
+                                ]
+                            },
+                            defaultValue: {
+                                father: 'John Sr.',
+                                mother: 'Jane Sr.'
+                            }
+                        }
+                    ]
+                }
+            },
+            group: 'Data',
+            description: 'List of users to display in the card.',
+            defaultValue: []
+        },
         {
             name: 'hobbies',
             type: {

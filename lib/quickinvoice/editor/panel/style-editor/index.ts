@@ -9,7 +9,8 @@ export interface StyleEditor {
     component?: EditorComponent;
     subElements?: SubElement[];
     selectedElement?: string;
-    componentToShow?: "styles" | "properties"
+    componentToShow?: "styles" | "properties";
+    allowedProperties?: string[];
 }
 
 export class StyleEditor extends MinzeElement {
@@ -22,8 +23,9 @@ export class StyleEditor extends MinzeElement {
     reactive: Reactive = [
         'componentId',
         ['subElements', []],
-        "selectedElement",
-        ["componentToShow", "properties"]
+        ["selectedElement", 'host'],
+        ["componentToShow", "properties"],
+        ['allowedProperties', []],
     ]
 
     handleToggleClick = (event: Event) => {
@@ -57,31 +59,65 @@ export class StyleEditor extends MinzeElement {
     // col-span-2
 
     // SELECT INPUT
-    elementSelect = () =>/*html*/`
-        <div class="bg-gray-50 px-4 py-2">
-            <h3 class="font-space-mono font-semibold text-lg capitalize relative -left-1 mb-1 ${!this.component ? 'hidden' : ''}">[${this.component?.dataset.name}] component </h3>
-            <div class="relative bg-white">
-                <select
-                    name="subElement"
-                    id="subElement-select"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-none text-sm text-gray-800 focus:outline-none focus:ring-offset-2 focus:ring-2 focus:ring-gray-200 font-urbanist appearance-none w-full"
-                >
-                    <option
-                        value=""
-                        disabled
-                    >Select Sub-Element</option>
+    elementSelect = () => {
+        const v1 = /*html*/`
+            <div class="bg-gray-50 px-4 py-2">
+                <h3 class="font-space-mono font-semibold text-lg capitalize relative -left-1 mb-1 ${!this.component ? 'hidden' : ''}">[${this.component?.dataset.name}] component </h3>
+                <div class="relative bg-white">
+                    <select
+                        name="subElement"
+                        id="subElement-select"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-none text-sm text-gray-800 focus:outline-none focus:ring-offset-2 focus:ring-2 focus:ring-gray-200 font-urbanist appearance-none w-full"
+                    >
+                        <option
+                            value=""
+                            disabled
+                        >Select Sub-Element</option>
 
-                    <option
-                        value="host"
-                        selected
-                    >Root</option>
-                    
-                    ${this.subElements?.map(opt => `<option value="${opt.key}" class="">${opt.name}</option>`).join('')}
-                </select>
-                <span class="i-solar-alt-arrow-down-outline ml-1 absolute top-2.2 right-4 text-slate-700 text-xl"></span>
+                        <option
+                            value="host"
+                            selected
+                        >Root</option>
+                        
+                        ${this.subElements?.map(opt => `<option value="${opt.key}" class="">${opt.name}</option>`).join('')}
+                    </select>
+                    <span class="i-solar-alt-arrow-down-outline ml-1 absolute top-2.2 right-4 text-slate-700 text-xl"></span>
+                </div>
             </div>
-        </div>
-    `
+        `;
+
+        const v2 = /*html*/`
+            <div class="">
+                <details open class="group b-b-1 open:b-b-">
+                    <summary
+                        class="p-2 bg-gray-50 transition-all"
+                        flex="~ items-center justify-between"
+                        hover="cursor-pointer bg-gray-100"
+                        group-open="b-b-1 sticky top-42px z-1"
+                    >
+                        <p class="font-space-mono font-semibold">
+                            Select Nested Elements
+                        </p>
+                        <span class="i-solar-alt-arrow-down-bold text-xl mr-1 group-open:i-solar-alt-arrow-up-bold!"></span>
+                    </summary>
+                    
+                    <ul class="divide-y bg-gray-50/20 b-b-">
+                        <li sub-element-option data-value="host" class="px-3 py-1 font-space-mono transition-all" hover="bg-gray-100 cursor-pointer tracking-.8 font-bold shadow z-1">Root ${this.selectedElement === 'host' ? '<b class="tracking-normal!">[Selected]</b>' : ''} </li>
+                        ${this.subElements?.map(opt => `
+                            <li sub-element-option data-value="${opt.key}" class="px-3 py-1 font-space-mono transition-all" hover="bg-gray-100 cursor-pointer tracking-.8 font-bold shadow z-1">${opt.name} ${this.selectedElement === opt.key ? '<b class="tracking-normal!">[Selected]</b>' : ''} </li>
+                            `).join('')
+                        }
+                    </ul>
+                    <p class="text-center font-space-mono font-bold py-2 bg-gray-50/20">
+                        <!-- [•] -->
+                    </p>
+                </details>
+
+            </div>
+        `
+
+        return v2
+    }
 
     toggleComponentToRender = () => {
         if(this.component) {
@@ -89,14 +125,29 @@ export class StyleEditor extends MinzeElement {
                 return this.property.html()
             }
 
+            const renderElement = (tag: string) => {
+                return /*html*/`
+                    <${tag}
+                        ${this.component?.id ? `component-id="${this.component.id}"` : ''}
+                        ${this.component?.styles ? `styles='${JSON.stringify(this.component.styles)}'` : ''}
+                        ${this.component?.subElements ? `elements='${JSON.stringify(this.component.subElements)}'` : ''}
+                        ${this.selectedElement ? `sub-element="${this.selectedElement}"` : ''}
+                    ></${tag}>
+                `
+            }
+
+            const emptyTemplate = /*html*/`
+                <div class="p-4 text-center">
+                    <p class="text-gray-500 font-space-mono font-semibold">No styles available for this component.</p>
+                </div>
+            `
+
+            const elements = this.allowedProperties ?? [];
+
             return /*html*/`
                 ${this.elementSelect()}
-                <dimension-editor
-                    ${this.component?.id ? `component-id="${this.component.id}"` : ''}
-                    ${this.component?.styles ? `styles='${JSON.stringify(this.component.styles)}'` : ''}
-                    ${this.component?.subElements ? `elements='${JSON.stringify(this.component.subElements)}'` : ''}
-                    ${this.selectedElement ? `sub-element="${this.selectedElement}"` : ''}
-                ></dimension-editor>
+                ${elements.map(tag => renderElement(tag)).join('')}
+                ${elements.length === 0 ? emptyTemplate : ''}
             `
         }
 
@@ -137,7 +188,10 @@ export class StyleEditor extends MinzeElement {
                             .find(def => def.type == componentType!);
 
                         if (definition) {
-                            this.subElements = definition.subElements || []
+                            this.subElements = definition.subElements || [];
+                            this.allowedProperties = definition.styleSettings?.allowedProperties || [];
+
+                            this.selectedElement = 'host';
                         }
                     })
 
@@ -150,6 +204,16 @@ export class StyleEditor extends MinzeElement {
             (e: InputEvent) => {
                 const input = e.target as HTMLInputElement;
                 const value = input.value;
+
+                this.selectedElement = value;
+            }
+        ],
+        [
+            "[sub-element-option]",
+            "click",
+            (e: InputEvent) => {
+                const input = e.target as HTMLInputElement;
+                const value = input.dataset.value;
 
                 this.selectedElement = value;
             }

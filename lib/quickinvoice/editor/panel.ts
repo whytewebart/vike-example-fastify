@@ -35,7 +35,7 @@ export class EditorPanel extends MinzeElement {
     ]
 
     header = () => /*html*/`
-        <div part="header">
+        <div part="header" class="shadow">
             <p class="font-space-mono font-semibold">${this.title}</p>
             <button class="flex p-2 rounded transition mr-2" hover="bg-gray-50" focus="bg-gray-100">
                 <span class="i-solar-alt-arrow-down-outline text-xl ${this.panelStatus === 'closed' ? 'rotate-180' : ''}"></span>

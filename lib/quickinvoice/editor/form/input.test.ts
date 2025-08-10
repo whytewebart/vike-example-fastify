@@ -18,7 +18,7 @@ export interface EditorInput {
     repeater?: string; // Whether the input is a repeater
     entries: any[];
     entryId: string;
-    nested: 'deep' | boolean; // Whether the input array is nested
+    nested: boolean; // Whether the input array is nested
 }
 
 export class EditorInput extends MinzeElement {
@@ -42,7 +42,6 @@ export class EditorInput extends MinzeElement {
     reactive?: Reactive = [["entries", []]]
     static observedAttributes = ['checked', 'default-value']
     get splitLabel() {
-        if(typeof this.label !== 'string') return '';
         return this.label.replace(/([a-z])([A-Z])/g, '$1 $2')
     }
 
@@ -63,27 +62,17 @@ export class EditorInput extends MinzeElement {
         }).filter(d => d.callingCode)
     }
 
-    currencies = () => {
-        const seen = new Set<string>();
-        return clm.getAllCountries().filter(country => {
-            if (seen.has(country.currency_name)) return false;
-            seen.add(country.currency_name);
-            return true;
-        });
-    }
-
-
     protected session = new IndexedDBWrapper<DB.Session>(this.DB_NAME, 'session', this.DB_VERSION)
 
     html = () => {
         // LABEL COMPONENT
         const label = /*html*/`
-            <label for="${this.label}-input" class="text-base font-semibold text-gray-700 capitalize font-space-mono mb-1 ${this.getAttribute('hide-label') ? 'hidden' : ''}">${this.splitLabel}</label>
+            <label for="${this.label}-input" class="text-base font-semibold text-gray-700 capitalize font-space-mono mb-1 ${this.repeater && this.repeater == 'label' ? 'pl-4' : ''}">${this.splitLabel}</label>
         `;
         // WRAPPER COMPONENT
         const wrapper = (template: string, hideLabel: boolean = false) => /*html*/`
             <div
-                class="flex flex-col space-y-1 ${typeof this.type !== 'object' ? 'py-2 px-4' : ''}">
+                class="flex flex-col space-y-1 ${typeof this.type !== 'object' ? 'py-2 px-4' : ''} ${this.repeater && typeof this.type !== 'object' ? 'px-8!' : ''}">
                 ${!hideLabel ?
                     /*html*/`
                         ${label}
@@ -100,15 +89,17 @@ export class EditorInput extends MinzeElement {
                 ? '' :
                 // @ts-ignore
                 // this.type?.type === 'object' || this.repeater ?
-                this.type?.type === 'object' && !this.repeater ?
+                this.type?.type === 'object' || this.repeater ?
                 /*html*/`
                     <!-- SAVE BUTTON -->
-                    <div class="grid sticky bottom-3 z-1 mt-2 mx-3">
-                        <button id="save-entries" class="px-4 py-1.5 font-space-mono bg-blue-600 text-white text-base hover:bg-blue-700 transition-colors w-full rounded-2 capitalize">
-                            Save ${this.label}
+                    <div class="grid sticky bottom-0 z-1">
+                        <button id="save-entries" class="px-4 py-1 font-urbanist bg-blue-600 text-white text-sm hover:bg-blue-700 transition-colors ${this.repeater ? 'w-fit' : 'w-full'} rounded-none capitalize">
+                            <!-- ${this.repeater ? `Add new <b class="uppercase">[${this.label}]</b> entry` : 'Save ' + this.label} -->
+                            ${this.repeater ? `Update <b class="uppercase">[${Number(this.dataset.entryIndex) + 1}]</b> entry` : 'Save ' + this.label}
                         </button>
                     </div>
-                ` : ''
+                `
+                    : ''
             }
         `;
         // FALLBACK INPUT
@@ -146,76 +137,6 @@ export class EditorInput extends MinzeElement {
             </select>
             <span class="i-solar-alt-arrow-down-outline ml-1 absolute top-2.2 right-4 text-slate-700 text-xl z-1"></span>
         `
-
-        // CURRENCY INPUT
-        const currency = /*html*/`
-            <select
-                name="${this.label}"
-                id="${this.label}-select"
-                class="w-full px-3 py-2 border border-gray-300 rounded-none text-sm text-gray-800 focus:outline-none focus:ring-offset-2 focus:ring-2 focus:ring-gray-200 font-urbanist appearance-none w-full capitalize"
-            >
-                ${
-                    // this.currencies()
-                    clm.getAllCountries()
-                    .map(
-                        (country) => {
-                            const payload = {
-                                currency: country.currency,
-                                code: country.alpha2,
-                                language: country?.languages ? country.languages[0] : 'en'
-                            };
-
-                            return /*html*/`
-                            <option value='${JSON.stringify(payload)}' ${country.alpha2 === this.defaultValue?.code ? 'selected' : ''}>${country.name} - ${country.currency}</option>`
-                        }
-                    ).join('')
-                }
-            </select>
-            <span span class="i-solar-alt-arrow-down-outline ml-1 absolute top-2.2 right-4 text-slate-700 text-xl z-1" ></span>
-        `
-
-        // CURRENCY FORMAT
-        const currency_format = /*html*/`
-            <div
-                class="flex shadow-smp font-sans"
-                focus-within="outline-none ring-2 ring-gray-200 ring-offset-2"
-            >
-                <div relative>
-                    <select
-                        class="block rounded-l- border border-r-0 border-gray-200 bg-gray-50 text-gray-700 text-sm px-2 py-2 focus:outline-none appearance-none w-25"
-                        name="currencyFormat"
-                    >
-                        ${
-                            // this.currencies()
-                            clm.getAllCountries()
-                            .map(
-                                (country) => {
-                                    const payload = {
-                                        currency: country.currency,
-                                        code: country.alpha2,
-                                        language: country?.languages ? country.languages[0] : 'en'
-                                    };
-
-                                    return /*html*/`
-                                    <option value='${JSON.stringify(payload)}' ${country.alpha2 === this.defaultValue?.code ? 'selected' : ''}>${country.name} - ${country.currency}</option>`
-                                }
-                            ).join('')
-                        }
-                    </select>
-
-                    <span class="i-solar-alt-arrow-down-outline ml-1 absolute top-2.2 right-2 text-slate-700 text-xl z-1"></span>
-                </div>
-                <input
-                    type="number"
-                    name="currency_format"
-                    id="currency_format"
-                    class="px-3 py-2 border border-gray-300 text-sm text-gray-800 w-full outline-none"
-                    placeholder="123-456-7890"
-                    value="${this.defaultValue?.value}"
-                >
-            </div>
-        `
-
         // CHECKBOX INPUT
         const svgIcon = /*html*/`
             <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
@@ -246,10 +167,9 @@ export class EditorInput extends MinzeElement {
             >
                 <div relative>
                     <select
-                        class="block rounded-l- border border-r-0 border-gray-200 bg-gray-50 text-gray-700 text-sm px-2 py-2 focus:outline-none appearance-none min-w-25"
+                        class="block rounded-l- border border-r-0 border-gray-200 bg-gray-50 text-gray-700 text-sm px-2 py-2 focus:outline-none appearance-none w-25"
                         name="countryCode"
                     >
-                        <option disabled selected>Select Country</option>
                         ${this.countries().map((country) => /*html*/`
                                 <option value="${country.alpha2}"> ${country.alpha2} +${country.callingCode} </option>
                             `).join('')
@@ -281,86 +201,43 @@ export class EditorInput extends MinzeElement {
         var localType: any = this.type;
         // ${ localType?.itemType?.type ? '' : i === 0 ? 'repeater' : ''}
         const array = /*html*/`
-            <div class="overflow-y-clip">
-                <!-- HEADER -->
-                <div
-                    class="py-3 px-4 bg-white ${this.nested && this.nested === 'deep' ? '' : this.nested ? 'top-42px! z-2' : 'z-3 shadow'} sticky top-0"
-                    flex="~ items-start ${this.nested ? 'gap-x-3' : 'justify-between'}"
-                    border="${this.repeater ? '' : 'y-1'} gray-200"
-                >
-                    <label for="${this.label}-array" class="text-base font-semibold text-gray-700 capitalize font-space-mono">${this.splitLabel} Repeater</label>
-                    <button id="add-entry" class="bg-gray-100p flex rounded hover:bg-gray-100">
-                        <span class="i-solar-pen-new-square-outline text-2xl"></span>
-                        <!-- <span class="font-space-mono font-bold whitespace-nowrap">[Create Entry]</span> -->
-                    </button>
-    
-                    ${this.nested ? `<div class="h-6 b-l-3 b-b-3 w-4 absolute left-4 top-12 z-10 b-gray-8"></div>` : ''}
-                    
-                </div>
-                
-                <div class="grid relative ${this.nested ? 'pl-6 -space-y-2 overflow-y-clip' : ''}">
-                    ${Array.from(this.entries)?.map((entry, i) => /*html*/`
-                        <details class="group">
-                            <summary
-                             class="px-4 ${this.nested ? '' : 'py-1 bg-gray-50/30'} transition-all"
-                             flex="~ items-center justify-between"
-                             hover="cursor-pointer bg-gray-50"
-                             group-open="${this.nested ? '' : 'bg-gray-50 b-b-1'} sticky top-42px z-1"
-                             group-not-open="rounded-2xl ${this.nested ? '' : 'b-1'} b-t-0"
-                            >
-                                <p class="font-space-mono font-semibold">
-                                    <span class="i-solar-alt-arrow-right-bold text-xl mr-1 group-open:i-solar-alt-arrow-down-bold!"></span>
-                                    0${i + 1}. <span class="ml-1 ${this.componentId ? '' : 'hidden'}">Entry</span>
-                                </p>
-    
-                                <div flex="~ items-center row-reverse">
-                                    <button
-                                        id="remove-entries"
-                                        ${entry.id ? `data-entry-id="${entry.id}"` : ''} data-entry-index="${i}"
-                                        class="flex p-2 rounded transition-all" hover="bg-red-100" focus="bg-gray-100"
-                                    >
-                                        <span
-                                        ${entry.id ? `data-entry-id="${entry.id}"` : ''} data-entry-index="${i}"
-                                        class="i-solar-trash-bin-minimalistic-outline text-xl text-red-600"></span>
-                                    </button>
-                                    ${
-                                        this.componentId ? `
-
-                                        <button id="save-entry" data-save-entry-id="${entry.id}" class="flex p-2 rounded transition font-space-mono" hover="font-bold underline underline-offset-2">
-                                            Update
-                                        </button>
-                                        
-                                        ` : ''
-                                    }
-                                </div>
-                            </summary>
-                            <div class="relative ${this.nested ? 'ml-5.7 pl-1' : ''}">
-                                <editor-input
-                                    ${typeof localType?.itemType === 'string' ? 'hide-label="true"' : ''}
-                                    label="${this.label}"
-                                    type='${JSON.stringify(localType?.itemType || this.type)}'
-                                    component-id="${this.componentId}"
-                                    repeater="${i === 0 ? 'label' : ''}"
-                                    default-value='${!localType?.itemType?.type ? (entry?.value || entry) : JSON.stringify(entry)}'
-                                    ${entry.id ? `entry-id="${entry.id}"` : ''}
-                                    data-entry-index="${i}"
-                                    ${this.getAttribute('save-btn') ? `save-btn="${this.getAttribute('save-btn')}"` : ''}
-                                    ${this.getAttribute('nested') && !this.componentId ? 'nested="deep"' : ''}
-                                ></editor-input>
-    
-                                ${this.nested ? /*html*/`
-                                    <div class="absolute top-0 left-0 b-l-3 h-full b-gray-8"></div>
-                                ` : ''}
-                            </div>
-    
-                            <div class="${typeof localType?.itemType === 'string' ? 'pb-1' : 'py-2'} ${this.nested ? '' : 'b-b-1'}"><div>
-                        </details>
-                        
-                    `).join('')}
-                </div>
+            <div class="flex items-center justify-between py-1 px-4 bg-white ${this.nested ? 'shadow-reflect shadow-gray-500 top-42px! z-2' : 'z-3'} ${this.repeater ? 'ml-5' : ''} border-y border-gray-200 shadow sticky top-0">
+                <label for="${this.label}-array" class="text-base font-semibold text-gray-700 capitalize font-space-mono">${this.splitLabel} Repeater</label>
+                <button id="add-entry" class="bg-gray-100 py-2 px-2 flex rounded hover:bg-gray-200">
+                    <span class="i-solar-pen-new-square-outline"></span>
+                </button>
             </div>
 
+            <div class="grid relative ${this.nested ? 'bg-gray-100-' : ''} ${this.repeater ? 'ml-4' : ''}">
+                ${Array.from(this.entries)?.map((entry, i) => /*html*/`
+                    <editor-input
+                        label="${this.label}"
+                        type='${JSON.stringify(localType?.itemType || this.type)}'
+                        component-id="${this.componentId}"
+                        repeater="${i === 0 ? 'label' : ''}"
+                        default-value='${!localType?.itemType?.type ? (entry?.value || entry) : JSON.stringify(entry)}'
+                        ${entry.id ? `entry-id="${entry.id}"` : ''}
+                        data-entry-index="${i}"
+                        ${this.getAttribute('save-btn') ? `save-btn="${this.getAttribute('save-btn')}"` : ''}
+                    ></editor-input>
+                    
+                    <div class="relative">
+                        <button
+                            id="remove-entries"
+                            ${entry.id ? `data-entry-id="${entry.id}"` : ''} data-entry-index="${i}"
+                            class="px-4 py-1 font-urbanist bg-stone-600 text-white text-sm hover:bg-stone-700 transition-colors w-fit rounded-none relative z-1 ${this.repeater ? 'left-8' : ''}">
+                            Remove
+                        </button>
+                        <div class="w-4 border border-gray-500 absolute top-1/2 left-4 ${this.repeater ? '' : 'hidden'}"></div>
+                    </div>
+                    
+                `).join('')}
 
+                ${Array.from(this.entries).length > 0 ? /*html*/`
+                        <div class="h-[calc(100%_-_2rem)] w-4 absolute left-4 top-5" border="2 r-0 gray-500"></div>
+                    ` : ''
+            }
+            </div>
         `
 
         const stringify = (payload: any) => {
@@ -390,9 +267,8 @@ export class EditorInput extends MinzeElement {
                 }
                         default-value='${stringify(this.defaultValue[opt.name] || opt.defaultValue)}'
                         save-btn="hide"
-                        ${this.getAttribute('nested') === 'deep' ? `nested="deep"` : localType?.type ? `nested="true"` : ''}
+                        ${localType?.type ? `nested="true"` : ''}
                         ${this.repeater && this.repeater === 'label' ? `repeater="${i === 0 ? 'label' : ''}"` : this.repeater ? 'repeater' : ''}
-                        ${opt.singularLabel ? `singular-label="${opt.singularLabel}"` : ''}
                     ></editor-input>
                 `).join('')}
             </div>
@@ -416,10 +292,6 @@ export class EditorInput extends MinzeElement {
                 return wrapper(image);
             case "tel":
                 return wrapper(phone);
-            case "currency":
-                return wrapper(currency)
-            case "currency-format":
-                return wrapper(currency_format)
             default:
                 return wrapper(fallback);
         }
@@ -493,64 +365,8 @@ export class EditorInput extends MinzeElement {
         return { [label]: this.validateType(el.getAttribute('default-value') || '') };
     };
 
-    saveEntries = async () => {
-        // const el = event.target as HTMLElement;
-        // const entryId = el.dataset.saveEntryId;
-        // var key = entryId ? `editor-input[entry-id=${entryId}]` : 'editor-input';
-
-        const entryElements = this.selectAll('editor-input') || [];
-        const entries: Record<string, any> = {};
-
-        if (this.entryId)
-            entries.id = this.entryId;
-
-        entryElements.forEach((el: any) => {
-            const parsed = this.parseEditorInput(el);
-            Object.assign(entries, parsed);
-        });
-
-        if (typeof this.type !== 'object') {
-            entries.value = this.getAttribute('default-value')
-        }
-
-        // console.log("🧠 Final structured data:", this.label, this.type, entries);
-        if (this.componentId) {
-            this.dispatch(`component:${this.componentId}:properties`, {
-                data: {
-                    [this.label]: entries
-                }
-            });
-        }
-    }
-
-    fmtCurrency(value: any, payload?:  {
-        currency: string;
-        code: string;
-        language: string;
-    }) {
-        // CHECK IF VALUE IS NUMBER
-        if (!(/^-?\d+(\.\d+)?$/.test(value))) return value;
-        value = Number(value);
-        
-        const locale = `${payload?.language}-${payload?.code}`
-
-        // FORMAT VALUE
-        const formatter = new Intl.NumberFormat(payload ? locale : 'en-US', {
-            style: 'currency',
-            currency: payload ? payload.currency : 'USD',
-            currencyDisplay: 'symbol'
-        });
-        // FORMAT VALUE
-        value = formatter.format(value);
-        return value
-    }
-
     async onReady() {
-        this.title = this.label;
-
-        if(typeof this.defaultValue === 'boolean' && this.type !== 'boolean') {
-            this.setAttribute('default-value', '• This is placeholder')
-        }
+        this.title = this.label
 
         if (typeof this.type === 'object') {
 
@@ -586,22 +402,15 @@ export class EditorInput extends MinzeElement {
             }
         };
 
-            if(this.componentId && this.entryId) {
-                Minze.listen(
-                    `editor-input:save-entry-${this.entryId}-input`,
-                    this.saveEntries
-                );
-            }
-
     }
 
     eventListeners?: EventListeners = [
         [
-            "input:not([type=file]), textarea, select:not([name=countryCode]):not([name=currencyFormat])",
+            "input:not([type=file]), textarea, select:not([name=countryCode])",
             "input",
             (e: InputEvent) => {
                 const input = e.target as HTMLInputElement;
-                var value: string | boolean | Object = this.type == 'boolean' ? input?.checked : input?.value || '';
+                var value = this.type == 'boolean' ? input?.checked : input?.value || '';
 
                 var countryCode;
                 if (this.type === 'tel') {
@@ -615,19 +424,6 @@ export class EditorInput extends MinzeElement {
                     }
                 }
 
-                if (this.type === 'currency-format') {
-                    const select = <HTMLSelectElement>this.select('select[name=currencyFormat]')!;
-                    value = {
-                        value,
-                        formatted: this.fmtCurrency(value, JSON.parse(select.value)),
-                        currencyCode: select.value
-                    }
-                }
-
-                if(this.type === 'currency') {
-                    value = JSON.parse(value)
-                }
-
                 if (this.componentId && !this.repeater) {
                     this.dispatch(`component:${this.componentId}:properties`, {
                         data: {
@@ -636,9 +432,7 @@ export class EditorInput extends MinzeElement {
                     });
                 }
 
-                this.setAttribute('default-value',
-                    typeof value === 'object' ? JSON.stringify(value) : value.toString()
-                );
+                this.setAttribute('default-value', value.toString());
             }
         ],
         [
@@ -705,52 +499,33 @@ export class EditorInput extends MinzeElement {
         ],
 
         [
-            'select[name=currencyFormat]', 'input', (e: InputEvent) => {
-                const select = e.target as HTMLInputElement;
-                const input = this.select('input[name=currency_format]') as HTMLInputElement;
+            "#save-entries",
+            "click",
+            async () => {
+                const entryElements = this.selectAll('editor-input') || [];
+                const entries: Record<string, any> = {};
 
-                const currencyCode = <any>JSON.parse(select.value)
-                var value: string | boolean | Object  = input.value;
+                if (this.entryId)
+                    entries.id = this.entryId;
 
-                value = {
-                    value,
-                    formatted: this.fmtCurrency(value, currencyCode),
-                    currencyCode
+                entryElements.forEach((el: any) => {
+                    const parsed = this.parseEditorInput(el);
+                    Object.assign(entries, parsed);
+                });
+
+                if (typeof this.type !== 'object') {
+                    entries.value = this.getAttribute('default-value')
                 }
 
-                // console.log(input.value, value)
-
-                if (this.componentId && !this.repeater) {
+                // console.log("🧠 Final structured data:", this.label, this.type, entries);
+                if (this.componentId) {
                     this.dispatch(`component:${this.componentId}:properties`, {
                         data: {
-                            [this.label]: value
+                            [this.label]: entries
                         }
                     });
                 }
-
-                this.setAttribute('default-value', JSON.stringify(value));
             }
-        ],
-
-        [
-            "#save-entry",
-            "click",
-            (event: Event) => {
-                const el = event.target as HTMLElement;
-                const entryId = el.dataset.saveEntryId;
-
-                // console.log(entryId)
-
-                this.dispatch(`editor-input:save-entry-${entryId}-input`, {
-                    entryId
-                })
-            }
-        ],
-
-        [
-            "#save-entries",
-            "click",
-            this.saveEntries
         ],
 
         [
@@ -815,7 +590,7 @@ export class EditorInput extends MinzeElement {
                 // console.log(newItem)
 
                 const updated = this.entries.map((d, i) => {
-                    const el = this.select(`editor-input[data-entry-index="${i}"]`) as HTMLElement;
+                    const el = this.select(`[data-entry-index="${i}"]`) as HTMLElement;
                     const entryId = el.getAttribute('entry-id')
                     const parsed = this.parseEditorInput(el);
 

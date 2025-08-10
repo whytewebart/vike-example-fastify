@@ -103,6 +103,14 @@ class PropertyEditor {
                 ></editor-input>
             `
         }).join('')
+
+        // IF NO PROPERTIES, RETURN EMPTY HTML
+        const emptyHtml = /*html*/`
+            <div class="p-4 text-center">
+                <p class="text-gray-500 font-space-mono font-semibold">No properties available for this component.</p>
+            </div>
+        `
+
         // RETURN HTML TEMPLATE
         return this.componentId && this.componentId !== 'unset' ? /*html*/`
             <div class="header">
@@ -112,7 +120,7 @@ class PropertyEditor {
             </div>
 
             <div>
-                ${propHtml}
+                ${propHtml || emptyHtml}
                 <div class="spacer"></div>
             </div>
 

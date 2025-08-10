@@ -40,9 +40,44 @@ const directiveMap: DirectiveMap = {
   }
 };
 
+function fmtCurrency(value: any, payload?:  {
+    currency: string;
+    code: string;
+    language: string;
+}) {
+  // CHECK IF VALUE IS NUMBER
+  if (!(/^-?\d+(\.\d+)?$/.test(value))) return value;
+  value = Number(value);
+  
+  // console.log(localCurrency.getLocales(currency))
+  // console.log(clm.getCountryByAlpha2('US'))
+  const locale = `${payload?.language}-${payload?.code}`
+  // console.log(locale)
+
+  // FORMAT VALUE
+  const formatter = new Intl.NumberFormat(payload ? locale : 'en-US', {
+    style: 'currency',
+    currency: payload ? payload.currency : 'USD',
+    currencyDisplay: 'symbol'
+  });
+  // FORMAT VALUE
+  value = formatter.format(value);
+  return value
+}
+
 function evaluate(expression: string, context: Record<string, any>) {
+  context = {
+    ...context,
+    fmtCurrency
+  }
   try {
-    return new Function(...Object.keys(context), `return ${expression}`)(...Object.values(context));
+    // return new Function(...Object.keys(context), `return ${expression}`)(...Object.values(context));
+    return new Function(
+      ...Object.keys(context),
+      `
+      return ${expression}
+      `
+    )(...Object.values(context));
   } catch (e) {
     console.warn('Eval error:', expression, e);
     return null;
@@ -104,14 +139,14 @@ function evaluateSyntax(
           const target = el.getAttribute('data-attr');
           if (!target) continue;
 
-          const raw  = el.getAttribute('attr-'+target);
+          const raw = el.getAttribute('attr-' + target);
           const expr = raw?.match(/@expr\s*\[\s*([\s\S]*?)\s*\]\s*@end/)?.[1];
           if (!expr) continue;
 
           const val = evaluate(expr, context);
           el.setAttribute(target, val);
         }
-        
+
         continue;
       };
 

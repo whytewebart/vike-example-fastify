@@ -39,8 +39,8 @@ export class EditorComponent extends EditorCanvasBase {
     ]
 
     reactive: Reactive = [
-        'definition',
         '_entry',
+        'definition',
         '_state',
         // CACHE
         ['__cache_properties', ''],
@@ -211,7 +211,7 @@ export class EditorComponent extends EditorCanvasBase {
     `
 
     html = () => /*html*/`
-        ${this.capabilities.enableHandle ? this.handle : ''}
+        ${this.type === 'dropzone' ? this.handle : ''}
         ${this.template()}
     `
 
@@ -315,38 +315,64 @@ export class EditorComponent extends EditorCanvasBase {
         }
     }
 
-    manageSlots = async () => {
-        const slots = this.selectAll("slot") as NodeListOf<HTMLSlotElement>;
+    manageSlots = () => {
+        // APPEND SLOT CONTENT TO DROPZONE
+        const slots = <NodeListOf<HTMLSlotElement>>this.selectAll("slot");
+        slots.forEach(slot => {
+            const target = slot.getAttribute('name')!
+            const nodes = <EditorComponent[]>slot.assignedElements({ flatten: true });
+            const dropzone = this.select(`[dropzone="${target ?? ''}"]`);
 
-        for (const slot of slots) {
-            const target = slot.getAttribute('name') ?? '';
-            const dropzone = this.select(`[dropzone="${target}"]`);
-            if (!dropzone) continue;
-            
-            const nodes = slot.assignedElements({ flatten: true }) as EditorComponent[];
+            if (dropzone) {
+                nodes.forEach(el => {
+                    // console.log('Appending element to dropzone', el, dropzone);
+                    // dropzone.appendChild(el);
+                    // el.removeAttribute('slot');
 
-            // Process each assigned node
-            for (const [index, el] of nodes.entries()) {
-                const entry = await this.session.get(el.id);
-                if (entry) {
-                    await this.session.update({
-                        ...entry,
-                        index,
-                        order: index,
-                        dropzone: dropzone.getAttribute('data-dropzone-id')!
+                    // this.dispatch(`component:${el.id}:state:load`, {
+                    //     force: true
+                    // });
+                    this.components.create(el.type, undefined, {
+                        id: el.id,
+                        _properties: JSON.parse(el.getAttribute('_properties') || '{}'),
+                        _styles: JSON.parse(el.getAttribute('_styles') || '{}'),
+                        "_sub-elements": JSON.parse(el.getAttribute('_sub-elements') || '{}'),
                     });
-                }
+                    // IF ELEMENT HAS SLOTS
+                    // const nested = <NodeListOf<HTMLSlotElement>>el.shadowRoot?.querySelectorAll('slot');
+
+                    // if (nested?.length === 0) {
+                    //     this.session.delete(el.id)
+                    //         .then(() => {
+                    //             el.removeAttribute('slot');
+                    //             dropzone?.appendChild(el);
+                    //         })
+                    // }
+
+                    // nested?.forEach(slot => {
+                    //     const _nodes = slot.assignedElements({ flatten: true });
+                    //     if (_nodes.length === 0) {
+                    //         // DELETE ENTRY
+                    //         this.session.delete(el.id)
+                    //             .then(() => {
+                    //                 el.removeAttribute('slot');
+                    //                 dropzone?.appendChild(el);
+                    //             })
+                    //     } else {
+                    //         el.removeAttribute('slot');
+                    //         this.session.delete(el.id)
+                    //             .then(() => {
+                    //                 dropzone.innerHTML += el.outerHTML;
+                    //                 el.remove();
+                    //             })
+                    //     }
+                    // })
+
+                })
             }
 
-            const hasComponents = dropzone.querySelector('editor-component') || nodes.length > 0;
-
-            if (hasComponents) {
-                dropzone.removeAttribute('empty-dropzone-indicator');
-            } else {
-                dropzone.setAttribute('empty-dropzone-indicator', '');
-            }
-        }
-    };
+        })
+    }
 
     registerDefaults = async () => {
         if (!this.definition) return console.error('Definition not loaded');
@@ -413,8 +439,6 @@ export class EditorComponent extends EditorCanvasBase {
                 dropzone?.setAttribute('data-dropzone-id',
                     this.entry.dropzones['default'])
             }
-
-            // console.log(dropzone, dropzone?.getAttribute('data-dropzone-id'))
         }
 
         // SET STATE TO LOADED
@@ -425,16 +449,14 @@ export class EditorComponent extends EditorCanvasBase {
         this.propertyListeners();
         // SET STORE
         await this.store();
-
-        this.manageSlots();
     }
 
-    store = async () => {
+    store = async (force: boolean = false) => {
         // OPEN DATABASE
         await Promise.all([this.session.open(), this.space.open()]);
         // GET KEY
         const key = `component-${this.type}-${this.id}`
-        var dropzone = this.closest<HTMLElement>('[data-dropzone-id]')
+        var dropzone = this.closest('[data-dropzone-id]')
         const children = Array.from(dropzone?.children || []);
         const index = children.indexOf(this);
         const session = (await this.space.findByIndex('latest', "true"))[0];
@@ -446,12 +468,19 @@ export class EditorComponent extends EditorCanvasBase {
         if ((!dropzone || dropzone?.id === 'canvas') && parent) {
             const slotId = this.getAttribute('slot');
             const dropzoneKey = slotId ? `[dropzone="${slotId}"]` : '[dropzone]';
-            var ___ = parent.querySelector(dropzoneKey);
+            dropzone = parent.querySelector(dropzoneKey);
+
+            // dropzone?.append(this.cloneNode(true))
+            // this.remove()
+
+            console.log(`Dropzone not found, using parent dropzone`, dropzone);
         }
 
-        if (!this.entry) {
-            if (!session) return;
+        console.log(new Date().toTimeString())
 
+        if (!this.entry || force) {
+            if (!session) return;
+            
             // CREATE ENTRY
             const payload = {
                 key,
@@ -474,7 +503,7 @@ export class EditorComponent extends EditorCanvasBase {
                 dropzones[name] = el.getAttribute('data-dropzone-id')!
             })
 
-            await this.session.add({
+            await this.session[force ? 'update' : 'add']({
                 ...payload,
                 dropzone: dropzone?.getAttribute('data-dropzone-id')!,
                 dropzones,
@@ -482,32 +511,30 @@ export class EditorComponent extends EditorCanvasBase {
         }
 
         // LOAD NESTED ELEMENTS
-        const dropzones = Array.from(this.selectAll('[data-dropzone-id]') || []);
-        for (const el of dropzones) {
-            const dropzoneId = el.getAttribute('data-dropzone-id');
-            const query = IDBKeyRange.only([session.id, dropzoneId]);
-            const response = await this.session.findByIndex("sessionId", query);
+        Array.from(this.selectAll('[data-dropzone-id]') || [])
+            .forEach(async el => {
+                const dropzoneId = el.getAttribute('data-dropzone-id');
+                const query = IDBKeyRange.only([session.id, dropzoneId])
+                await this.session.findByIndex("sessionId", query).then(response => {
+                    response
+                        .sort((a, b) => a.order - b.order)
+                        .map(ent => {
+                            // CHECK IF ELEMENT WITH ID EXISTS
+                            // TO AVOID DUPLICATES
+                            if (this.select(`[id="${ent.id}"]`)) return;
+                            const rootElement = this.select(`[data-dropzone-id="${ent.dropzone}"]`);
 
-            response
-                .sort((a, b) => a.order - b.order)
-                .forEach(ent => {
-                    if (this.select(`[id="${ent.id}"]`)) return;
-                    const rootElement = this.select(`[data-dropzone-id="${ent.dropzone}"]`);
+                            const component = this.components.create(ent.type, undefined, {
+                                id: ent.id,
+                                _properties: ent.properties,
+                                _styles: ent?.styles,
+                                "_sub-elements": ent?.subElements,
+                            });
 
-                    const component = this.components.create(ent.type, undefined, {
-                        id: ent.id,
-                        properties: ent.properties,
-                        styles: ent?.styles,
-                        "sub-elements": ent?.subElements,
-                    });
-
-                    rootElement?.appendChild(component);
-                });
-
-            if (response.length === 0) {
-                el.setAttribute('empty-dropzone-indicator', '')
-            }
-        }
+                            rootElement?.appendChild(component)
+                        })
+                })
+            })
 
         // CHECK IF COMPONENT HAS CHANGED DROPZONE
         if (this.entry && (this.entry?.dropzone !== dropzone?.getAttribute('data-dropzone-id'))) {
@@ -565,10 +592,12 @@ export class EditorComponent extends EditorCanvasBase {
         // SET COMPONENT CAPABILITIES
         const capabilities = { ...this.definition?.capabilities, ...this.capabilities };
         this.setAttribute('capabilities', JSON.stringify(capabilities));
-        // SET TEMPLATE
-        this.template = (() => this.definition!.renderTemplate!(this.properties));
         this.dataset.type = this.definition?.type?.toLowerCase() || 'unknown';
         this.dataset.name = this.definition.name
+    }
+
+    afterAttributeChange(name?: string, oldValue?: string | null, newValue?: string | null) {
+        // console.log(this.id, "attribute changed", name, oldValue, newValue);
     }
 
     async onReady() {
@@ -577,6 +606,8 @@ export class EditorComponent extends EditorCanvasBase {
             console.error('Definition not loaded');
             this.remove()
         };
+        // SET TEMPLATE
+        this.template = (() => this.definition!.renderTemplate!(this.properties));
         // COMPONENT IS NOW READY
         this._state = 'ready';
     }
@@ -596,10 +627,11 @@ export class EditorComponent extends EditorCanvasBase {
                     this._entry = JSON.stringify(response);
                     // REGISTER DEFAULTS
                     await this.registerDefaults();
+                    this.manageSlots()
                 })
         };
 
-        // console.log(this.type, this.id, "rerenderd", this._state)
+        console.log(this.type, this.id, "rerenderd", this._state)
     }
 
     async onStart() {
@@ -610,7 +642,6 @@ export class EditorComponent extends EditorCanvasBase {
 
     privateCss = () => /*css*/`
         ${this.definition?.styleSettings?.css?.(this.properties)}
-
         :host {
             position: relative !important;
             overflow-y: clip;
@@ -619,17 +650,20 @@ export class EditorComponent extends EditorCanvasBase {
                 ${this.hostRefuse.map(d => /*css*/`${d}: initial !important;`).join(' ')}
             }
         }
-
         ${this.styleGetter}
+
         ${this.subStyleGetter}
     `
 
-    css = () => /*css*/`
-        ${resetcss}
-        ${componentCss}
-        ${dropzoneCss}
-        ${this.privateCss()}
-    `
+    css = () => {
+        // console.log(this.subStyleGetter)
+        return /*css*/`
+            ${resetcss}
+            ${componentCss}
+            ${dropzoneCss}
+            ${this.privateCss()}
+        `;
+    }
 
     canvas = {
         methods: {
@@ -700,8 +734,8 @@ export class EditorComponent extends EditorCanvasBase {
                 // VALIDATE
                 this.validation.nested(type, e, () => {
                     e.preventDefault();
-                    this.dropzone.methods.drop(canvas, e)
                     this.dropzone.methods.resetDropHighilght(canvas)
+                    this.dropzone.methods.drop(canvas, e)
                     /* REMOVE SPACE */
                     this.dispatch(`container:resize:dragover`);
                 })
@@ -876,7 +910,7 @@ export class EditorComponent extends EditorCanvasBase {
         Minze.listen(`component:${this.id}:state:load`, async (event: EventDetail) => {
             // console.log("Loading component state for", this.id, event.detail);
             // SAVE TO LOCAL STORAGE
-            await this.store();
+            await this.store(event.detail?.force);
         })
     }
 

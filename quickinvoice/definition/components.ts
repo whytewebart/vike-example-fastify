@@ -1,4 +1,5 @@
 import { nanoid } from "nanoid";
+import tableStylesCss from './styles/fixedtable.css?inline'
 
 const button: ComponentDefinition = {
     type: 'button',
@@ -31,15 +32,15 @@ const button: ComponentDefinition = {
 
     styleSettings: {
         allowedProperties: [
-            'background-color',
-            'color',
-            'padding',
-            'border-radius'
+            'dimension-editor',
+            'typography-editor',
+            'layout-editor',
+            'background-editor',
+            'spacing-editor',
         ],
         defaultStyles: {
             'padding': '8px 16px',
             'border-radius': '4px',
-            // 'background-color': '#007bff',
             'color': '#ffffff',
             'font-family': 'Urbanist, sans-serif',
         },
@@ -88,30 +89,25 @@ const dropzone: ComponentDefinition = {
         canHaveChildren: true,
         canBeDeleted: true,
         canAcceptStyles: true,
-        isContainer: true
+        isContainer: true,
+        enableHandle: true
     },
 
     styleSettings: {
         allowedProperties: [
-            'background-color',
-            'border',
-            'padding',
-            'min-height'
+            'dimension-editor',
+            'spacing-editor',
+            'background-editor',
+            'layout-editor',
+            'stack-editor'
         ],
         defaultStyles: {
             'padding': '10px'
         },
         css: (properties) => /*css*/`
-            [dropzone]:not(:has(editor-component)):has(slot) {
-                min-height: 60px;
-                /* border: 1px dashed rgba(0, 0, 0, 0.08); */
-            }
 
-            [dropzone]:not(:has(editor-component)):has(slot)::before {
-                content: "Drop content here";
-                color: rgba(0, 0, 0, 0.3);
-                font-size: 0.875rem;
-                font-style: italic;
+            slot {
+                display: block
             }
         `
     },
@@ -152,12 +148,10 @@ const heading: ComponentDefinition = {
 
     styleSettings: {
         allowedProperties: [
-            'font-size',
-            'font-weight',
-            'color',
-            'text-align',
-            'margin-top',
-            'margin-bottom'
+            'dimension-editor',
+            'typography-editor',
+            'layout-editor',
+            'spacing-editor'
         ],
         defaultStyles: {},
         css: (properties) => /*css*/`
@@ -202,12 +196,10 @@ const paragraph: ComponentDefinition = {
 
     styleSettings: {
         allowedProperties: [
-            'font-size',
-            'color',
-            'text-align',
-            'line-height',
-            'margin-top',
-            'margin-bottom'
+            'dimension-editor',
+            'typography-editor',
+            'layout-editor',
+            'spacing-editor'
         ],
         defaultStyles: {
         },
@@ -227,6 +219,53 @@ const paragraph: ComponentDefinition = {
     },
 
     renderTemplate: (properties) => `<p styles="host">${properties.text}</p>`
+};
+
+const telephone: ComponentDefinition = {
+    type: 'telephone',
+    name: 'Phone Number',
+    category: 'Typography',
+    icon: 'T',
+
+    capabilities: {
+        canHaveChildren: false,
+        canAcceptStyles: true,
+        canBeDeleted: true
+    },
+
+    properties: [
+        {
+            name: 'phoneNumber',
+            type: "tel",
+            defaultValue: '+1 234 567 8901'
+        }
+    ],
+
+    styleSettings: {
+        allowedProperties: [
+            'dimension-editor',
+            'typography-editor',
+            'layout-editor',
+            'spacing-editor'
+        ],
+        defaultStyles: {
+        },
+        css: (properties) => /*css*/`
+            :host, p {
+                display: block;
+                font-family: 'Urbanist';
+            }
+
+            p {
+                white-space: pre-wrap;
+                line-height: 1.5,
+                color: #333333;
+                font-size: 10pt;
+            }
+        `
+    },
+
+    renderTemplate: (properties) => `<p styles="host">${properties.phoneNumber}</p>`
 };
 
 const divider: ComponentDefinition = {
@@ -278,12 +317,8 @@ const divider: ComponentDefinition = {
 
     styleSettings: {
         allowedProperties: [
-            'padding-top',
-            'padding-bottom',
-            'width',
-            'border-top-width',
-            'border-top-color',
-            'border-top-style'
+            'spacing-editor',
+            'background-editor'
         ],
         defaultStyles: {
             'padding-top': '10px',
@@ -340,10 +375,9 @@ const image: ComponentDefinition = {
 
     styleSettings: {
         allowedProperties: [
-            'width',
-            'height',
-            'border-radius',
-            'box-shadow'
+            'dimension-editor',
+            'layout-editor',
+            'spacing-editor',
         ],
         defaultStyles: {},
         css: (properties) => /*css*/`
@@ -407,7 +441,9 @@ const qrcode: ComponentDefinition = {
     ],
 
     styleSettings: {
-        allowedProperties: [],
+        allowedProperties: [
+            'spacing-editor'
+        ],
         defaultStyles: {},
         css: (properties) => /*css*/`
             :host {
@@ -454,6 +490,19 @@ const fixedTable: ComponentDefinition = {
     },
 
     properties: [
+        {
+            name: 'style',
+            type: 'select',
+            defaultValue: 'default',
+            options: [
+                'default',
+                'bordered',
+                'dark',
+                'newspaper',
+                'striped',
+                'condensed'
+            ],
+        },
         {
             name: 'entries',
             type: {
@@ -511,48 +560,26 @@ const fixedTable: ComponentDefinition = {
         },
         {
             name: 'currency',
-            type: 'text',
-            defaultValue: '$'
+            type: 'currency',
+            defaultValue: ''
         }
     ],
 
     styleSettings: {
-        allowedProperties: ['padding', 'margin', 'border', 'background', 'font-size', 'color'],
+        allowedProperties: [
+            'dimension-editor',
+            'spacing-editor',
+            'layout-editor',
+            'background-editor',
+            'typography-editor',
+            'stack-editor'
+        ],
         defaultStyles: {
             width: '100%',
             borderCollapse: 'collapse'
         },
-        css: () => /*css*/`
-         table {
-                border-collapse: collapse;
-                width: 100%;
-            }
-
-            th, td {
-                border: 1px solid black;
-            }
-
-            td {
-                padding: 0px 8px;
-                text-align: left;
-            }
-
-            tr[footer] {
-                font-weight: 700
-            }
-
-            .charges > *:nth-child(1), .charges > *:nth-child(2) {
-                border: none !important;
-            }
-
-            .charges > *:nth-child(3), .charges > *:nth-child(4) {
-                background-color: #ecececff
-            }
-
-            .subtotal > *:nth-child(3), .subtotal > *:nth-child(4) {
-                background-color: #9e9e9eff;
-                color: #f3f3f3ff
-            }
+        css: (properties) => /*css*/`
+            ${tableStylesCss}
         `
     },
 
@@ -560,7 +587,7 @@ const fixedTable: ComponentDefinition = {
         {
             key: 'thead',
             selector: 'thead',
-            name: 'Table Header Columns',
+            name: 'Table Header',
         },
         {
             key: 'column',
@@ -579,50 +606,56 @@ const fixedTable: ComponentDefinition = {
         },
     ],
 
-    renderTemplate: ({ entries }) => {
+    renderTemplate: () => {
+        const emptyHtml = /*html*/`
+            <div class="p-4 text-center">
+                <p class="text-gray-500 font-space-mono font-semibold">No entries available.</p>
+            </div>
+        `;
+
         return /*html*/`
-            <div styles="host">
+            <div styles="host" data-attr="class" attr-class="@expr[properties.style]@end">
                 <table>
                     <thead>
-                    <tr>
-                        <th>Item</th>
-                        <th>Qty</th>
-                        <th>Price</th>
-                        <th>Total</th>
-                    </tr>
+                        <tr>
+                            <th>Item</th>
+                            <th>Qty</th>
+                            <th>Price</th>
+                            <th>Total</th>
+                        </tr>
                     </thead>
                     <tbody>
                         <tr data-each="@expr[properties.entries]@end" data-key="entry">
                             <td data-text="@expr[entry.item]@end"></td>
                             <td data-text="@expr[entry.qty]@end"></td>
-                            <td data-text="@expr[properties.currency + '' + entry.price]@end"></td>
-                            <td data-text="@expr[properties.currency + '' + (Number(entry.qty) * Number(entry.price))]@end"></td>
+                            <td data-text="@expr[fmtCurrency(entry.price, properties.currency)]@end"></td>
+                            <td data-text="@expr[fmtCurrency(Number(entry.qty) * Number(entry.price), properties.currency)]@end"></td>
                         </tr>
                         <tr class="charges subtotal">
-                            <td style="border: 0;"></td>
-                            <td style="border: 0;"></td>
+                            <td></td>
+                            <td></td>
                             <td>SubTotal:</td>
-                            <td data-text="@expr[
-                            properties.currency + properties.entries.reduce((sum, item) => sum + (Number(item.price) * Number(item.qty)), 0)]@end"></td>
+                            <td data-text="@expr[fmtCurrency(properties.entries.reduce((sum, item) => sum + (Number(item.price) * Number(item.qty)), 0), properties.currency )]@end"></td>
                         </tr>
                         <tr data-each="@expr[properties.chargesSummary]@end" data-key="charge" class="charges">
                             <td></td>
                             <td></td>
-                            <td data-text="@expr[charge.title]@end"></td>
-                            <td data-text="@expr[(charge.applyAs == 'flat' ? properties.currency : '') + charge.value + (charge.applyAs == 'percentage' ? '%' : '')]@end"></td>
+                            <td data-html="@expr[charge.title + (charge.applyAs == 'percentage' ? (' <b>(' + charge.value + '%)</b>') : '')]@end"></td>
+                            <td data-text="@expr[
+                                charge.applyAs == 'flat' ? fmtCurrency(charge.value, properties.currency) : charge.applyAs == 'percentage' ? fmtCurrency(properties.entries.reduce((sum, item) => sum + (Number(item.price) * Number(item.qty)), 0) * (charge.value / 100), properties.currency) : '']@end"></td>
                         </tr>
                         <tr footer>
-                            <td style="border: 0;"></td>
-                            <td style="border: 0;"></td>
+                            <td></td>
+                            <td></td>
                             <td>Total:</td>
                             <td data-text="@expr[
-                            properties.currency + '' + (
+                            fmtCurrency(
     properties.entries.reduce((sum, item) => sum + (Number(item.price) * Number(item.qty)), 0) +
     properties.chargesSummary.reduce((sum, item) => {
         const subtotal = properties.entries.reduce((s, i) => s + (Number(i.price) * Number(i.qty)), 0);
         return sum + (item.applyAs === 'flat' ? Number(item.value) : subtotal * (Number(item.value) / 100));
     }, 0)
-    )
+    , properties.currency)
 
                                 ]@end"></td>
                         </tr>
@@ -709,7 +742,14 @@ const dynamicTable: ComponentDefinition = {
     ],
 
     styleSettings: {
-        allowedProperties: ['padding', 'margin', 'border', 'background', 'font-size', 'color'],
+        allowedProperties: [
+            'dimension-editor',
+            'spacing-editor',
+            'layout-editor',
+            'background-editor',
+            'typography-editor',
+            'stack-editor'
+        ],
         defaultStyles: {
             width: '100%',
             borderCollapse: 'collapse'
@@ -768,7 +808,8 @@ const columnGrid: ComponentDefinition = {
         canHaveChildren: false,
         canAcceptStyles: true,
         canBeDeleted: true,
-        isContainer: false
+        isContainer: false,
+        enableHandle: true
     },
 
     properties: [
@@ -843,6 +884,12 @@ const columnGrid: ComponentDefinition = {
     ],
 
     styleSettings: {
+        allowedProperties: [
+            'dimension-editor',
+            'spacing-editor',
+            'background-editor',
+            'layout-editor',
+        ],
         css(properties) {
             return /*css*/`
                 [styles=host] {
@@ -851,12 +898,19 @@ const columnGrid: ComponentDefinition = {
                     justify-content: ${properties.justify};
                     align-items: ${properties.alignment};
                     gap: ${properties.gap}px;
-                    padding: 10px
+                    /* padding: 10px */
                 }
 
                 [dropzone-column-1], [dropzone-column-2] {
-                    /* background-color: #f4f4f5; */
                     flex: ${properties.flex ? '1' : 'initial'};
+                }
+
+                [dropzone]:not(:has(editor-component)):has(slot) {
+                    /* background-color: #f4f4f5;
+                    min-height: 100px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center; */
                     /* padding: 10px; */
                 }
             `
@@ -933,29 +987,22 @@ const socialLinks: ComponentDefinition = {
             defaultValue: 'row'
         },
         {
-            name: 'gap',
-            type: {
-                type: 'object',
-                shape: [
-                    {
-                        name: 'columnGap',
-                        type: 'number',
-                        defaultValue: 10
-                    },
-                    {
-                        name: 'rowGap',
-                        type: 'number',
-                        defaultValue: 10
-                    }
-                ]
-            },
-            defaultValue: {
-                columnGap: 10,
-                rowGap: 10
-            }
+            name: 'columnGap',
+            type: 'number',
+            defaultValue: 10
         },
         {
-            name:'hideLabel',
+            name: 'rowGap',
+            type: 'number',
+            defaultValue: 10
+        },
+        {
+            name: 'iconSize',
+            type: 'number',
+            defaultValue: 25
+        },
+        {
+            name: 'showLabel',
             type: 'boolean',
             defaultValue: false
         }
@@ -971,13 +1018,20 @@ const socialLinks: ComponentDefinition = {
     ],
 
     styleSettings: {
+        allowedProperties: [
+            // 'dimension-editor',
+            'typography-editor',
+            'spacing-editor',
+            // 'layout-editor',
+            // 'background-editor'
+        ],
         css(properties) {
             return /*css*/`
                 [styles=host] {
                     display: ${properties.direction == 'row' ? 'flex' : 'grid'};
                     flex-direction: row;
-                    column-gap: ${properties.gap.columnGap}px;
-                    row-gap: ${properties.gap.rowGap}px;
+                    column-gap: ${properties.columnGap}px;
+                    row-gap: ${properties.rowGap}px;
                     flex-wrap: wrap
                 }
 
@@ -987,13 +1041,13 @@ const socialLinks: ComponentDefinition = {
                     align-items: center;
 
                     img {
-                        width: 25px;
-                        height: 25px;
+                        width: ${properties.iconSize}px;
+                        height: ${properties.iconSize}px;
                         object-fit: contain;
                     }
 
                     span {
-                        display: ${properties.hideLabel ? 'none' : 'block'};
+                        display: ${properties.showLabel ? 'block' : 'none'};
                         font-size: 100%;
                         font-weight: 600
                     }
@@ -1065,6 +1119,11 @@ const signature: ComponentDefinition = {
     ],
 
     styleSettings: {
+        allowedProperties: [
+            'dimension-editor',
+            'layout-editor',
+            'spacing-editor'
+        ],
         css(properties) {
             return /*css*/`
                 [styles=host] {
@@ -1105,4 +1164,557 @@ const signature: ComponentDefinition = {
     }
 }
 
-export default { button, dropzone, heading, paragraph, divider, image, qrcode, dynamicTable, fixedTable, columnGrid, socialLinks, signature }
+// RECIPIENT
+const recipient: ComponentDefinition = {
+    type: 'recipient',
+    name: 'Recipient',
+    category: 'Layout',
+
+    capabilities: {},
+    properties: [
+        {
+            name: 'nameOfRecipient',
+            type: 'text',
+            defaultValue: 'Evelyn Smith'
+        },
+        {
+            name: 'title',
+            type: 'text',
+            defaultValue: 'Head of Operations'
+        },
+        {
+            name: 'company',
+            type: 'text',
+            defaultValue: 'Studio AB1'
+        },
+        {
+            name: 'email',
+            type: 'text',
+            defaultValue: 'evelyn@studioab1.com'
+        },
+        {
+            name: 'phone',
+            type: 'tel',
+            defaultValue: '(213) 333-9277'
+        },
+        {
+            name:'hideLabel',
+            type: 'boolean',
+            defaultValue: false
+        },
+        {
+            name: 'columnGap',
+            type: 'number',
+            defaultValue: 20
+        }
+    ],
+
+    styleSettings: {
+        allowedProperties: [
+            'dimension-editor',
+            'typography-editor',
+            'layout-editor',
+            'background-editor',
+            'spacing-editor'
+        ],
+        css(properties) {
+            return /*css*/`
+                ul {
+                    font-family: "Space Mono";
+                    font-weight: 500;
+                    font-size: 14px;
+                }
+
+                ul#labels li {
+                    font-weight: 800;
+                    text-transform: uppercase;
+                    color: #131313ff;
+                }
+
+                ul#labels {
+                    display: ${properties.hideLabel ? 'none' : 'block' };
+                }
+
+                [styles=host] {
+                    display: ${properties.hideLabel ? 'block' : 'inline-flex'};
+                    grid-template-columns: auto 1fr;
+                    column-gap: ${properties.columnGap}px;
+                }
+            `
+        }
+    },
+
+    renderTemplate: (properties) => {
+        return /*html*/`
+            <div styles="host">
+                <ul id="labels">
+                    <li>client</li>
+                    <li>company</li>
+                    <li>email</li>
+                    <li>phone</li>
+                </ul>
+                <ul id="info">
+                    <li>${properties.nameOfRecipient}</li>
+                    <li>${properties.company}</li>
+                    <li>${properties.email}</li>
+                    <li>${properties.phone}</li>
+                </ul>
+            </div>
+        `
+    }
+}
+
+// MONEY COMPONENT
+const money: ComponentDefinition = {
+    type: 'money',
+    name: 'Money',
+    category: 'Layout',
+
+    capabilities: {},
+
+    properties: [
+        {
+            name: 'amount',
+            type: "currency-format",
+            defaultValue: {
+                value: 500
+            }
+        }
+    ],
+
+    styleSettings: {
+        allowedProperties: [
+            'dimension-editor',
+            'typography-editor',
+            'layout-editor',
+            'spacing-editor'
+        ],
+        defaultStyles: {
+        },
+        css: (properties) => /*css*/`
+            :host, p {
+                display: block;
+                font-family: 'Urbanist';
+            }
+
+            p {
+                white-space: pre-wrap;
+                line-height: 1.5,
+                color: #333333;
+                font-size: 10pt;
+            }
+        `
+    },
+
+    renderTemplate: (properties) => `<p styles="host">${properties.amount?.formatted || properties.amount?.value}</p>`
+}
+
+const spacer: ComponentDefinition = {
+    type: 'spacer',
+    name: 'Spacer',
+    category: 'Layout',
+
+    capabilities: {},
+
+    styleSettings: {
+        allowedProperties: [
+            'dimension-editor'
+        ],
+        defaultStyles: {
+            'height': '100px'
+        },
+        css: (properties) => /*css*/``
+    },
+    
+    properties: [],
+    renderTemplate: (properties) => `<div styles="host"></div>`
+}
+
+const card: ComponentDefinition = {
+    type: 'card',
+    name: 'Card',
+    category: 'Containers',
+    icon: '🃏',
+
+    // Global capabilities
+    capabilities: {
+        canHaveChildren: false,
+        // childrenLocked: true,
+        canBeDeleted: false,
+        canAcceptStyles: true,
+        isContainer: true
+    },
+
+    styleSettings: {
+        allowedProperties: [
+            'dimension-editor',
+            'typography-editor',
+            'layout-editor',
+            'spacing-editor',
+            'background-editor',
+            'stack-editor'
+        ],
+        defaultStyles: {
+            'background-color': '#ffffff',
+            'border-radius': '8px',
+            // 'box-shadow': '0 2px 8px rgba(0,0,0,0.1)',
+            'width': '100%'
+        },
+        css: (properties) => /*css*/`
+             :host {
+                background-color: #fff;
+                border-radius: 8px;
+                /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); */
+                max-width: 400px;
+                margin: 0 auto;
+                overflow: hidden;
+                border: 1px solid #ddd;
+            }
+
+            .card-header {
+                padding: 16px;
+                background-color: #f0f0f0;
+                border-bottom: 1px solid #ccc;
+            }
+
+            .card-header h3 {
+                margin: 0 0 8px;
+                font-size: 1.2em;
+            }
+
+            .card-header p {
+                margin: 0;
+                color: #666;
+                font-size: 0.95em;
+            }
+
+            .card-body {
+                padding: 16px;
+                min-height: 100px;
+                background-color: #fafafa;
+                outline: none;
+                transition: background 0.2s;
+            }
+
+            .card-footer {
+                padding: 12px 16px;
+                background-color: #f9f9f9;
+                border-top: 1px solid #eee;
+                display: flex;
+                gap: 10px;
+                justify-content: flex-end;
+            }
+        `
+    },
+
+    properties: [
+        {
+            name: 'title',
+            type: 'text',
+            defaultValue: 'Card Title',
+            group: 'Header',
+            helptext: 'The title of the card.',
+            description: "Enter in clear words the 'title' of this card."
+        },
+        {
+            name: 'description',
+            type: 'rich-text',
+            defaultValue: '-',
+            group: 'Header'
+        },
+        {
+            name: 'hideDescription',
+            type: 'boolean',
+            defaultValue: 'true',
+            group: 'Header'
+        },
+        {
+            name: 'showFooter',
+            type: 'boolean',
+            defaultValue: true,
+            group: 'Footer'
+        },
+        {
+            name: 'users',
+            type: {
+                type: 'array',
+                itemType: {
+                    type: 'object',
+                    shape: [
+                        {
+                            name: 'name',
+                            type: 'text',
+                            defaultValue: 'John Doe'
+                        },
+                        {
+                            name: 'age',
+                            type: 'number',
+                            defaultValue: 30
+                        },
+                        {
+                            name: 'profilePicture',
+                            type: 'image',
+                            defaultValue: ''
+                        },
+                        {
+                            name: "friends",
+                            type: {
+                                type: 'array',
+                                itemType: {
+                                    type: 'object',
+                                    shape: [
+                                        {
+                                            name: 'name',
+                                            type: 'text',
+                                            defaultValue: 'Jane Doe'
+                                        },
+                                        {
+                                            name: 'age',
+                                            type: 'number',
+                                            defaultValue: 28
+                                        },
+                                        {
+                                            name: 'hobbies',
+                                            singularLabel: 'hobby',
+                                            type: {
+                                                type: 'array',
+                                                itemType: "text"
+                                            },
+                                            group: 'Data',
+                                            description: 'List of hobbies for the user.',
+                                            defaultValue: []
+                                        },
+                                    ]
+                                }
+                            },
+                            defaultValue: []
+                        },
+                        {
+                            name: 'family',
+                            type: {
+                                type: 'object',
+                                shape: [
+                                    {
+                                        name: 'father',
+                                        type: 'text',
+                                        defaultValue: 'John Sr.'
+                                    },
+                                    {
+                                        name: 'mother',
+                                        type: 'text',
+                                        defaultValue: 'Jane Sr.'
+                                    }
+                                ]
+                            },
+                            defaultValue: {
+                                father: 'John Sr.',
+                                mother: 'Jane Sr.'
+                            }
+                        }
+                    ]
+                }
+            },
+            group: 'Data',
+            description: 'List of users to display in the card.',
+            defaultValue: []
+        },
+        {
+            name: 'hobbies',
+            type: {
+                type: 'array',
+                itemType: "text"
+            },
+            group: 'Data',
+            description: 'List of hobbies for the user.',
+            defaultValue: []
+        },
+        {
+            name: 'client',
+            type: {
+                type: "object",
+                shape: [
+                    {
+                        name: "name",
+                        type: "text",
+                        defaultValue: "John"
+                    },
+                    {
+                        name: "email",
+                        type: "text",
+                        defaultValue: "john@email.com"
+                    },
+                    {
+                        name: "phone",
+                        type: "tel",
+                        defaultValue: ""
+                    },
+                    {
+                        name: "active",
+                        type: "boolean",
+                        defaultValue: false
+                    }
+                ]
+            },
+            defaultValue: {}
+        }
+    ],
+
+    subElements: [
+        {
+            key: 'header',
+            selector: '.card-header',
+            name: 'Header',
+            allowedStyles: ['padding', 'background-color', 'border-bottom'],
+            capabilities: {
+                canAcceptStyles: true,
+                canHaveChildren: false
+            }
+        },
+        {
+            key: 'body',
+            selector: '.card-body',
+            name: 'Body',
+            allowedStyles: ['padding', 'min-height'],
+            capabilities: {
+                canHaveChildren: 5,
+                canAcceptStyles: true,
+                isContainer: true,
+                canBeDeleted: true
+            }
+        },
+        {
+            key: 'footer',
+            selector: '.card-footer',
+            name: 'Footer',
+            allowedStyles: ['padding', 'background-color', 'border-top'],
+            capabilities: {
+                canAcceptStyles: true,
+                isContainer: true
+            }
+        }
+    ],
+
+    defaultChildren: [
+        {
+            name: 'Save Button',
+            type: 'button',
+            properties: [
+                {
+                    name: 'variant',
+                    type: 'select',
+                    defaultValue: 'clear',
+                },
+                {
+                    name: 'label',
+                    type: 'text',
+                    defaultValue: 'Save'
+                }
+            ],
+            styleSettings: {
+                defaultStyles: {
+                    'background-color': '#791e07ff',
+                    'color': '#fff'
+                }
+            },
+            selector: '.card-footer',
+        },
+        {
+            name: 'Cancel Button',
+            type: 'button',
+            properties: [
+                {
+                    name: 'variant',
+                    type: 'select',
+                    defaultValue: 'secondary',
+                },
+                {
+                    name: 'label',
+                    type: 'text',
+                    defaultValue: 'Cancel'
+                }
+            ],
+            selector: '.card-footer'
+        }
+    ],
+
+    renderTemplate: (properties) => {
+        return /*HTML*/`
+            <div class="card-header">
+                <h3>
+                    <b data-text="@expr[properties.client?.name]@end"></b>
+                    <span data-text="@expr[properties.title]@end"></span>
+                </h3>
+                <p data-if="@expr[!properties.hideDescription]@end" data-text="@expr[properties.description]@end"></p>
+            </div>
+
+            <div id="client">
+                <h3>Client</h3>
+                <h4 data-text="@expr[properties.client?.name]@end"></h4>
+                <p data-text="@expr[properties.client?.email]@end"></p>
+                <p data-text="@expr[properties.client?.phone]@end"></p>
+                <p data-text="@expr[properties.client?.active ? 'Active' : 'Inactive']@end"></p></h4>
+            </div>
+            
+            <ul id="userList">
+                <!--
+                    data-each tells the engine “for each element in users”,
+                    data-key names each loop variable “user”,
+                    and @expr[user.*]@end is evaluated for each object.
+                -->
+                <li data-each="@expr[properties.users]@end" data-key="user">
+                    <span data-text="@expr[user.name]@end"></span>
+                    – <span data-text="@expr[user.age]@end years old"></span>
+                    <img data-ifo="@expr[user.profilePicture]@end" data-bind data-attr-src="@expr[user.profilePicture]@end" data-bind data-attr-alt="@expr[user.name]@end's profile picture" />
+                    <ul style="list-style-type: disc; margin-left: 20px;">
+                        <li data-each="@expr[user.friends]@end" data-key="friend">
+                            <span data-text="@expr[friend.name]@end"></span>
+                            – <span data-text="@expr[friend.age]@end years old"></span>
+                            <ul>
+                                <li data-each="@expr[friend.hobbies]@end" data-key="hobby">
+                                    <span data-text="@expr[hobby]@end"></span>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div data-if="@expr[user.family]@end" class="family">
+                        <span>Family:</span>
+                        <h3 data-text="@expr[user.family?.father]@end"></h3>
+                        <h3 data-text="@expr[user.family?.mother]@end"></h3>
+                    </div>
+                </li>
+            </ul>
+
+            <!-- hobbies -->
+            <ul>
+                <li data-each="@expr[properties.hobbies]@end" data-key="hobby">
+                    <span data-text="@expr[hobby?.value]@end"></span>
+                </li>
+            </ul>
+
+            <div class="card-body" tabindex="0"></div>
+            <div data-if="@expr[properties.showFooter]@end" class="card-footer" tabindex="0"></div>
+        `
+    }
+};
+
+export default {
+  button,
+  dropzone,
+  heading,
+  paragraph,
+  telephone,
+  divider,
+  image,
+  qrcode,
+  dynamicTable,
+  fixedTable,
+  columnGrid,
+  socialLinks,
+  signature,
+  recipient,
+  money,
+  spacer,
+
+
+  card
+};
