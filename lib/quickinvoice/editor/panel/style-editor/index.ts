@@ -53,6 +53,10 @@ export class StyleEditor extends MinzeElement {
                     <h3>Properties</h3>
                 </div>
             </div>
+            <div class="p-2 px-4 bg-gray-50 border-b grid font-sans ${this.component ? '' : 'hidden'}">
+                <h3 class="font-space-mono font-semibold text-lg capitalize relative -left-1">[${this.component?.type}] component </h3>
+                <p>Edit the properties of the component.</p>
+            </div>
         `
     }
 
@@ -90,7 +94,7 @@ export class StyleEditor extends MinzeElement {
             <div class="">
                 <details open class="group b-b-1 open:b-b-">
                     <summary
-                        class="p-2 bg-gray-50 transition-all"
+                        class="py-2 px-4 bg-gray-50 transition-all"
                         flex="~ items-center justify-between"
                         hover="cursor-pointer bg-gray-100"
                         group-open="b-b-1 sticky top-42px z-1"
@@ -151,7 +155,13 @@ export class StyleEditor extends MinzeElement {
             `
         }
 
-        return ``
+        return /*html*/`
+            <div class="p-4 text-center bg-gray-50">
+                <p class="text-gray-500 font-urbanist text-lg trackinng-tight font-semibold">
+                    Select a component to begin editing
+                </p>
+            </div>
+        `
     }
 
     html = (): string => /*html*/`

@@ -113,12 +113,6 @@ class PropertyEditor {
 
         // RETURN HTML TEMPLATE
         return this.componentId && this.componentId !== 'unset' ? /*html*/`
-            <div class="header">
-                <!-- <span>${this.componentId}</span> -->
-                <h3>[${this.componentType}] component </h3>
-                <p>${this.description}</p>
-            </div>
-
             <div>
                 ${propHtml || emptyHtml}
                 <div class="spacer"></div>
