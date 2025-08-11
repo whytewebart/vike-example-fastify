@@ -110,7 +110,7 @@ export class EditorLayers extends MinzeElement {
                             class="transition-all font-mono text-sm px-${layer * 3} py-1.5 capitalize"
                             
                         >
-                           ${comp.components ? '<span class="i-solar-paperclip-rounded-2-outline"></span>' : ''} ${comp.type.replaceAll('-', ' ')}
+                           ${comp.components ? '<span class="i-solar-paperclip-rounded-2-outline"></span>' : ''} ${comp.label || comp.type.replaceAll('-', ' ')}
                         </p>
                         ${comp.components && comp.components.length > 0 ? /*html*/`<button
                                 class="flex p-2 rounded transition mr-2"

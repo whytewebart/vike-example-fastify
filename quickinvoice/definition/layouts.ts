@@ -232,7 +232,7 @@ const paymentTerms: LayoutDefinition = {
 const issuedBy: LayoutDefinition = {
     id: 'issued-by',
     html: /*html*/`
-        <editor-component type="dropzone" _properties="{}">
+        <editor-component _label="Issued By" type="dropzone" _properties="{}">
             <editor-component type="heading" _properties='{"level":"h4","text":"Issued By"}' _styles='{"text-transform": "uppercase","font-weight": "700"}'></editor-component>
             <editor-component type="signature" _properties='{"useCapture":"true","size":"130"}'></editor-component>
             <editor-component type="paragraph" _properties='${JSON.stringify({ text: `Evelyn Smith\n${new Date().toLocaleDateString()}` })}'></editor-component>

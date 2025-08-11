@@ -338,7 +338,7 @@ export class EditorCanvasBase extends MinzeElement {
             var component = document.createElement('editor-component')
             component.setAttribute('type', type);
             // SET EMPTY DEFAULTS
-            ["properties", "styles", "sub-elements", "id"]
+            ["properties", "styles", "sub-elements", "label", "id"]
                 .forEach(attr => {
                     let val = attrs[attr] || '';
                     typeof val !== 'string' ? val = JSON.stringify(val) : null;

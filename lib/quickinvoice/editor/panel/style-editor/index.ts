@@ -11,6 +11,9 @@ export interface StyleEditor {
     selectedElement?: string;
     componentToShow?: "styles" | "properties";
     allowedProperties?: string[];
+
+    editLabel: boolean;
+    componentLabel?: string;
 }
 
 export class StyleEditor extends MinzeElement {
@@ -26,6 +29,8 @@ export class StyleEditor extends MinzeElement {
         ["selectedElement", 'host'],
         ["componentToShow", "properties"],
         ['allowedProperties', []],
+        ['editLabel', false],
+        ['componentLabel', null]
     ]
 
     handleToggleClick = (event: Event) => {
@@ -36,6 +41,10 @@ export class StyleEditor extends MinzeElement {
         // console.log(event, target, component)
 
         this.componentToShow = component;
+    }
+
+    handleEditLabel = (event: Event) => {
+        this.editLabel = !this.editLabel;
     }
 
     header = () => {
@@ -54,7 +63,28 @@ export class StyleEditor extends MinzeElement {
                 </div>
             </div>
             <div class="p-2 px-4 bg-gray-50 border-b grid font-sans ${this.component ? '' : 'hidden'}">
-                <h3 class="font-space-mono font-semibold text-lg capitalize relative -left-1">[${this.component?.type}] component </h3>
+                <div class="${this.editLabel ? 'mb-1' : ''}" flex="~ items-center">
+                    <h3 class="font-space-mono font-semibold text-lg capitalize relative -left-1 ${this.editLabel ? 'hidden' : ''}">
+                        [${ this.componentLabel || this.component?.type+' component'}] </h3>
+
+                    <input
+                        type="text"
+                        class="bg-white py-1.5 px-3 b-1 rounded-lg mr-1 ${this.editLabel ? '': 'hidden'}"
+                        id="label-edit-input"
+                        placeholder="Component Label"
+                        value="${this.componentLabel ?? ''}"
+                    >
+
+                    <button
+                        class="flex p-2 bg-transparent rounded-lg"
+                        hover="bg-gray-100"
+                        focus="ring-1 ring-indigo-6 ring-offset-3"
+                        title="Edit Label"
+                        id="handle-edit-label"
+                    >
+                        <span class="${this.editLabel ? 'i-solar-check-read-outline' : 'i-solar-pen-bold-duotone'}"></span>
+                    </button>
+                </div>
                 <p>Edit the properties of the component.</p>
             </div>
         `
@@ -110,7 +140,7 @@ export class StyleEditor extends MinzeElement {
                         ${this.subElements?.map(opt => `
                             <li sub-element-option data-value="${opt.key}" class="px-3 py-1 font-space-mono transition-all" hover="bg-gray-100 cursor-pointer tracking-.8 font-bold shadow z-1">${opt.name} ${this.selectedElement === opt.key ? '<b class="tracking-normal!">[Selected]</b>' : ''} </li>
                             `).join('')
-                        }
+            }
                     </ul>
                     <p class="text-center font-space-mono font-bold py-2 bg-gray-50/20">
                         <!-- [•] -->
@@ -124,7 +154,7 @@ export class StyleEditor extends MinzeElement {
     }
 
     toggleComponentToRender = () => {
-        if(this.component) {
+        if (this.component) {
             if (this.componentToShow === 'properties') {
                 return this.property.html()
             }
@@ -181,6 +211,7 @@ export class StyleEditor extends MinzeElement {
                 const componentId = e.detail.component?.id;
                 const componentType = this.component?.getAttribute('type');
                 const componentProps = this.component?.getAttribute('properties')
+                this.componentLabel = this.component?.getAttribute('label') || this.component?.getAttribute('_label') || '';
 
                 // SET COMPONENT ON PROPERTY CLASS
                 this.property.setComponent({
@@ -232,6 +263,24 @@ export class StyleEditor extends MinzeElement {
             "[data-component]",
             "click",
             this.handleToggleClick
+        ],
+        [
+            "button#handle-edit-label",
+            "click",
+            this.handleEditLabel
+        ],
+        [
+            "input#label-edit-input",
+            "input",
+            (e: InputEvent) => {
+                // HANDLE INPUT UPDATE AND EMIT TO COMPONENT
+                const input = e.target as HTMLInputElement;
+                const value = input.value;
+
+                this.dispatch(`component:${this.component?.id}:label`, {
+                    label: value
+                })
+            }
         ]
     ]
 

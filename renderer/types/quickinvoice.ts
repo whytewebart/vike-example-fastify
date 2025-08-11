@@ -157,7 +157,8 @@ declare namespace DB {
       styles?: Record<string, string>;
       properties?: Record<string, any>;
     }>,
-    styles?: Record<string, any>
+    styles?: Record<string, any>,
+    label?: string
   }
 
   interface Space {

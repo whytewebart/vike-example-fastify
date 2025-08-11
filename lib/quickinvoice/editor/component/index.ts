@@ -15,6 +15,7 @@ export interface EditorComponent {
     _properties: Record<string, any>;
     _styles: Record<string, string>;
     _subElements?: ComponentInstance['subElements'],
+    _label: string,
     _entry?: string;
 
     _state?: 'ready' | 'loaded' | 'indexchanged' | 'destroyed';
@@ -35,6 +36,7 @@ export class EditorComponent extends EditorCanvasBase {
         '_properties',
         '_styles',
         'type',
+        '_label',
         ['capabilities', {}]
     ]
 
@@ -462,7 +464,8 @@ export class EditorComponent extends EditorCanvasBase {
                 index,
                 order: index,
                 styles: this.styles,
-                subElements: this.subElements
+                subElements: this.subElements,
+                label: this._label
             };
 
             const dropzones_ = Array.from(this.selectAll('[data-dropzone-id]') || []);
@@ -864,6 +867,20 @@ export class EditorComponent extends EditorCanvasBase {
             },
             select: () => {
                 this.components.select(this)
+            },
+            updateLabel: async (e: EventDetail) => {
+                const { label } = e.detail;
+                this._label = label;
+                this.setAttribute('_label', label);
+
+                if(!this.entry) {
+                    this._entry = JSON.stringify((await this.session.get(this.id)))
+                }
+
+                this.session.update({
+                    ...this.entry!,
+                    label
+                })
             }
         };
         // ADD LISTENERS
@@ -873,6 +890,7 @@ export class EditorComponent extends EditorCanvasBase {
         Minze.listen(`component:${this.id}:rerender`, () => this.rerender())
         Minze.listen(`component:${this.id}:properties`, handlers.update)
         Minze.listen(`component:${this.id}:select`, handlers.select)
+        Minze.listen(`component:${this.id}:label`, handlers.updateLabel)
         Minze.listen(`component:${this.id}:state:load`, async (event: EventDetail) => {
             // console.log("Loading component state for", this.id, event.detail);
             // SAVE TO LOCAL STORAGE

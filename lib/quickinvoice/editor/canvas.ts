@@ -262,7 +262,8 @@ export class EditorCanvas extends EditorCanvasBase {
                         properties: entry.properties,
                         id: entry.id,
                         "sub-elements": entry?.subElements,
-                        styles: entry?.styles
+                        styles: entry?.styles,
+                        label: entry?.label
                     });
 
                     if (rootElement) rootElement.appendChild(component)
