@@ -149,17 +149,38 @@ export class EditorCanvas extends EditorCanvasBase {
 
     deleteComponentRecursively = async (component: HTMLElement) => {
         const shadowRoot = component.shadowRoot;
-        const children = Array.from(
+
+        // 1. Get all <editor-component> children inside the shadow DOM
+        const shadowChildren = Array.from(
             shadowRoot?.querySelectorAll('editor-component') || []
         ) as HTMLElement[];
 
-        for (const child of children) {
+        // 2. Get all <slot> elements and their assigned nodes
+        const slotElements = Array.from(
+            shadowRoot?.querySelectorAll('slot') || []
+        ) as HTMLSlotElement[];
+
+        // 3. Collect <editor-component> elements from slotted content
+        const slottedChildren: HTMLElement[] = [];
+        for (const slot of slotElements) {
+            const assignedElements = slot.assignedElements({ flatten: true }) as HTMLElement[];
+            const editorComponents = assignedElements.filter(el => el.tagName.toLowerCase() === 'editor-component');
+            slottedChildren.push(...editorComponents);
+        }
+
+        // Combine shadow and slotted children
+        const allChildren = [...shadowChildren, ...slottedChildren];
+
+        // 4. Recursively delete all children
+        for (const child of allChildren) {
             await this.deleteComponentRecursively(child);
         }
 
+        // 5. Delete the current component
         await this.session.delete(component.id);
         component.remove();
     };
+
 
     eventListeners: EventListeners = [
         ...this.handleEvents,
@@ -225,7 +246,7 @@ export class EditorCanvas extends EditorCanvasBase {
                 /* CLEAR THE CANVAS */
                 const canvas = this.select("#canvas") as HTMLElement;
                 const editors = canvas.querySelectorAll<HTMLElement>('editor-component');
-                
+
                 for (const editor of editors) {
                     await this.deleteComponentRecursively(editor)
                 }
