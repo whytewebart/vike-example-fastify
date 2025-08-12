@@ -409,11 +409,6 @@ export class EditorCanvas extends EditorCanvasBase {
         this.dropzone.hooks.start();
     }
 
-    async afterRender() {
-        if (this._cache_registered)
-            await this.registerComponents();
-    }
-
     async onReady() {
         await this.space.open();
         await this.dropzone.setup();
