@@ -46,7 +46,12 @@ const header1_props = {
                 }
             },
         },
-        styles: {}
+        styles: {
+            "margin-top": "15px",
+            "margin-bottom": "15px",
+            "margin-right": "15px",
+            "margin-left": "15px",
+        }
     },
 
     logo: {
@@ -61,7 +66,7 @@ const header1_props = {
             "font-weight": "700",
             "text-align": "right",
             "display": "flex",
-            "height": "21px",
+            // "height": "21px",
             "align-items": "center"
         }
     }
@@ -168,15 +173,15 @@ const header1 = {
             <editor-component slot="columna" type="image" _properties='{"src":"${invoicespace_logo}"}' _styles='${JSON.stringify(header1_props.logo.styles)}'></editor-component>
             <editor-component slot="columna" type="paragraph" _properties='{"text":"${new Date().toDateString()}"}' _styles='{"padding-top":"10px"}'></editor-component>
             <editor-component slot="columna" type="dropzone" _properties="{}" _styles='{"padding":"none","padding-top":"25px"}'>
-                <editor-component type="heading" _properties='{"level":"h3","text":"Office Address"}' _styles='{"text-transform": "uppercase","font-weight": "700"}'></editor-component>
+                <editor-component type="heading" _properties='{"level":"h4","text":"Office Address"}' _styles='{"text-transform": "uppercase","font-weight": "700"}'></editor-component>
                 <editor-component type="paragraph" _properties='${JSON.stringify({"text":"63 Buttonwood Ave, \nHelena, Montana, 88162"})}'></editor-component>
                 <editor-component type="paragraph" _properties='{"text":"+1 (234) 567 8901"}' _styles='{"padding-top":"10px","font-weight": "700","font-size":"15px"}'></editor-component>
             </editor-component>
 
-            <editor-component slot="columnb" type="heading" _properties='{"level":"h2","text":"Invoice"}' _styles='${JSON.stringify(header1_props.invoice.styles)}'></editor-component>
+            <editor-component slot="columnb" type="heading" _properties='{"level":"h3","text":"Invoice"}' _styles='${JSON.stringify(header1_props.invoice.styles)}'></editor-component>
             <editor-component slot="columnb" type="paragraph" _properties='{"text":"NO: ${nanoid(9).toLowerCase()}"}' _styles='{"text-align":"right"}'></editor-component>
             <editor-component slot="columnb" type="dropzone" _properties="{}" _styles='{"padding":"none","padding-top":"15px"}'>
-                <editor-component type="heading" _properties='{"level":"h3","text":"Receipient"}' _styles='{"text-align":"right","text-transform": "uppercase","font-weight": "700"}'></editor-component>
+                <editor-component type="heading" _properties='{"level":"h4","text":"Receipient"}' _styles='{"text-align":"right","text-transform": "uppercase","font-weight": "700"}'></editor-component>
                 <editor-component type="paragraph" _properties='{"text":"+234 567 8901"}' _styles='{"text-align":"right"}'></editor-component>
                 <editor-component type="paragraph" _properties='{"text":"hello@example.com"}' _styles='{"text-align":"right"}'></editor-component>
                 <editor-component type="paragraph" _properties='${JSON.stringify({"text":"1639 Glenwood Hwy, 3rd FL, \nBoise, Idaho, 75518"})}' _styles='{"text-align":"right"}'></editor-component>
@@ -259,9 +264,54 @@ const issuedBy: LayoutDefinition = {
     }
 }
 
+const footer_styles = {
+    dropzone: {
+        display: 'flex',
+        padding: 'none',
+        "column-gap": "10px",
+        "margin-top": "10px"
+    },
+    nopadding: {
+        padding: 'none',
+        'display': 'flex',
+        'flex-direction': 'column',
+        'flex': '1'
+    }
+}
+
+const footer = {
+    id: 'footer-01',
+    html: /*html*/`
+    <editor-component type="dropzone" _styles='{"padding":"10px"}'>
+        <editor-component type="heading" _properties='{"level":"h4","text":"Thank you for your Business"}'></editor-component>
+        <editor-component type="dropzone" _styles='${JSON.stringify(footer_styles.dropzone)}'>
+            <editor-component type="dropzone" _styles='${JSON.stringify(footer_styles.nopadding)}'>
+                <editor-component type="heading" _properties='{"level":"h4", "text":"Questions?"}'></editor-component>
+                <editor-component type="paragraph" _properties='${JSON.stringify({
+                    text: "Email us: e.company@mail.site\nCall us : +628 123 456 789"
+                })}'></editor-component>
+            </editor-component>
+            <editor-component type="dropzone" _styles='${JSON.stringify(footer_styles.nopadding)}'>
+                <editor-component type="heading" _properties='{"level":"h4", "text":"Payment Info :"}'></editor-component>
+                <editor-component type="paragraph" _properties='${JSON.stringify({
+                    text: "Account : 1234 567 890\nA/C Name : Bank of System\nBank Detail : Bank Pvt.ltd"
+                })}'></editor-component>
+            </editor-component>
+            <editor-component type="dropzone" _styles='${JSON.stringify(footer_styles.nopadding)}'>
+                <editor-component type="heading" _properties='{"level":"h4", "text":"Terms & Conditions :"}'></editor-component>
+                <editor-component type="paragraph" _properties='${JSON.stringify({
+                    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed diam nonummy nibh euismod tincidunt."
+                })}'></editor-component>
+            </editor-component>
+        </editor-component>
+    </editor-component>
+    `
+}
+
 export default {
     header1,
     disclaimer,
     paymentTerms,
-    issuedBy
+    issuedBy,
+    footer
 }

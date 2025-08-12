@@ -94,6 +94,7 @@ div[section="tabs"] {
     :host {
         display: grid;
         grid-template-columns: 1fr minmax(20rem, 50rem);
+        /* grid-template-columns: 1fr minmax(40rem, 50rem); */
         height: 100vh;
 
         div[section="panels"] {
@@ -112,6 +113,10 @@ div[section="tabs"] {
                 @apply overflow-y-auto max-h-screen app-scrollbar b-l-1;
             }
         }
+    }
+
+    .hide-component {
+        @apply: hidden;
     }
 
     div[section="panels"] div[section="tabs"] {

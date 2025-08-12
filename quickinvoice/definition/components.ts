@@ -116,7 +116,7 @@ const dropzone: ComponentDefinition = {
     subElements: [],
     defaultChildren: [],
     renderTemplate: (properties) => /*html*/`
-        <div styles="host" dropzone><slot></slot></div>
+        <div styles="host" dropzone><slot styles="host"></slot></div>
     `
 };
 
@@ -137,7 +137,7 @@ const heading: ComponentDefinition = {
             name: 'level',
             type: 'select',
             defaultValue: 'h1',
-            options: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']
+            options: ['h1', 'h2', 'h3', 'h4', 'h5']
         },
         {
             name: 'text',
@@ -153,18 +153,26 @@ const heading: ComponentDefinition = {
             'layout-editor',
             'spacing-editor'
         ],
-        defaultStyles: {},
+        defaultStyles: {
+            'font-weight': '800'
+        },
         css: (properties) => /*css*/`
             :host, h1, h2, h3, h4, h5, h6 {
                 display: block;
                 font-family: 'Urbanist';
             }
-            h1, [tag="h1"] { font-size: 32px; }
-            h2, [tag="h2"] { font-size: 24px; }
-            h3, [tag="h3"] { font-size: 16px; }
-            h4, [tag="h4"] { font-size: 14px; }
-            h5, [tag="h5"] { font-size: 12px; }
-            h6, [tag="h6"] { font-size: 10px; }
+            /* h1, [tag="h1"] { font-size: 32pt; }
+            h2, [tag="h2"] { font-size: 24pt; }
+            h3, [tag="h3"] { font-size: 16pt; }
+            h4, [tag="h4"] { font-size: 14pt; }
+            h5, [tag="h5"] { font-size: 12pt; }
+            h6, [tag="h6"] { font-size: 10pt; } */
+            h1, [tag="h1"] { font-size: 24pt; }
+            h2, [tag="h2"] { font-size: 18pt; }
+            h3, [tag="h3"] { font-size: 14pt; }
+            h4, [tag="h4"] { font-size: 12pt; }
+            h5, [tag="h5"] { font-size: 10pt; }
+            h6, [tag="h6"] { font-size: 10pt; }
         `
     },
 
@@ -213,7 +221,7 @@ const paragraph: ComponentDefinition = {
                 white-space: pre-wrap;
                 line-height: 1.5,
                 color: #333333;
-                font-size: 10pt;
+                font-size: 8pt;
             }
         `
     },
@@ -454,6 +462,10 @@ const qrcode: ComponentDefinition = {
             canvas {
                 display: block;
             }
+
+            img {
+                width: fit-content;
+            }
         `
     },
 
@@ -462,6 +474,11 @@ const qrcode: ComponentDefinition = {
         const canvas = /*html*/`
             <canvas
                 styles="host"
+                data-attr-data.prop.dark.color="@expr[properties.foreground]@end"
+                data-attr-data.prop.light.color="@expr[properties.background]@end"
+                data-attr-data.prop.width="@expr[properties.size]@end"
+                data-attr-data.prop.margin="@expr[properties.margin]@end"
+                data-attr-alt="@expr[properties.value}]@end"
                 data-qrcode="@expr[properties.value]@end"
             ></canvas>
         `;
@@ -469,6 +486,11 @@ const qrcode: ComponentDefinition = {
         const img = /*html*/`
             <img
                 styles="host"
+                data-attr-data.prop.dark.color="@expr[properties.foreground]@end"
+                data-attr-data.prop.light.color="@expr[properties.background]@end"
+                data-attr-data.prop.width="@expr[properties.size]@end"
+                data-attr-data.prop.margin="@expr[properties.margin]@end"
+                data-attr-alt="@expr[properties.value}]@end"
                 data-qrcode="@expr[properties.value]@end"
             />
         `
@@ -585,6 +607,11 @@ const fixedTable: ComponentDefinition = {
 
     subElements: [
         {
+            key: 'table',
+            selector: 'table',
+            name: 'Table',
+        },
+        {
             key: 'thead',
             selector: 'thead',
             name: 'Table Header',
@@ -631,6 +658,8 @@ const fixedTable: ComponentDefinition = {
                             <td data-text="@expr[fmtCurrency(entry.price, properties.currency)]@end"></td>
                             <td data-text="@expr[fmtCurrency(Number(entry.qty) * Number(entry.price), properties.currency)]@end"></td>
                         </tr>
+                    </tbody>
+                    <tfoot>
                         <tr class="charges subtotal">
                             <td></td>
                             <td></td>
@@ -659,7 +688,7 @@ const fixedTable: ComponentDefinition = {
 
                                 ]@end"></td>
                         </tr>
-                    </tbody>
+                    </tfoot>
                 </table>
             </div>
             
@@ -741,21 +770,49 @@ const dynamicTable: ComponentDefinition = {
         }
     ],
 
+    subElements: [
+        {
+            key: 'table',
+            selector: 'table',
+            name: 'Table',
+        },
+        {
+            key: 'thead',
+            selector: 'thead',
+            name: 'Table Header',
+        },
+        {
+            key: 'column',
+            selector: 'th',
+            name: 'Header Column',
+        },
+        {
+            key: 'body',
+            selector: 'tbody',
+            name: 'Table Body',
+        },
+        {
+            key: 'row',
+            selector: 'tr',
+            name: 'Table Row',
+        },
+    ],
+
     styleSettings: {
         allowedProperties: [
             'dimension-editor',
             'spacing-editor',
             'layout-editor',
-            'background-editor',
             'typography-editor',
-            'stack-editor'
+            'background-editor',
+            // 'stack-editor'
         ],
         defaultStyles: {
             width: '100%',
             borderCollapse: 'collapse'
         },
         css: () => /*css*/`
-             table {
+            table {
                 border-collapse: collapse;
                 width: 100%;
             }
@@ -793,7 +850,7 @@ const dynamicTable: ComponentDefinition = {
             </tbody>
         `;
 
-        return `<table>${header}${body}</table>`;
+        return `<div styles="host"><table>${header}${body}</table></div>`;
     }
 };
 

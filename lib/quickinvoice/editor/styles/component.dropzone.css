@@ -38,3 +38,9 @@
     border-color: rgba(59, 130, 246, 0.4);
     background-color: rgba(59, 130, 246, 0.03);
 }
+
+slot {
+  display: contents !important;
+  flex: none;
+  align-self: auto;
+}

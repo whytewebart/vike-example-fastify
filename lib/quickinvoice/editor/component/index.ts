@@ -1,16 +1,17 @@
+// MINZE IMPORTS
 import type { Reactive, Attrs, Watch, EventListeners } from 'minze'
 import Minze, { MinzeElement } from 'minze'
 import { EditorCanvasBase } from '../base/canvas';
 
+// STYLESHEETS
 import componentCss from '../styles/component.css?inline'
 import dropzoneCss from "../styles/component.dropzone.css?inline"
 import resetcss from "@unocss/reset/tailwind-compat.css?inline"
 
 import { nanoid } from 'nanoid';
-// import gsap from 'gsap';
 import templating from './utils/templating';
-type EventDetail = Event & { detail: any }
 
+// TYPES & INTERFACE
 export interface EditorComponent {
     _properties: Record<string, any>;
     _styles: Record<string, string>;
@@ -36,7 +37,7 @@ export class EditorComponent extends EditorCanvasBase {
         '_properties',
         '_styles',
         'type',
-        '_label',
+        ['_label', ''],
         ['capabilities', {}]
     ]
 
@@ -56,33 +57,34 @@ export class EditorComponent extends EditorCanvasBase {
         return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
     }
 
+    // INCLUDE PROPERTIES TO COMPONENT ROOT
     hostIncludes = [
         'width',
         'height',
+        'display'
     ];
 
+    // EXCLUDE PROPERTIES FROM TEMPLATE ROOT [styles=host]
     hostRefuse = [
         'width',
         'height',
-        // margin
         'margin-top',
         'margin-left',
         'margin-right',
         'margin-bottom',
-        // padding
-        // 'padding-top',
-        // 'padding-left',
-        // 'padding-right',
-        // 'padding-bottom',
+        'flex'
     ]
 
+    // RETURNS STYLES OBJECT AS VALID CSS
     get styleGetter() {
         var hostCss = `:host { `;
 
-        const styleString = Object.entries({
+        const opts = {
             ...((this.definition?.styleSettings?.defaultStyles) || {}),
             ...((this.styles) || {})
-        })
+        };
+
+        const styleString = Object.entries(opts)
             .map(([key, value]) => {
                 const entry = `${this.camelToKebab(key)}: ${value};`
                 if ([...this.hostIncludes, ...this.hostRefuse].includes(key)) {
@@ -94,14 +96,12 @@ export class EditorComponent extends EditorCanvasBase {
             .join(' ');
 
         hostCss += ' }'
-        // const stylestring = `:host > [styles="host"] { ${styleString} }`
         const stylestring = `[styles="host"] { ${styleString} }`
 
-        return `${hostCss}
-        ${stylestring}
-        `
+        return `${hostCss}\n${stylestring}`
     }
 
+    // RETURNS SUB ELEMENTS STYLES TO VALID CSS
     get subStyleGetter() {
         var payload = '';
         this.definition?.subElements?.forEach(({ key, selector }) => {
@@ -115,18 +115,27 @@ export class EditorComponent extends EditorCanvasBase {
         return payload
     }
 
-    get properties() {
+    // RETURNS PROPERTIES AS VALID OBJECT
+    get properties(): Record<string, any> {
         return JSON.parse(this.__cache_properties || '{}');
     }
 
-    get styles() {
+    // RETURNS STYLES AS VALID OBJECT
+    get styles(): Record<string, any> {
         return JSON.parse(this.__cache_styles || '{}');
     }
 
-    get subElements() {
+    // RETURNS SUB-ELEMENTS PROPERIES
+    get subElements(): Record<string, any> {
         return JSON.parse(this.__cache_subElements || '{}');
     }
 
+    // VALIDATE LABEL
+    get label() {
+        return typeof this._label === 'boolean' ? '' : this._label
+    }
+
+    // RETURNS ENTRY OBJECT
     get entry(): DB.Session | null {
         try {
             return JSON.parse(this._entry!)
@@ -145,23 +154,17 @@ export class EditorComponent extends EditorCanvasBase {
 
         <style ref="button-handle">
             button#handle {
-                padding-top: 0.125rem; /* 2px */
-                padding-bottom: 0.125rem; /* 2px */
-                padding-left: 1.25rem; /* 20px */
-                padding-right: 1.25rem; /* 20px */
+                padding: 0.125rem 1.25rem;
                 border-bottom-left-radius: 0.5rem; /* 8px */
                 border-bottom-right-radius: 0.5rem; /* 8px */
                 border-width: 1px;
-                --un-border-opacity: 1;
-                border-color: rgb(191 219 254 / var(--un-border-opacity));
+                border-color: rgb(191,219,254);
                 border-top-width: 0px;
-                --un-bg-opacity: 1;
-                background-color: rgb(243 244 246 / var(--un-bg-opacity)) /* #f3f4f6 */;
+                background-color: #f3f4f6;
                 width: fit-content;
                 font-size: 0.75rem; /* 12px */
                 line-height: 1rem; /* 16px */
-                --un-text-opacity: 1;
-                color: rgb(55 65 81 / var(--un-text-opacity)) /* #374151 */;
+                color: #374151;
                 font-family: "Space Mono";
                 font-weight: 600;
                 text-transform: capitalize;
@@ -181,13 +184,11 @@ export class EditorComponent extends EditorCanvasBase {
                     scaleX(var(--un-scale-x)) scaleY(var(--un-scale-y))
                     scaleZ(var(--un-scale-z));
             }
+            
             button#handle:hover {
                 border-top-width: 2px;
-                --un-border-opacity: 1;
-                --un-border-top-opacity: var(--un-border-opacity);
-                border-top-color: rgb(129 140 248 / var(--un-border-top-opacity));
-                --un-bg-opacity: 1;
-                background-color: rgb(249 250 251 / var(--un-bg-opacity)) /* #f9fafb */;
+                border-top-color: rgb(129,140,248);
+                background-color: #f9fafb;
                 cursor: grab;
             }
         </style>
@@ -465,7 +466,7 @@ export class EditorComponent extends EditorCanvasBase {
                 order: index,
                 styles: this.styles,
                 subElements: this.subElements,
-                label: this._label
+                label: this.label
             };
 
             const dropzones_ = Array.from(this.selectAll('[data-dropzone-id]') || []);

@@ -142,6 +142,8 @@ interface EditorState {
   };
 }
 
+type EventDetail = Event & { detail: any }
+
 declare namespace DB {
   interface Session {
     type: string,

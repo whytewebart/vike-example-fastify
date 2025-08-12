@@ -1,7 +1,6 @@
 import { Attrs, EventListeners, MinzeElement, Reactive } from 'minze'
 import { nanoid } from 'nanoid';
 import { IndexedDBWrapper } from '../component/utils/state';
-import { rejects } from 'assert';
 
 export interface EditorCanvasBase {
     selectedComponent: HTMLElement | null;

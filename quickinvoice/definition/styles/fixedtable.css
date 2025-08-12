@@ -1,8 +1,12 @@
+table {
+    font-size: 10pt;
+    font-family: 'Albert Sans', serif;
+}
+
 @scope (.default) {
     table {
         border-collapse: collapse;
         width: 100%;
-        font-family: 'Helvetica Neue', sans-serif;
     }
 
     table th {
@@ -40,8 +44,8 @@
             border: 1px solid black;
         }
 
-        td {
-            padding: 0px 8px;
+        th, td {
+            padding: 7px 10px;
             text-align: left;
         }
 
@@ -50,13 +54,16 @@
         }
 
         .charges>*:nth-child(1),
-        .charges>*:nth-child(2) {
+        [footer]>*:nth-child(1),
+        .charges>*:nth-child(2),
+        [footer]>*:nth-child(2) {
             border: none !important;
         }
 
         .charges>*:nth-child(3),
         .charges>*:nth-child(4) {
-            background-color: #ecececff
+            background-color: #ecececff;
+            order: 1;
         }
 
         .subtotal>*:nth-child(3),
@@ -107,7 +114,6 @@
     table {
         border-collapse: collapse;
         width: 100%;
-        font-family: 'Albert Sans', serif;
         border-top: 1px solid #d4c9a8;
         /* border-bottom: 1px solid #d4c9a8; */
     }
@@ -142,7 +148,9 @@
     }
 
     table {
-        .charges, [footer] {
+
+        .charges,
+        [footer] {
             td {
                 padding: 5px 15px;
             }
@@ -177,4 +185,46 @@
             }
         }
     }
+}
+
+@scope (.striped) {
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    th,
+    td {
+        padding: 10px 12px;
+        border: 1px solid #e6e9ef;
+        text-align: left;
+    }
+
+    th {
+        background: #f3f4f6;
+        font-weight: 800;
+    }
+
+    tbody tr {
+        td:nth-child(3) {
+            text-align: right;
+        }
+    }
+
+    tfoot {
+
+        th,
+        td {
+            font-weight: 700;
+            background: #f9fafb;
+            /* background: transparent;
+            border-width: 0; */
+
+            &:nth-child(3) {
+                text-align: right;
+            }
+        }
+    }
+
 }

@@ -210,8 +210,8 @@ export class StyleEditor extends MinzeElement {
                 this.component = e.detail.component
                 const componentId = e.detail.component?.id;
                 const componentType = this.component?.getAttribute('type');
-                const componentProps = this.component?.getAttribute('properties')
-                this.componentLabel = this.component?.getAttribute('label') || this.component?.getAttribute('_label') || '';
+                const componentProps = this.component?.getAttribute('_properties')
+                this.componentLabel = this.component?.getAttribute('_label') || '';
 
                 // SET COMPONENT ON PROPERTY CLASS
                 this.property.setComponent({
@@ -221,7 +221,6 @@ export class StyleEditor extends MinzeElement {
                 });
 
                 this.property.setProperties(JSON.parse(componentProps || '{}'))
-                // this.dimensions.setComponent(this.component!)
                 // SET STYLES
                 await import('@/quickinvoice/definition/components')
                     .then((response) => {
@@ -263,6 +262,14 @@ export class StyleEditor extends MinzeElement {
             "[data-component]",
             "click",
             this.handleToggleClick
+        ],
+        [
+            window, "onnboarding:style-editor-switch", (e: EventDetail) => {
+                const { tab } = e.detail;
+                if(['styles', 'properties'].includes(tab)) {
+                    this.componentToShow = tab
+                }
+            }
         ],
         [
             "button#handle-edit-label",

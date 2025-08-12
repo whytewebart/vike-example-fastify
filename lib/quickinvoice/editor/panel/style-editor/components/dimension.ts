@@ -31,7 +31,13 @@ export class DimensionEditor extends StyleEditorBase {
                 description: 'Set the height of the component.',
                 key: nanoid(6),
                 class: ''
-            }
+            },
+            {
+                prop: 'flex',
+                type: 'select',
+                label: 'Flex',
+                value: 'none',
+            },
         ])]
     ]
 
@@ -42,7 +48,7 @@ export class DimensionEditor extends StyleEditorBase {
                 .map((value: string) => `<option ${opt.value.match(regex)?.includes(value) ? 'selected' : ''} value="${value}" class="">${value}</option>`).join('')
             }
         `
-        
+
         return /*html*/`
             <div class="grid cols-[1fr_auto]" border="1 gray-300">
                 <input
@@ -72,12 +78,55 @@ export class DimensionEditor extends StyleEditorBase {
                 <div class="content pb-2">
                     <p>${this.description}</p>
                     <div class="form">
-                        ${this.fields.map(prop => `
+                        ${this.fields.filter(d => d.prop !== 'flex').map(prop => `
                         <div class="${prop.class || ''}">
                             <label for="${prop.prop}">${prop.label}</label>
                             ${this.field(prop)}
                         </div>
                         `).join('')}
+                    </div>
+                    
+                    <div class="grid-col-span-2 space-y-3 mt-3">
+                        <label for="flex" class="font-space-mono font-700">Flex Container</label>
+                        <div
+                            class="mt-2 bg-gray-100"
+                            grid="~ cols-2"
+                            border="1"
+                        >
+                            <label
+                                for="1"
+                                class="flex justify-center items-center font-medium w-full h-full py-1.5 peer-checked:bg-white text-center relative cursor-pointer"
+                                hover="bg-gray-200"
+                            >
+                                <span class="z-1 relative">flex</span>
+                                <input
+                                    type="radio"
+                                    id="1"
+                                    name="flex"
+                                    prop="flex"
+                                    value="1"
+                                    class="sr-only peer"
+                                />
+                                <div class="absolute top-0 left-0 right-0 m-1 rounded-lg h-[stretch] peer-checked:bg-white"></div>
+                            </label>
+
+                            <label
+                                for="none"
+                                class="flex justify-center items-center font-medium w-full h-full py-1.5 peer-checked:bg-white text-center relative cursor-pointer"
+                                hover="bg-gray-200"
+                            >
+                                <span class="z-1 relative">Revert</span>
+                                <input
+                                    type="radio"
+                                    id="none"
+                                    name="flex"
+                                    prop="flex"
+                                    value="none"
+                                    class="sr-only peer"
+                                />
+                                <div class="absolute top-0 left-0 right-0 m-1 rounded-lg h-[stretch] peer-checked:bg-white"></div>
+                            </label>
+                        </div>
                     </div>
                 </div>
             </details>
@@ -144,6 +193,21 @@ export class DimensionEditor extends StyleEditorBase {
 
     // EVENT LISTENERS
     eventListeners: EventListeners = [
-        ['input, select', 'input', this.handleChange],
+        ['input:not([type="radio"]), select', 'input', this.handleChange],
+        ['input[type="radio"]', 'input', (e: Event) => {
+            const target = e.target as HTMLInputElement;
+            const name = target.getAttribute('prop')!
+            const value = target.value;
+
+            this.updateProperties(name, value)
+
+            // GET COMPONENT
+            this.dispatch(`component:${this.componentId}:styles`, {
+                [this.subElement]: {
+                    [name]: value,
+                    'display': name === 'flex' && value === '1' ? 'flex' : 'initial'
+                }
+            })
+        }],
     ]
 }

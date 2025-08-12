@@ -35,6 +35,9 @@ dependencies:
   '@primevue/metadata':
     specifier: 4.3.3
     version: 4.3.3
+  '@sjmc11/tourguidejs':
+    specifier: ^0.0.27
+    version: 0.0.27
   '@unhead/ssr':
     specifier: ^1.11.15
     version: 1.11.15
@@ -977,6 +980,23 @@ packages:
       glob: 11.0.0
     dev: false
 
+  /@floating-ui/core@1.7.3:
+    resolution: {integrity: sha512-sGnvb5dmrJaKEZ+LDIpguvdX3bDlEllmv4/ClQ9awcmCZrlx5jQyyMWFM5kBI+EyNOCDDiKk8il0zeuX3Zlg/w==}
+    dependencies:
+      '@floating-ui/utils': 0.2.10
+    dev: false
+
+  /@floating-ui/dom@1.7.3:
+    resolution: {integrity: sha512-uZA413QEpNuhtb3/iIKoYMSK07keHPYeXF02Zhd6e213j+d1NamLix/mCLxBUDW/Gx52sPH2m+chlUsyaBs/Ag==}
+    dependencies:
+      '@floating-ui/core': 1.7.3
+      '@floating-ui/utils': 0.2.10
+    dev: false
+
+  /@floating-ui/utils@0.2.10:
+    resolution: {integrity: sha512-aGTxbpbg8/b5JfU1HXSrbH3wXZuLPJcNEcZQFMxLs3oSzgtVu6nFPkbbGGUvBcUjKV2YyB9Wxxabo+HEH9tcRQ==}
+    dev: false
+
   /@iconify-json/fa6-brands@1.2.5:
     resolution: {integrity: sha512-U/iFfziz6jSN9zArOJZYTtoj2tQyh6MxPdI8M84DQ2kEulPaj8j+h9bqvjmzszNHmD7v+kmmKd/MLkMKk+3Zuw==}
     dependencies:
@@ -1670,6 +1690,13 @@ packages:
     os: [win32]
     requiresBuild: true
     optional: true
+
+  /@sjmc11/tourguidejs@0.0.27:
+    resolution: {integrity: sha512-SCnY9BhZbiB8N3MeU+KqJmxJrQqID3DJGMlBjZPr1+IG2OLDz8WS6K3T3AT8fLhbY3oKGEUd241R308bK3F3BA==}
+    dependencies:
+      '@floating-ui/dom': 1.7.3
+      sass: 1.83.1
+    dev: false
 
   /@tsconfig/node10@1.0.11:
     resolution: {integrity: sha512-DcRjDCujK/kCk/cUe8Xz8ZSpm8mS3mNNpta+jGCA6USEDfktlNvm1+IuZ9eTcDbNk41BHwpHHeW+N1lKCz4zOw==}

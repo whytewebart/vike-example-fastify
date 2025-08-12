@@ -81,6 +81,7 @@
 
 <script lang="ts" setup>
 import gsap from 'gsap';
+import "@sjmc11/tourguidejs/src/scss/tour.scss"
 
 const bus = useEventBus('editor-w')
 function scrollToEditor() {

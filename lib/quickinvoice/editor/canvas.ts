@@ -3,8 +3,11 @@ import { MinzeElement } from 'minze';
 
 import css from './styles/canvas.css?inline'
 import componentCss from './styles/component.css?inline'
+import resetcss from "@unocss/reset/tailwind-compat.css?inline"
 
 import { EditorCanvasBase } from './base/canvas';
+import { EditorComponent } from './component';
+import { customAlphabet } from 'nanoid';
 
 export interface EditorCanvas {
     canvas: {
@@ -86,6 +89,90 @@ export class EditorCanvas extends EditorCanvasBase {
         ],
         [window, 'mouseup', () => { this.dispatch('canvas:enddrag') }]
     ]
+
+    // DOWNLOAD
+    print = async () => {
+        if (!this.session) {
+            alert('DB not initialized. try again in a few minutes')
+        };
+
+        const spaces = await this.space.findByIndex("latest", "true");
+        if (!(spaces.length > 0)) return;
+
+        const divToDownload = document.createElement('div');
+        const canvas = this.select("#canvas")!
+        const canvasChildren: EditorComponent[] = Array.from(canvas.querySelectorAll('editor-component'))
+
+        const _uniqueId = customAlphabet('abcdefghijklmnopqrstuvwxyz', 10)
+
+        function recurisveNestedFind(el: EditorComponent) {
+            const element = document.createElement('div');
+            // DEFINE UNIQUE IDS
+            const hostId = _uniqueId()
+            // DEFINE SANITIZED DOM
+            const _html = el.shadowRoot?.innerHTML!.replaceAll(/(?<!:)\bhost\b/g, hostId)
+            const _css = el.privateCss().replaceAll(/(?<!:)\bhost\b/g, hostId)
+            // APPEND HTML
+            element.innerHTML += _html;
+            element.innerHTML += `<style>${_css}</style>`;
+            // REMOVE DRAG HANDLE
+            element.querySelector('button#handle')?.remove();
+            element.querySelector('style[ref="button-handle"]')?.remove();
+            // GET ID
+            const id = el.getAttribute("id")!
+            const query = <NodeListOf<EditorComponent>>element?.querySelectorAll('editor-component');
+
+            for (const nested of query) {
+                const id = nested.getAttribute("id")!;
+                const element = <EditorComponent>el.shadowRoot?.querySelector(`[id="${id}"]`)
+                const response = recurisveNestedFind(element)
+                const key = Object.keys(response)[0]
+                const { html } = response[key];
+
+                nested.parentElement?.appendChild(html);
+                nested.remove();
+            }
+
+            return {
+                [id]: {
+                    html: document.createRange().createContextualFragment(element?.innerHTML)
+                }
+            }
+        }
+
+        divToDownload.innerHTML += /*html*/`
+            <style>
+                ${resetcss}
+                ${componentCss}
+            </style>
+        `
+
+        Array.from(canvasChildren)
+            .map(el => recurisveNestedFind(el))
+            .forEach(entry => {
+                const key = Object.keys(entry)[0];
+                const { html } = entry[key];
+
+                divToDownload.appendChild(html)
+            });
+
+
+        // REMOVE ALL SLOTS
+        divToDownload.querySelectorAll('slot').forEach(slot => slot.remove())
+        // SET INVOICE CONTAINER STYLES
+        const styles = {
+            width: '535px',
+            height: '760px',
+            display: 'flex',
+            'flex-direction': 'column',
+            background: 'white'
+        };
+
+        divToDownload.setAttribute('style', `${Object.entries(styles).map(([key, value]) => `${key}:${value}`).join(';')}`)
+
+        window.invoiceHTML = document.createRange().createContextualFragment(divToDownload.outerHTML);
+        this.dispatch('print-invoice', { toPrint: window.invoiceHTML, })
+    }
 
     scaleCanvas() {
         clearTimeout(this.resizeTimeout)
@@ -255,6 +342,17 @@ export class EditorCanvas extends EditorCanvasBase {
                 this.components.create(template.type, canvas!);
                 console.log(`Template ${template.type} registered successfully.`);
             }
+        ],
+        [
+            window, 'canvas:select:random', (e: EventDetail) => {
+                const random = this.select<HTMLElement>('editor-component');
+                if(random) {
+                    this.components.select(random)
+                }
+            }
+        ],
+        [
+            window, 'editor-canvas:download:print', this.print
         ]
     ]
 

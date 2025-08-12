@@ -1,12 +1,16 @@
 <template>
-  <Button
-    label="Select invoice template"
-    icon="i-solar-alt-arrow-down-outline"
-    icon-pos="right"
-    pt:root="justify-between w-fit gap-x-8 mx-a"
-    pt:label="flex-none"
-    @click="toggleTemplates = !toggleTemplates"
-  />
+  <ButtonGroup pt:root="mx-a">
+    <Button
+      label="Select invoice template"
+      icon="i-solar-alt-arrow-down-outline"
+      icon-pos="right"
+      pt:root="justify-between w-fit gap-x-8"
+      pt:label="flex-none"
+      @click="toggleTemplates = !toggleTemplates"
+      id="select-invoice-template"
+    />
+    <Button label="Onboarding" severity="secondary" @click="startTour" />
+  </ButtonGroup>
 
   <div class="bk-col-full my-4" invoice-temp-grid>
     <div v-if="toggleTemplates">
@@ -57,18 +61,35 @@
     class="bk-col-root xxl:bk-col-nav sm:b-y-1"
     :class="{ 'temp-open': toggleTemplates }"
   >
-    <editor-canvas> </editor-canvas>
+    <editor-canvas></editor-canvas>
+    <div
+      slot="panels-onboarding-div"
+      class="p-3 h-full absolute top-0 left-0 right-0 -z-1"
+    ></div>
+    <div
+      slot="style-editor-onboarding-div"
+      class="p-3 h-full absolute top-0 left-0 right-0 -z-1"
+    ></div>
   </editor-wrapper>
 </template>
 
 <script lang="tsx" setup>
+import type { TourGuideClient } from "@sjmc11/tourguidejs";
+import { TourGuideStep } from "@sjmc11/tourguidejs/src/types/TourGuideStep";
 import { SetupContext } from "vue";
 
 const visible = ref(false);
 const toggleTemplates = ref(false);
 
+const tg = ref<TourGuideClient>();
 const confirm = useConfirm();
 const toast = useToast();
+const breakpoints = useBreakpoints({
+  xs: 0,
+  sm: 640,
+  md: 768,
+  editor: 1000,
+});
 
 const InvoiceTemplate = (props: { type?: string }, ctx: SetupContext) => {
   const emitRegsiterTemplate = () => {
@@ -98,7 +119,7 @@ const InvoiceTemplate = (props: { type?: string }, ctx: SetupContext) => {
               },
             },
           })
-        )
+        );
 
         toggleTemplates.value = false;
         toast.add({
@@ -111,8 +132,8 @@ const InvoiceTemplate = (props: { type?: string }, ctx: SetupContext) => {
       reject: () => {
         toast.add({
           severity: "error",
-          summary: "Rejected",
-          detail: "You have rejected",
+          summary: "Action Canceled",
+          // detail: "You have rejected",
           life: 3000,
         });
       },
@@ -144,8 +165,111 @@ function getPrint() {
   }
 }
 
-onMounted(() => {
+const steps = ref<TourGuideStep[]>([
+  {
+    target: "editor-wrapper", // no specific target, overlays the whole screen
+    title: "Welcome to InvoiceSpace Editor!",
+    content: `
+      <p>This is where you create and customize invoices. Let’s take a quick tour so you can start building like a pro.</p>
+      <p><em>You can skip at any time.</em></p>
+    `,
+  },
+  {
+    target: "editor-canvas",
+    title: "The Canvas",
+    content: `
+      <p>This is your live preview area. Everything you change in the editor appears here instantly. Click elements to select and customize them.</p>
+    `,
+  },
+  {
+    target: "[slot=panels-onboarding-div]",
+    title: "Components",
+    content: `
+      <p>Here you’ll find building blocks for your invoice — headers, tables, totals, and more. Drag and drop them into the canvas to add them to your design.</p>
+    `,
+  },
+  {
+    target: "[slot=style-editor-onboarding-div]",
+    title: "The Editor Panel",
+    content: `
+      <p>Once you select something on the canvas, you can customize it here. It’s divided into two sections: Styles and Properties.</p>
+    `,
+  },
+  {
+    target: "[slot=style-editor-onboarding-div]",
+    title: "Styles Editor",
+    content: `
+      <p>Here you can adjust colors, fonts, spacing, and other visual settings for your selected component.</p>
+  <p class="font-semibold text-base my-2"><strong>Tip:</strong> Use the <em>Select Nested Elements</em> dropdown to target and style specific parts within the component.</p>
+
+  <p>Different components will show different nested elements, depending on their structure.</p>
+    `,
+    beforeEnter() {
+      window.dispatchEvent(new CustomEvent("canvas:select:random"));
+      window.dispatchEvent(
+        new CustomEvent("onnboarding:style-editor-switch", {
+          detail: {
+            tab: "styles",
+          },
+        })
+      );
+    },
+  },
+  {
+    target: "[slot=style-editor-onboarding-div]",
+    title: "Properties Editor",
+    content: `
+      <p>Control content, data bindings, and specific settings for your selected element. Perfect for editing text, numbers, and dynamic fields.</p>
+    `,
+    beforeEnter() {
+      window.dispatchEvent(
+        new CustomEvent("onnboarding:style-editor-switch", {
+          detail: {
+            tab: "properties",
+          },
+        })
+      );
+    },
+  },
+  {
+    target: "body",
+    title: "You’re all set!",
+    content: `
+      <p>Now it’s your turn — add components, style them, and send your first invoice.</p>
+      <p><em>Tip: You can restart this tour anytime from the Help menu.</em></p>
+    `,
+  },
+]);
+function startTour() {
+  tg.value?.start();
+  // window.dispatchEvent(
+  //   new CustomEvent("quickinvoice:start-tour")
+  // );
+}
+
+onMounted(async () => {
   window.addEventListener("print-invoice", getPrint);
+  const { TourGuideClient } = await import("@sjmc11/tourguidejs");
+
+  const valid = breakpoints.isSmallerOrEqual('editor');
+  if(valid) {
+    steps.value = steps.value.map((step) => {
+
+      if (step.target === "editor-wrapper") step.target = undefined;
+      if (step.target === "[slot=panels-onboarding-div]") {
+        step.target = "#select-invoice-template";
+        step.title = "Select a Template"
+        step.content = `<p>Start faster by choosing a pre-designed invoice template. Click <strong>Select Template</strong> at the top of the editor to browse and load a design instantly.</p>
+        <p>You can still customize everything later — fonts, colors, layout, and more.</p>`
+      };
+
+      return step
+    })
+  }
+
+  tg.value = new TourGuideClient({
+    steps: steps.value,
+  });
 });
 
 onUnmounted(() => {
@@ -186,5 +310,17 @@ div[invoice-temp-grid] {
 
 .temp-open {
   --at-apply: max-lg:h-0 max-lg:overflow-hidden;
+}
+
+.tg-dialog-header {
+  @apply: pt-2! px-3!;
+}
+
+.tg-dialog-body {
+  @apply: p-3!;
+}
+
+.tg-dialog-footer {
+  @apply: p-3!;
 }
 </style>
