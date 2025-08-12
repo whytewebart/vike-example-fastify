@@ -48,7 +48,7 @@
     </div>
     <div id="download-print"></div>
 
-    <div class="sticky bottom-0 left-0 right-0 p-2" grid="~ sm:cols-2 gap-2">
+    <div class="sticky bottom-0 left-0 right-0 p-2 bg-white" grid="~ cols-2 gap-2">
       <Button
         label="Close Window"
         pt:root=""
@@ -285,10 +285,6 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss">
-body:has(.quickinvoice) {
-  --at-apply: bg-alabaster!;
-}
-
 div[invoice-temp] {
   &:hover {
     --at-apply: bg-white;

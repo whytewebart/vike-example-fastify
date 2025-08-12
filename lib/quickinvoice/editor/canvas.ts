@@ -8,6 +8,7 @@ import resetcss from "@unocss/reset/tailwind-compat.css?inline"
 import { EditorCanvasBase } from './base/canvas';
 import { EditorComponent } from './component';
 import { customAlphabet } from 'nanoid';
+import { transform } from 'typescript';
 
 export interface EditorCanvas {
     canvas: {
@@ -187,10 +188,13 @@ export class EditorCanvas extends EditorCanvasBase {
 
         /* CLEAR THE CANVAS */
         const canvas = this.select<HTMLElement>("#canvas")!
-        const divToDownload = document.createElement('div');
+        const invoiceHTML = document.createElement('div');
+        const invoiceScaleWrapper = document.createElement('div')
+        const invoiceContainer = document.createElement('div');
+
         const canvasChildren: EditorComponent[] = Array.from(canvas.querySelectorAll('editor-component'))
 
-        divToDownload.innerHTML += /*html*/`
+        invoiceHTML.innerHTML += /*html*/`
             <style>
                 ${resetcss}
                 ${componentCss}
@@ -203,24 +207,35 @@ export class EditorCanvas extends EditorCanvasBase {
                 const key = Object.keys(entry)[0];
                 const { html } = entry[key];
 
-                divToDownload.appendChild(html)
+                invoiceHTML.appendChild(html)
             });
 
 
         // REMOVE ALL SLOTS
-        divToDownload.querySelectorAll('slot').forEach(slot => slot.remove())
+        invoiceHTML.querySelectorAll('slot').forEach(slot => slot.remove())
+        // SET INVOICE HTML ID
+        invoiceHTML.id = 'document-to-print';
+        // SET CONTAINER STYLES
+        invoiceContainer.style.width = `${this.canvas.width * this.canvasScale}px`;
+        invoiceContainer.style.height = `${this.canvas.height * this.canvasScale}px`;
+        invoiceContainer.style.display = 'grid';
+        invoiceContainer.style.justifyContent = 'center';
+        invoiceContainer.style.alignContent = 'center';
+        invoiceContainer.style.margin = '0px auto';
+        // SET INVOICE SCALE WRAPPER SCALE
+        invoiceScaleWrapper.style.transform = `scale(${this.canvasScale})`;
         // SET INVOICE CONTAINER STYLES
-        const styles = {
-            width: '535px',
-            height: '760px',
-            display: 'flex',
-            'flex-direction': 'column',
-            background: 'white'
-        };
+        invoiceHTML.style.width = `${this.canvas.width}px`;
+        invoiceHTML.style.height = `${this.canvas.height}px`;
+        invoiceHTML.style.display = 'flex';
+        invoiceHTML.style.flexDirection = 'column';
+        invoiceHTML.style.background = 'white';
 
-        divToDownload.setAttribute('style', `${Object.entries(styles).map(([key, value]) => `${key}:${value}`).join(';')}`)
-
-        window.invoiceHTML = document.createRange().createContextualFragment(divToDownload.outerHTML);
+        // SET STRUCTURE
+        invoiceScaleWrapper.appendChild(invoiceHTML);
+        invoiceContainer.appendChild(invoiceScaleWrapper);
+        // SET TO WINDOWS OBJECT
+        window.invoiceHTML = document.createRange().createContextualFragment(invoiceContainer.outerHTML);
         this.dispatch('print-invoice', { toPrint: window.invoiceHTML, })
     }
 

@@ -1,16 +1,17 @@
 <template>
-
   <Toast />
-  <ConfirmDialog :pt="{
-    header: 'py-2 px-3 hidden!',
-    headerActions: 'hidden!',
-    root: 'p-0! bg-transparent!',
-    content: 'bg-gray-50 px-4! py-2! rounded-t-lg!',
-    icon: 'hidden',
-    message: 'font-urbanist! text-sm text-gray-700',
-    footer: 'bg-gray-50 p-2! rounded-b-lg! grid! grid-cols-2 gap-2',
-    mask: 'bg-surface-50/20! backdrop-blur-sm!',
-  }">
+  <ConfirmDialog
+    :pt="{
+      header: 'py-2 px-3 hidden!',
+      headerActions: 'hidden!',
+      root: 'p-0! bg-transparent!',
+      content: 'bg-gray-50 px-4! py-2! rounded-t-lg!',
+      icon: 'hidden',
+      message: 'font-urbanist! text-sm text-gray-700',
+      footer: 'bg-gray-50 p-2! rounded-b-lg! grid! grid-cols-2 gap-2',
+      mask: 'bg-surface-50/20! backdrop-blur-sm!',
+    }"
+  >
     <template #message="{ message }">
       <span v-html="message.message"></span>
     </template>
@@ -68,7 +69,12 @@
     :style="{ left: x + 'px', top: y + 'px' }"
   ></div> -->
   <div id="jump-to-editor" class="fixed bottom-4 right-4 z-10 space-x-2">
-    <Button pt:root="py-1.5!" size="small" icon="i-solar-arrow-up-outline" @click="scrollToTop" />
+    <Button
+      pt:root="py-1.5!"
+      size="small"
+      icon="i-solar-arrow-up-outline"
+      @click="scrollToTop"
+    />
     <Button
       label="Jump to Editor"
       size="small"
@@ -80,26 +86,25 @@
 </template>
 
 <script lang="ts" setup>
-import gsap from 'gsap';
-import "@sjmc11/tourguidejs/src/scss/tour.scss"
+import gsap from "gsap";
+import "@sjmc11/tourguidejs/src/scss/tour.scss";
 
-const bus = useEventBus('editor-w')
+const bus = useEventBus("editor-w");
 function scrollToEditor() {
-  document.querySelector('editor-wrapper')?.scrollIntoView({
-    behavior: 'smooth'
-  })
+  document.querySelector("editor-wrapper")?.scrollIntoView({
+    behavior: "smooth",
+  });
 }
 
 function scrollToTop() {
   window.scrollTo({
     top: 0,
-    behavior: 'smooth'
-  })
+    behavior: "smooth",
+  });
 }
 
 onMounted(() => {
-
-  const _target = <HTMLElement>document.querySelector("editor-wrapper")!
+  const _target = <HTMLElement>document.querySelector("editor-wrapper")!;
   const target = <HTMLElement>document.querySelector("#jump-to-editor")!;
 
   const observer = new IntersectionObserver(
@@ -108,14 +113,14 @@ onMounted(() => {
         if (entry.isIntersecting) {
           gsap.to(target, {
             height: 0,
-            overflow: 'hidden'
-          })
+            overflow: "hidden",
+          });
 
           // bus.emit('open-editor')
         } else {
           gsap.to(target, {
-            height: 'auto'
-          })
+            height: "auto",
+          });
         }
       });
     },
@@ -151,13 +156,13 @@ body:has(.quickinvoice) {
   }
 
   .quickinvoice {
-    --at-apply: viewport max-md:bg-surface-100;
+    --at-apply: viewport;
     --gap: 1em;
     --full-val: 1200px;
 
     h1 {
       // font-size: clamp(40px, 5vw, 60px);
-      font-size: clamp(30px, 12vw - 1rem , 60px);
+      font-size: clamp(30px, 12vw - 1rem, 60px);
       letter-spacing: -0.09em;
       line-height: 1;
       text-align: center;
@@ -167,6 +172,10 @@ body:has(.quickinvoice) {
         font-size: clamp(30px, 5vw + 1rem, 60px);
       }
     }
+  }
+
+  @screen lt-md {
+    background: #f4f4f5 !important;
   }
 }
 </style>
