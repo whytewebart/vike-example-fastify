@@ -17,6 +17,7 @@ export interface EditorCanvas {
 
     canvasScale: number,
     resizeTimeout?: NodeJS.Timeout,
+    _cache_registered: boolean
 }
 
 type EventDetail = Event & { detail: any }
@@ -40,6 +41,7 @@ export class EditorCanvas extends EditorCanvasBase {
 
         'canvasScale',
         'resizeTimeout',
+        '_cache_registered'
     ]
 
     // HANDLE CLASSES
@@ -90,6 +92,90 @@ export class EditorCanvas extends EditorCanvasBase {
         [window, 'mouseup', () => { this.dispatch('canvas:enddrag') }]
     ]
 
+    registerComponents = async () => {
+        /* GET CURRENT SESSION */
+        const active = (await this.space.findByIndex('latest', "true"))[0];
+        /* const query = IDBKeyRange.bound(active.id, [active.id, []]) */
+        const query = IDBKeyRange.only([active.id, active.id])
+        await this.session.findByIndex("sessionId", query).then(response => {
+            const canvas = this.select(`[data-dropzone-id="${active.id}"]`);
+            response
+                .sort((a, b) => a.order - b.order)
+                .map(entry => {
+                    if (entry.dropzone !== active.id) return;
+                    const rootElement = this.select(`[data-dropzone-id="${entry.dropzone}"]`);
+
+                    const component = this.components.create(entry.type, undefined, {
+                        properties: entry.properties,
+                        id: entry.id,
+                        "sub-elements": entry?.subElements,
+                        styles: entry?.styles,
+                        label: entry?.label
+                    });
+
+                    if (rootElement) rootElement.appendChild(component)
+                    else { canvas?.appendChild(component) }
+                })
+        });
+
+        this._cache_registered = true;
+    }
+
+
+    _uniqueId = customAlphabet('abcdefghijklmnopqrstuvwxyz', 10)
+
+    isDescendantOfSlot(element: HTMLElement, shadowRoot: ShadowRoot) {
+        const slots = shadowRoot.querySelectorAll('slot');
+
+        for (const slot of slots) {
+            const assignedNodes = slot.assignedNodes({ flatten: true });
+
+            for (const node of assignedNodes) {
+                if (node.nodeType === Node.ELEMENT_NODE && node.contains(element)) {
+                    return slot;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    recurisveNestedFind(el: EditorComponent) {
+        const element = document.createElement('div');
+        // DEFINE UNIQUE IDS
+        const hostId = this._uniqueId()
+        // DEFINE SANITIZED DOM
+        const _html = el.shadowRoot?.innerHTML!.replaceAll(/(?<!:)\bhost\b/g, hostId)
+        const _css = el.privateCss().replaceAll(/(?<!:)\bhost\b/g, hostId)
+        // APPEND HTML
+        element.innerHTML += _html;
+        element.innerHTML += `<style>${_css}</style>`;
+        // REMOVE DRAG HANDLE
+        element.querySelector('button#handle')?.remove();
+        element.querySelector('style[ref="button-handle"]')?.remove();
+        // GET ID
+        const id = el.getAttribute("id")!
+        const shadowRoot = el.shadowRoot;
+        const query = <NodeListOf<EditorComponent>>element?.querySelectorAll('editor-component');
+
+        for (const nested of query) {
+            const id = nested.getAttribute("id")!;
+            const element = <EditorComponent>shadowRoot?.querySelector(`[id="${id}"]`)
+            const response = this.recurisveNestedFind(element)
+            const key = Object.keys(response)[0]
+            const { html } = response[key];
+
+            nested.parentElement?.appendChild(html);
+            nested.remove();
+        }
+
+        return {
+            [id]: {
+                html: document.createRange().createContextualFragment(element?.innerHTML)
+            }
+        }
+    }
+
     // DOWNLOAD
     print = async () => {
         if (!this.session) {
@@ -99,46 +185,10 @@ export class EditorCanvas extends EditorCanvasBase {
         const spaces = await this.space.findByIndex("latest", "true");
         if (!(spaces.length > 0)) return;
 
+        /* CLEAR THE CANVAS */
+        const canvas = this.select<HTMLElement>("#canvas")!
         const divToDownload = document.createElement('div');
-        const canvas = this.select("#canvas")!
         const canvasChildren: EditorComponent[] = Array.from(canvas.querySelectorAll('editor-component'))
-
-        const _uniqueId = customAlphabet('abcdefghijklmnopqrstuvwxyz', 10)
-
-        function recurisveNestedFind(el: EditorComponent) {
-            const element = document.createElement('div');
-            // DEFINE UNIQUE IDS
-            const hostId = _uniqueId()
-            // DEFINE SANITIZED DOM
-            const _html = el.shadowRoot?.innerHTML!.replaceAll(/(?<!:)\bhost\b/g, hostId)
-            const _css = el.privateCss().replaceAll(/(?<!:)\bhost\b/g, hostId)
-            // APPEND HTML
-            element.innerHTML += _html;
-            element.innerHTML += `<style>${_css}</style>`;
-            // REMOVE DRAG HANDLE
-            element.querySelector('button#handle')?.remove();
-            element.querySelector('style[ref="button-handle"]')?.remove();
-            // GET ID
-            const id = el.getAttribute("id")!
-            const query = <NodeListOf<EditorComponent>>element?.querySelectorAll('editor-component');
-
-            for (const nested of query) {
-                const id = nested.getAttribute("id")!;
-                const element = <EditorComponent>el.shadowRoot?.querySelector(`[id="${id}"]`)
-                const response = recurisveNestedFind(element)
-                const key = Object.keys(response)[0]
-                const { html } = response[key];
-
-                nested.parentElement?.appendChild(html);
-                nested.remove();
-            }
-
-            return {
-                [id]: {
-                    html: document.createRange().createContextualFragment(element?.innerHTML)
-                }
-            }
-        }
 
         divToDownload.innerHTML += /*html*/`
             <style>
@@ -148,7 +198,7 @@ export class EditorCanvas extends EditorCanvasBase {
         `
 
         Array.from(canvasChildren)
-            .map(el => recurisveNestedFind(el))
+            .map(el => this.recurisveNestedFind(el))
             .forEach(entry => {
                 const key = Object.keys(entry)[0];
                 const { html } = entry[key];
@@ -234,7 +284,7 @@ export class EditorCanvas extends EditorCanvasBase {
         }
     `
 
-    deleteComponentRecursively = async (component: HTMLElement) => {
+    deleteComponentRecursively = async (component: HTMLElement, deleteFromDB = false) => {
         const shadowRoot = component.shadowRoot;
 
         // 1. Get all <editor-component> children inside the shadow DOM
@@ -260,11 +310,11 @@ export class EditorCanvas extends EditorCanvasBase {
 
         // 4. Recursively delete all children
         for (const child of allChildren) {
-            await this.deleteComponentRecursively(child);
+            await this.deleteComponentRecursively(child, deleteFromDB);
         }
 
         // 5. Delete the current component
-        await this.session.delete(component.id);
+        if (deleteFromDB) { await this.session.delete(component.id); }
         component.remove();
     };
 
@@ -293,7 +343,7 @@ export class EditorCanvas extends EditorCanvasBase {
                     }
 
                     // Recursive delete function
-                    await this.deleteComponentRecursively(this.selectedComponent);
+                    await this.deleteComponentRecursively(this.selectedComponent, true);
                     this.components.select(null);
 
                     this.dropzone.methods.resetDropHighilght(selectedCanvas!)
@@ -329,15 +379,13 @@ export class EditorCanvas extends EditorCanvasBase {
             window, 'components:register-template', async (e: EventDetail) => {
                 const { template } = e.detail;
                 if (!template) return;
-
                 /* CLEAR THE CANVAS */
                 const canvas = this.select("#canvas") as HTMLElement;
                 const editors = canvas.querySelectorAll<HTMLElement>('editor-component');
 
                 for (const editor of editors) {
-                    await this.deleteComponentRecursively(editor)
-                }
-
+                    await this.deleteComponentRecursively(editor, true)
+                };
                 /* REGISTER THE TEMPLATE */
                 this.components.create(template.type, canvas!);
                 console.log(`Template ${template.type} registered successfully.`);
@@ -346,7 +394,7 @@ export class EditorCanvas extends EditorCanvasBase {
         [
             window, 'canvas:select:random', (e: EventDetail) => {
                 const random = this.select<HTMLElement>('editor-component');
-                if(random) {
+                if (random) {
                     this.components.select(random)
                 }
             }
@@ -361,33 +409,16 @@ export class EditorCanvas extends EditorCanvasBase {
         this.dropzone.hooks.start();
     }
 
+    async afterRender() {
+        if (this._cache_registered)
+            await this.registerComponents();
+    }
+
     async onReady() {
         await this.space.open();
         await this.dropzone.setup();
         await this.session.open();
-        /* GET CURRENT SESSION */
-        const active = (await this.space.findByIndex('latest', "true"))[0];
-        /* const query = IDBKeyRange.bound(active.id, [active.id, []]) */
-        const query = IDBKeyRange.only([active.id, active.id])
-        await this.session.findByIndex("sessionId", query).then(response => {
-            const canvas = this.select(`[data-dropzone-id="${active.id}"]`);
-            response
-                .sort((a, b) => a.order - b.order)
-                .map(entry => {
-                    if (entry.dropzone !== active.id) return;
-                    const rootElement = this.select(`[data-dropzone-id="${entry.dropzone}"]`);
 
-                    const component = this.components.create(entry.type, undefined, {
-                        properties: entry.properties,
-                        id: entry.id,
-                        "sub-elements": entry?.subElements,
-                        styles: entry?.styles,
-                        label: entry?.label
-                    });
-
-                    if (rootElement) rootElement.appendChild(component)
-                    else { canvas?.appendChild(component) }
-                })
-        })
+        await this.registerComponents()
     }
 }

@@ -37,12 +37,15 @@
     modal
     :pt="{
       content:
-        'bg-white! p-0! app-scrollbar rounded-none! border-none! lg:overflow-x-hidden [&::-webkit-scrollbar]:hidden!',
-      root: 'max-sm:rounded-none overflow-clip max-w-full',
+        'p-0! app-scrollbar rounded-none! border-none! lg:overflow-x-hidden [&::-webkit-scrollbar]:hidden!',
+      root: 'bg-transparent! max-sm:rounded-none overflow-clip max-w-full',
       mask: 'bg-surface-50/20! backdrop-blur-sm!',
     }"
     @show="getPrint"
   >
+    <div class="w-full" flex="~ justify-center">
+      <Button label="[ Refresh to fix layout issues ]" @click="reloadWindow" pt:root="bg-white mb-2 py-1! px-2" size="small" severity="secondary" />
+    </div>
     <div id="download-print"></div>
 
     <div class="sticky bottom-0 left-0 right-0 p-2" grid="~ sm:cols-2 gap-2">
@@ -163,6 +166,10 @@ function getPrint() {
     document.querySelector("#download-print")?.replaceWith(window.invoiceHTML);
     visible.value = true;
   }
+}
+
+function reloadWindow() {
+  window.location.reload()
 }
 
 const steps = ref<TourGuideStep[]>([
