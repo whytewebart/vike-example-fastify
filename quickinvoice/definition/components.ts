@@ -522,7 +522,6 @@ const fixedTable: ComponentDefinition = {
                 'dark',
                 'newspaper',
                 'striped',
-                'condensed'
             ],
         },
         {
