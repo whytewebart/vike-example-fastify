@@ -48,15 +48,16 @@
     </div>
     <div id="download-print"></div>
 
-    <div class="sticky bottom-0 left-0 right-0 p-2 bg-white" grid="~ cols-2 gap-2">
+    <div class="sticky bottom-0 left-0 right-0 p-2 bg-white b-t-1" grid="~ cols-2 gap-2">
       <Button
         label="Close Window"
         pt:root=""
         severity="secondary"
         fluid
         @click="visible = false"
+        size="small"
       />
-      <Button label="Download as PDF" pt:root=" bg-primary-700" fluid />
+      <Button label="Download as PDF" pt:root=" bg-primary-700" @click="download" size="small" fluid />
     </div>
   </Dialog>
 
@@ -77,6 +78,7 @@
 </template>
 
 <script lang="tsx" setup>
+import { useInvoice } from "@/composables/quickinvoice/download";
 import type { TourGuideClient } from "@sjmc11/tourguidejs";
 import { TourGuideStep } from "@sjmc11/tourguidejs/src/types/TourGuideStep";
 import { SetupContext } from "vue";
@@ -85,6 +87,7 @@ const visible = ref(false);
 const toggleTemplates = ref(false);
 
 const tg = ref<TourGuideClient>();
+const { download } = useInvoice()
 const confirm = useConfirm();
 const toast = useToast();
 const breakpoints = useBreakpoints({

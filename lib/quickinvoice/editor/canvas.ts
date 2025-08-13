@@ -36,8 +36,10 @@ export class EditorCanvas extends EditorCanvasBase {
     // DEFINE EDITOR PROPS
     reactive: Reactive = [
         ['canvas', {
-            width: 535,
-            height: 760,
+            // width: 535,
+            // height: 760,
+            width: 595,
+            height: 842,
         }],
 
         'canvasScale',
