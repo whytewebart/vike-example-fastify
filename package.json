@@ -39,6 +39,7 @@
     "country-locale-map": "^1.9.9",
     "cross-env": "^7.0.3",
     "css-tree": "^3.1.0",
+    "date-fns": "^4.1.0",
     "fastify": "^5.2.1",
     "fastify-plugin": "^5.0.1",
     "gsap": "^3.13.0",

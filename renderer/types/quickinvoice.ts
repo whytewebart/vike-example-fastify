@@ -10,8 +10,9 @@ interface ComponentCapabilities {
   canBeDeleted?: boolean;
   canBeDuplicated?: boolean;
   canAcceptStyles?: boolean;
-  isContainer?: boolean;
-  enableHandle?: boolean
+  isContainer?: boolean | 'strict';
+  enableHandle?: boolean,
+  allowSubElementRoot?: boolean
 }
 
 interface ComponentOverride {
@@ -24,6 +25,7 @@ interface StyleSettings {
   inheritable?: boolean; // Whether styles inherit to children
   defaultStyles?: Record<CSSProperty, string>;
   css?: (properties: Record<string, any>) => string;
+  allowHost?: string[]
 }
 
 // Property types
@@ -37,9 +39,9 @@ type PrimitiveType =
   | 'url'
   | 'tel'
   // | 'email'
-  // | 'date'
+  | 'date'
   // | 'time'
-  // | 'datetime'
+  | 'datetime-local'
   | 'currency'
   | 'currency-format'
   | 'rich-text';
@@ -48,7 +50,7 @@ type ComponentStyleType = 'dimension-editor' | 'spacing-editor' | 'layout-editor
 
 type PropertyType =
   | PrimitiveType
-  | { type: 'array'; itemType: PropertyType }
+  | { type: 'array'; itemType: PropertyType; arrayType?: 'fixed' | 'flexible'; max?: number }
   | { type: 'object'; shape: ObjectField[] };
 
 interface ObjectField {
@@ -78,8 +80,12 @@ interface SubElement {
   capabilities?: ComponentCapabilities;
 }
 
+type ExtractPropertyShape<T extends ComponentProperty[]> = {
+  [P in T[number] as P['name']]: P['defaultValue'];
+};
+
 // Component definition
-interface ComponentDefinition {
+interface ComponentDefinition<TProps extends ComponentProperty[] = ComponentProperty[]> {
   type: string; // Unique component type identifier
   name: string;
   category?: string;
@@ -89,9 +95,14 @@ interface ComponentDefinition {
   properties?: ComponentProperty[];
   subElements?: SubElement[];
   // defaultChildren?: ComponentDefinition[] | string[]; // Default child components
-  defaultChildren?: ComponentDefinition[]; // Default child components
+  defaultChildren?: (Pick<ComponentDefinition, 'name' | 'type' | 'properties' | 'subElements' | 'capabilities' | 'selector' | 'styleSettings'> & {
+    expressions?: {
+      attribute: string,
+      expr: string
+    }[]
+  })[];
   acceptsChildrenTypes?: string[] | 'all'; // Which component types can be children
-  renderTemplate?: (properties: Record<string, any>) => string; // HTML template
+  renderTemplate?: (properties: ExtractPropertyShape<TProps>) => string; // HTML template
   // mockTemplate?: string; // HTML template
   script?: string; // Component-specific JS
   selector?: string; // SELECTOR TO APPEND COMPONENT
@@ -150,6 +161,7 @@ declare namespace DB {
     id: string,
     properties: Record<string, any>,
     dropzone: string,
+    strictzone?: string,
     dropzones: Record<string, string>,
     key: string,
     index: number,

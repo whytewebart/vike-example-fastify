@@ -70,6 +70,7 @@ export default defineConfig({
       "[&::-webkit-scrollbar]:w-15px [&::-webkit-scrollbar]:opacity-1 [&::-webkit-scrollbar]:bg-alabaster [&::-webkit-scrollbar-track]:bg-alabaster [&::-webkit-scrollbar-track]:my-4px [&::-webkit-scrollbar-thumb]:bg-gray-7 [&::-webkit-scrollbar-thumb]:rounded-4 [&::-webkit-scrollbar-thumb]:b-5px [&::-webkit-scrollbar-thumb]:b-solid [&::-webkit-scrollbar-thumb]:b-transparent [&::-webkit-scrollbar-thumb]:bg-clip-content",
     "hide-scrollbar":
       "[&::-webkit-scrollbar]:w-15px [&::-webkit-scrollbar]:opacity-0 [&::-webkit-scrollbar]:transition-all",
+      "no-scrollbar": "[&::-webkit-scrollbar]:hidden [&::-webkit-scrollbar]:w-0 [&::-webkit-scrollbar]:opacity-0 [&::-webkit-scrollbar]:h-0",
     // ------------
     viewport: breakoutFn.defineGrid({
       content: 485,

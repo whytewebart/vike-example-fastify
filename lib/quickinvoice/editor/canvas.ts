@@ -8,7 +8,6 @@ import resetcss from "@unocss/reset/tailwind-compat.css?inline"
 import { EditorCanvasBase } from './base/canvas';
 import { EditorComponent } from './component';
 import { customAlphabet } from 'nanoid';
-import { transform } from 'typescript';
 
 export interface EditorCanvas {
     canvas: {
@@ -36,10 +35,10 @@ export class EditorCanvas extends EditorCanvasBase {
     // DEFINE EDITOR PROPS
     reactive: Reactive = [
         ['canvas', {
-            // width: 535,
-            // height: 760,
-            width: 595,
-            height: 842,
+            width: 535,
+            height: 760,
+            // width: 595,
+            // height: 842,
         }],
 
         'canvasScale',
@@ -151,8 +150,8 @@ export class EditorCanvas extends EditorCanvasBase {
         const _html = el.shadowRoot?.innerHTML!.replaceAll(/(?<!:)\bhost\b/g, hostId)
         const _css = el.privateCss().replaceAll(/(?<!:)\bhost\b/g, hostId)
         // APPEND HTML
-        element.innerHTML += _html;
         element.innerHTML += `<style>${_css}</style>`;
+        element.innerHTML += _html;
         // REMOVE DRAG HANDLE
         element.querySelector('button#handle')?.remove();
         element.querySelector('style[ref="button-handle"]')?.remove();
@@ -335,6 +334,34 @@ export class EditorCanvas extends EditorCanvasBase {
         component.remove();
     };
 
+    deleteComponentRequest = async () => {
+        if (!this.selectedComponent) return;
+        var selectedCanvas = this.selectedComponent.closest<HTMLElement>('[data-dropzone-id]');
+        if (!selectedCanvas) {
+            selectedCanvas = this.selectedComponent.closest('[strictzone]')
+        }
+
+        if (!selectedCanvas) return;
+
+        const canvasCapabilities: ComponentCapabilities = JSON.parse(
+            selectedCanvas?.getAttribute('capabilities') || '{}'
+        );
+        const capabilities: ComponentCapabilities = JSON.parse(
+            this.selectedComponent?.getAttribute('capabilities') || '{}'
+        );
+
+        if (canvasCapabilities?.canBeDeleted === false) {
+            return console.warn('Component cannot be deleted');
+        }
+
+        // Recursive delete function
+        await this.deleteComponentRecursively(this.selectedComponent, true);
+        this.components.select(null);
+
+        this.dropzone.methods.resetDropHighilght(selectedCanvas!)
+
+    }
+
 
     eventListeners: EventListeners = [
         ...this.handleEvents,
@@ -346,26 +373,13 @@ export class EditorCanvas extends EditorCanvasBase {
         }],
         [
             window, 'keyup', async (e: KeyboardEvent) => {
-                if (e.key.toLowerCase() === 'delete' && this.selectedComponent) {
-                    const selectedCanvas = this.selectedComponent.closest<HTMLElement>('[data-dropzone-id]');
-                    const canvasCapabilities: ComponentCapabilities = JSON.parse(
-                        selectedCanvas?.getAttribute('capabilities') || '{}'
-                    );
-                    const capabilities: ComponentCapabilities = JSON.parse(
-                        this.selectedComponent?.getAttribute('capabilities') || '{}'
-                    );
-
-                    if (canvasCapabilities?.canBeDeleted === false) {
-                        return console.warn('Component cannot be deleted');
-                    }
-
-                    // Recursive delete function
-                    await this.deleteComponentRecursively(this.selectedComponent, true);
-                    this.components.select(null);
-
-                    this.dropzone.methods.resetDropHighilght(selectedCanvas!)
+                if (e.key.toLowerCase() === 'delete') {
+                    await this.deleteComponentRequest()
                 }
             }
+        ],
+        [
+            window, 'canvas:component:delete', this.deleteComponentRequest
         ],
         [
             window, 'components:reorder', (e: EventDetail) => {

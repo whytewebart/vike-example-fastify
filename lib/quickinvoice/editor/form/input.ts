@@ -42,7 +42,7 @@ export class EditorInput extends MinzeElement {
     reactive?: Reactive = [["entries", []]]
     static observedAttributes = ['checked', 'default-value']
     get splitLabel() {
-        if(typeof this.label !== 'string') return '';
+        if (typeof this.label !== 'string') return '';
         return this.label.replace(/([a-z])([A-Z])/g, '$1 $2')
     }
 
@@ -82,8 +82,23 @@ export class EditorInput extends MinzeElement {
         `;
         // WRAPPER COMPONENT
         const wrapper = (template: string, hideLabel: boolean = false) => /*html*/`
-            <div
-                class="flex flex-col space-y-1 ${typeof this.type !== 'object' ? 'py-2 px-4' : ''}">
+            <div class="flex flex-col-reverse">
+                ${this.getAttribute('save-btn') == 'hide'
+                    ? '' :
+                    // @ts-ignore
+                    // this.type?.type === 'object' || this.repeater ?
+                    this.type?.type === 'object' && !this.repeater ?
+                    /*html*/`
+                        <!-- SAVE BUTTON -->
+                        <div class="grid sticky bottom-3 z-1 my-3 mx-4 peer">
+                            <button id="save-entries" class="px-4 py-1.5 font-space-mono bg-white text-blue-600 text-base transition-colors w-full rounded-none capitalize" border="1 dashed gray" hover="text-white bg-blue-700">
+                                Save ${this.label}
+                            </button>
+                        </div>
+                    ` : ''
+                }
+                <div
+                class="flex flex-col space-y-1 ${typeof this.type !== 'object' ? 'py-2 px-4' : ''} ${this.type?.type === 'object' ? 'bg-gray-50/30 border-y border-gray border-dashed' : ''}" peer-has-hover="bg-stone-50 border-y-2 border-blue-600">
                 ${!hideLabel ?
                     /*html*/`
                         ${label}
@@ -96,20 +111,7 @@ export class EditorInput extends MinzeElement {
                 <!-- HELP TEXT -->
                 ${this.helptext ? `<p class="text-sm text-gray-500 font-sans">${this.helptext}</p>` : ''}
             </div>
-            ${this.getAttribute('save-btn') == 'hide'
-                ? '' :
-                // @ts-ignore
-                // this.type?.type === 'object' || this.repeater ?
-                this.type?.type === 'object' && !this.repeater ?
-                /*html*/`
-                    <!-- SAVE BUTTON -->
-                    <div class="grid sticky bottom-3 z-1 mt-2 mx-3">
-                        <button id="save-entries" class="px-4 py-1.5 font-space-mono bg-blue-600 text-white text-base hover:bg-blue-700 transition-colors w-full rounded-2 capitalize">
-                            Save ${this.label}
-                        </button>
-                    </div>
-                ` : ''
-            }
+            </div>
         `;
         // FALLBACK INPUT
         const fallback = /*html*/`
@@ -117,12 +119,14 @@ export class EditorInput extends MinzeElement {
                 type="${this.type}"
                 value="${this.defaultValue}"
                 id="${this.label}-input"
-                class="px-3 py-2 border border-gray-300 rounded-none text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-offset-2 w-full"
+                class="px-3 py-2 border border-gray-300 rounded-none text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-offset-2 w-full ${this.type === 'color' ? 'p-0! h-8 b-0!' : ''}"
             />
         `
         // IMAGE INPUT
         const image = /*html*/`
-            <img src="${this.defaultValue}" class="w-full h-32 object-contain rounded-none bg-slate-50 border border-gray-300 b-b-0" />
+            <label for="${this.label}-image">
+                <img src="${this.defaultValue}" class="w-full h-32 object-contain rounded-none bg-slate-50 border border-gray-300 b-b-0" />
+            </label>
 
             <input
                 type="file"
@@ -155,21 +159,21 @@ export class EditorInput extends MinzeElement {
                 class="w-full px-3 py-2 border border-gray-300 rounded-none text-sm text-gray-800 focus:outline-none focus:ring-offset-2 focus:ring-2 focus:ring-gray-200 font-urbanist appearance-none w-full capitalize"
             >
                 ${
-                    // this.currencies()
-                    clm.getAllCountries()
-                    .map(
-                        (country) => {
-                            const payload = {
-                                currency: country.currency,
-                                code: country.alpha2,
-                                language: country?.languages ? country.languages[0] : 'en'
-                            };
+            // this.currencies()
+            clm.getAllCountries()
+                .map(
+                    (country) => {
+                        const payload = {
+                            currency: country.currency,
+                            code: country.alpha2,
+                            language: country?.languages ? country.languages[0] : 'en'
+                        };
 
-                            return /*html*/`
+                        return /*html*/`
                             <option value='${JSON.stringify(payload)}' ${country.alpha2 === this.defaultValue?.code ? 'selected' : ''}>${country.name} - ${country.currency}</option>`
-                        }
-                    ).join('')
-                }
+                    }
+                ).join('')
+            }
             </select>
             <span span class="i-solar-alt-arrow-down-outline ml-1 absolute top-2.2 right-4 text-slate-700 text-xl z-1" ></span>
         `
@@ -186,21 +190,21 @@ export class EditorInput extends MinzeElement {
                         name="currencyFormat"
                     >
                         ${
-                            // this.currencies()
-                            clm.getAllCountries()
-                            .map(
-                                (country) => {
-                                    const payload = {
-                                        currency: country.currency,
-                                        code: country.alpha2,
-                                        language: country?.languages ? country.languages[0] : 'en'
-                                    };
+            // this.currencies()
+            clm.getAllCountries()
+                .map(
+                    (country) => {
+                        const payload = {
+                            currency: country.currency,
+                            code: country.alpha2,
+                            language: country?.languages ? country.languages[0] : 'en'
+                        };
 
-                                    return /*html*/`
+                        return /*html*/`
                                     <option value='${JSON.stringify(payload)}' ${country.alpha2 === this.defaultValue?.code ? 'selected' : ''}>${country.name} - ${country.currency}</option>`
-                                }
-                            ).join('')
-                        }
+                    }
+                ).join('')
+            }
                     </select>
 
                     <span class="i-solar-alt-arrow-down-outline ml-1 absolute top-2.2 right-2 text-slate-700 text-xl z-1"></span>
@@ -229,7 +233,7 @@ export class EditorInput extends MinzeElement {
                     type="checkbox"
                     id="check"
                     ${this.checked ? 'checked' : ''}
-                    class="peer h-5 w-5 shrink-0 cursor-pointer appearance-none rounded border border-gray-300 checked:bg-slate-800 checked:border-slate-800 transition-all shadow-sm hover:shadow focus:ring focus:ring-slate-500"
+                    class="peer h-5 w-5 shrink-0 cursor-pointer appearance-none rounded border border-gray-300 checked:bg-primary-800 checked:border-primary-800 transition-all shadow-sm hover:shadow focus:ring focus:ring-primary-500"
                     />
                     <span class="absolute text-white opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
                         ${svgIcon}
@@ -289,7 +293,10 @@ export class EditorInput extends MinzeElement {
                     border="${this.repeater ? '' : 'y-1'} gray-200"
                 >
                     <label for="${this.label}-array" class="text-base font-semibold text-gray-700 capitalize font-space-mono">${this.splitLabel} Repeater</label>
-                    <button id="add-entry" class="bg-gray-100p flex rounded hover:bg-gray-100">
+
+                    
+
+                    <button id="add-entry" class="disabled:bg-gray-300 flex rounded hover:bg-gray-100 disabled:opacity-50" ${localType?.max && this.entries.length >= localType.max ? 'disabled' : ''}>
                         <span class="i-solar-pen-new-square-outline text-2xl"></span>
                         <!-- <span class="font-space-mono font-bold whitespace-nowrap">[Create Entry]</span> -->
                     </button>
@@ -314,24 +321,27 @@ export class EditorInput extends MinzeElement {
                                 </p>
     
                                 <div flex="~ items-center row-reverse">
-                                    <button
-                                        id="remove-entries"
-                                        ${entry.id ? `data-entry-id="${entry.id}"` : ''} data-entry-index="${i}"
-                                        class="flex p-2 rounded transition-all" hover="bg-red-100" focus="bg-gray-100"
-                                    >
-                                        <span
-                                        ${entry.id ? `data-entry-id="${entry.id}"` : ''} data-entry-index="${i}"
-                                        class="i-solar-trash-bin-minimalistic-outline text-xl text-red-600"></span>
-                                    </button>
-                                    ${
-                                        this.componentId ? `
+                                    ${localType.arrayType && localType.arrayType === 'fixed' ? '' : /*html*/`
+                                            <button
+                                                id="remove-entry"
+                                                ${entry.id ? `data-entry-id="${entry.id}"` : ''} data-entry-index="${i}"
+                                                class="flex p-2 rounded transition-all" hover="bg-red-100" focus="bg-gray-100"
+                                            >
+                                                <span
+                                                ${entry.id ? `data-entry-id="${entry.id}"` : ''} data-entry-index="${i}"
+                                                class="i-solar-trash-bin-minimalistic-outline text-xl text-red-600"></span>
+                                            </button>
+                                        `
+            }
+                                    
+                                    ${this.componentId ? `
 
                                         <button id="save-entry" data-save-entry-id="${entry.id}" class="flex p-2 rounded transition font-space-mono" hover="font-bold underline underline-offset-2">
                                             Update
                                         </button>
                                         
                                         ` : ''
-                                    }
+            }
                                 </div>
                             </summary>
                             <div class="relative ${this.nested ? 'ml-5.7 pl-1' : ''}">
@@ -372,14 +382,14 @@ export class EditorInput extends MinzeElement {
         }
 
         const object = /*html*/`
-            <div class="flex flex-col ${this.repeater ? 'bg-gray-50' : 'pt-2 px-4'}">
+            <div class="flex flex-col ${this.repeater ? 'bg-gray-50' : 'py-2 px-4'}">
                 ${!this.repeater ? /*html*/`
                         <label for="${this.label}-object" class="text-base font-semibold text-gray-700 capitalize font-space-mono">${this.splitLabel}</label>
                 ` : ''
             }
             </div>
             
-            <div class="grid">
+            <div class="grid -mt-2">
                 ${localType?.shape?.map((opt: ObjectField, i: number) => /*html*/`
                     <editor-input
                         label="${opt.name}"
@@ -523,7 +533,7 @@ export class EditorInput extends MinzeElement {
         }
     }
 
-    fmtCurrency(value: any, payload?:  {
+    fmtCurrency(value: any, payload?: {
         currency: string;
         code: string;
         language: string;
@@ -531,7 +541,7 @@ export class EditorInput extends MinzeElement {
         // CHECK IF VALUE IS NUMBER
         if (!(/^-?\d+(\.\d+)?$/.test(value))) return value;
         value = Number(value);
-        
+
         const locale = `${payload?.language}-${payload?.code}`
 
         // FORMAT VALUE
@@ -548,7 +558,7 @@ export class EditorInput extends MinzeElement {
     async onReady() {
         this.title = this.label;
 
-        if(typeof this.defaultValue === 'boolean' && this.type !== 'boolean') {
+        if (typeof this.defaultValue === 'boolean' && this.type !== 'boolean') {
             this.setAttribute('default-value', '• This is placeholder')
         }
 
@@ -586,12 +596,12 @@ export class EditorInput extends MinzeElement {
             }
         };
 
-            if(this.componentId && this.entryId) {
-                Minze.listen(
-                    `editor-input:save-entry-${this.entryId}-input`,
-                    this.saveEntries
-                );
-            }
+        if (this.componentId && this.entryId) {
+            Minze.listen(
+                `editor-input:save-entry-${this.entryId}-input`,
+                this.saveEntries
+            );
+        }
 
     }
 
@@ -624,7 +634,7 @@ export class EditorInput extends MinzeElement {
                     }
                 }
 
-                if(this.type === 'currency') {
+                if (this.type === 'currency') {
                     value = JSON.parse(value)
                 }
 
@@ -710,7 +720,7 @@ export class EditorInput extends MinzeElement {
                 const input = this.select('input[name=currency_format]') as HTMLInputElement;
 
                 const currencyCode = <any>JSON.parse(select.value)
-                var value: string | boolean | Object  = input.value;
+                var value: string | boolean | Object = input.value;
 
                 value = {
                     value,
@@ -844,7 +854,7 @@ export class EditorInput extends MinzeElement {
         ],
         // DELETE ENTRY
         [
-            "#remove-entries",
+            "#remove-entry",
             "click",
             (e) => {
                 const button = e.target as HTMLButtonElement;

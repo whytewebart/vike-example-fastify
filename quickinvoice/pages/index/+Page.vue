@@ -1,5 +1,5 @@
 <template>
-  <ButtonGroup pt:root="mx-a">
+  <ButtonGroup pt:root="mx-a" max-xs="grid [&>[data-pc-name=button]]:rounded-md!">
     <Button
       label="Select invoice template"
       icon="i-solar-alt-arrow-down-outline"
@@ -15,8 +15,8 @@
   <div class="bk-col-full my-4" invoice-temp-grid>
     <div v-if="toggleTemplates">
       <InvoiceTemplate type="template01" />
-      <InvoiceTemplate />
-      <InvoiceTemplate />
+      <InvoiceTemplate type="pastel-template" />
+      <InvoiceTemplate type="redline-template" />
       <InvoiceTemplate />
     </div>
 
@@ -114,7 +114,7 @@ const InvoiceTemplate = (props: { type?: string }, ctx: SetupContext) => {
         outlined: true,
       },
       acceptProps: {
-        label: "Save",
+        label: "Continue",
       },
       accept: () => {
         window.dispatchEvent(
@@ -252,9 +252,6 @@ const steps = ref<TourGuideStep[]>([
 ]);
 function startTour() {
   tg.value?.start();
-  // window.dispatchEvent(
-  //   new CustomEvent("quickinvoice:start-tour")
-  // );
 }
 
 onMounted(async () => {

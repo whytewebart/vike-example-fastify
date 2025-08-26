@@ -6,7 +6,8 @@ export interface EditorLayers {
     layerStatus: 'open' | 'closed',
     structure: SessionComponents[],
     session?: IndexedDBWrapper<DB.Session>,
-    space?: IndexedDBWrapper<DB.Space>
+    space?: IndexedDBWrapper<DB.Space>,
+    hideHeader: boolean
 }
 
 type SessionComponents = DB.Session & { [key: string]: any }
@@ -21,6 +22,8 @@ type IDBListener = Event & {
 export class EditorLayers extends MinzeElement {
     DB_VERSION = 1;
     DB_NAME = 'quickinvoice';
+    
+    attrs: Attrs = [['hide-header', false]]
 
     reactive?: Reactive = [
         ['layerStatus', 'closed'],
@@ -81,9 +84,13 @@ export class EditorLayers extends MinzeElement {
 
     html = () => /*html*/`
         <div part="root" style="height: 0px; overflow: clip; opacity: 0" class="app-scrollbar shadow- max-h-60">
-            <div class="py-1.8 bg-white border-b sticky top-0 z-10">
-                <p class="font-mono font-semibold text-base px-2">Layers</p>
-            </div>
+            ${
+                !this.hideHeader ? `
+                    <div class="py-1.8 bg-white border-b sticky top-0 z-10">
+                        <p class="font-mono font-semibold text-base px-2">Layers</p>
+                    </div>
+                `: ''
+            }
             <div section="panel-content" part="content" class="bg-gray-50">
                 ${this.recursiveRender(this.structure)}
                 ${
@@ -146,7 +153,14 @@ export class EditorLayers extends MinzeElement {
             for (const [key, value] of dropzoneKeys) {
                 // DEFINE QUERY
                 const query = IDBKeyRange.only([session.id, value]);
-                const found = await this.session.findByIndex("sessionId", query);
+                var found;
+                
+                if (key.startsWith('strict_')) {
+                    found = await this.session.findByIndex("sessionIdStrictzones", query)
+                } else {
+                    found = await this.session.findByIndex("sessionId", query);
+                }
+
                 const nested = await this.recursiveFind(session, found);
                 nestedComponents.push(...nested);
             }

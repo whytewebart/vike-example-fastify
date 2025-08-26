@@ -136,11 +136,11 @@ export class EditorWrapper extends EditorWrapperBase {
                 <div class="relative" section="panels_grid">
                     ${this.blocksPanel()}
                       <!-- CUSTOMIZATION -->
-                      <div class="hide-component relative min-h-41px">
-                        <div class="px-4 py-2 bg-white b-b-1 hover:cursor-pointer absolute top-0 left-0 right-0 z-20" layers-btn>
+                      <div class="hide-component">
+                        <div class="px-4 py-3 bg-white b-b-1 hover:cursor-pointer" layers-btn>
                           <p class="font-space-mono font-semibold">Layers</p>
                         </div>
-                        <editor-layers id="mobiletab"></editor-layers>
+                        <editor-layers hide-header="true" id="mobiletab"></editor-layers>
                       </div>
                       <div relative>
                         <editor-panel title="Editor">
@@ -176,7 +176,7 @@ export class EditorWrapper extends EditorWrapperBase {
             }
 
             [section="canvas"] {
-              min-height: calc(var(--canvas-height) + var(--canvas-padding) + var(--canvas-padding));
+              /* min-height: calc(var(--canvas-height) + var(--canvas-padding) + var(--canvas-padding)); */
               min-width: calc(var(--canvas-min-width) + var(--handle-padding) + var(--handle-padding));
             }
         }
@@ -194,6 +194,22 @@ export class EditorWrapper extends EditorWrapperBase {
 
   onReady() {
     this.handlers.hooks.ready();
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && entry.intersectionRatio === 1) {
+          document.body.classList.add('no-scrollbar');
+          console.log('hiding scrollbar')
+        } else {
+          document.body.classList.remove('no-scrollbar');
+        }
+      },
+      {
+        threshold: 1.0 // Trigger only when the div is 100% in view
+      }
+    );
+
+    observer.observe(this);
   }
 
   eventListeners?: EventListeners = [

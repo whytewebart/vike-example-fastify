@@ -7,7 +7,7 @@ import PropertyEditor from './atoms/properties';
 
 export interface StyleEditor {
     component?: EditorComponent;
-    subElements?: SubElement[];
+    subElements?: Pick<SubElement, 'key'|'name'>[];
     selectedElement?: string;
     componentToShow?: "styles" | "properties";
     allowedProperties?: string[];
@@ -26,7 +26,7 @@ export class StyleEditor extends MinzeElement {
     reactive: Reactive = [
         'componentId',
         ['subElements', []],
-        ["selectedElement", 'host'],
+        ["selectedElement", ''],
         ["componentToShow", "properties"],
         ['allowedProperties', []],
         ['editLabel', false],
@@ -84,6 +84,16 @@ export class StyleEditor extends MinzeElement {
                     >
                         <span class="${this.editLabel ? 'i-solar-check-read-outline' : 'i-solar-pen-bold-duotone'}"></span>
                     </button>
+
+                    <button
+                        class="flex p-2 bg-red-100 rounded-lg"
+                        hover="bg-red-200"
+                        focus="ring-1 ring-red-6 ring-offset-3"
+                        title="Delete Component"
+                        id="delete-component"
+                    >
+                        <span class="i-solar-trash-bin-trash-outline text-red"></span>
+                    </button>
                 </div>
                 <p>Edit the properties of the component.</p>
             </div>
@@ -107,11 +117,6 @@ export class StyleEditor extends MinzeElement {
                             value=""
                             disabled
                         >Select Sub-Element</option>
-
-                        <option
-                            value="host"
-                            selected
-                        >Root</option>
                         
                         ${this.subElements?.map(opt => `<option value="${opt.key}" class="">${opt.name}</option>`).join('')}
                     </select>
@@ -121,10 +126,10 @@ export class StyleEditor extends MinzeElement {
         `;
 
         const v2 = /*html*/`
-            <div class="">
+            <div class="${this.subElements && this.subElements.length > 0 ? '' : 'hidden'}">
                 <details open class="group b-b-1 open:b-b-">
                     <summary
-                        class="py-2 px-4 bg-gray-50 transition-all"
+                        class="py-2 px-4 bg-white transition-all"
                         flex="~ items-center justify-between"
                         hover="cursor-pointer bg-gray-100"
                         group-open="b-b-1 sticky top-42px z-1"
@@ -136,11 +141,10 @@ export class StyleEditor extends MinzeElement {
                     </summary>
                     
                     <ul class="divide-y bg-gray-50/20 b-b-">
-                        <li sub-element-option data-value="host" class="px-3 py-1 font-space-mono transition-all" hover="bg-gray-100 cursor-pointer tracking-.8 font-bold shadow z-1">Root ${this.selectedElement === 'host' ? '<b class="tracking-normal!">[Selected]</b>' : ''} </li>
                         ${this.subElements?.map(opt => `
                             <li sub-element-option data-value="${opt.key}" class="px-3 py-1 font-space-mono transition-all" hover="bg-gray-100 cursor-pointer tracking-.8 font-bold shadow z-1">${opt.name} ${this.selectedElement === opt.key ? '<b class="tracking-normal!">[Selected]</b>' : ''} </li>
                             `).join('')
-            }
+                        }
                     </ul>
                     <p class="text-center font-space-mono font-bold py-2 bg-gray-50/20">
                         <!-- [•] -->
@@ -177,6 +181,20 @@ export class StyleEditor extends MinzeElement {
             `
 
             const elements = this.allowedProperties ?? [];
+
+            if (!this.subElements || this.subElements?.length == 0) {
+                return /*html*/`
+                    <div class="py-4 px-2 text-center bg-gray-50">
+                        <div>
+                            <p class="text-gray-500 font-urbanist text-lg trackinng-tight font-semibold pb-1">
+                                Styling not available for this component
+                            </p>
+
+                            <div border="1 blue-6" class="mx-4"></div>
+                        </div>
+                    </div>
+                `
+            }
 
             return /*html*/`
                 ${this.elementSelect()}
@@ -222,16 +240,30 @@ export class StyleEditor extends MinzeElement {
 
                 this.property.setProperties(JSON.parse(componentProps || '{}'))
                 // SET STYLES
-                await import('@/quickinvoice/definition/components')
+                await import('@/quickinvoice/definition')
+                    .then(({ components, templates }) => {
+                        return {
+                            ...components,
+                            ...templates
+                        }
+                    })
                     .then((response) => {
-                        const definition = Object.values(response.default)
+                        const definition = Object.values(response)
                             .find(def => def.type == componentType!);
 
                         if (definition) {
-                            this.subElements = definition.subElements || [];
+                            this.subElements = definition.subElements?.filter(d => !d.hidden).map(({ key, name }) => ({ key, name })) || [];
                             this.allowedProperties = definition.styleSettings?.allowedProperties || [];
 
-                            this.selectedElement = 'host';
+                            if (definition.capabilities?.allowSubElementRoot) {
+                                this.subElements = [
+                                    {
+                                        key: 'host',
+                                        name: 'Root'
+                                    },
+                                    ...this.subElements
+                                ]
+                            }
                         }
                     })
 
@@ -284,9 +316,18 @@ export class StyleEditor extends MinzeElement {
                 const input = e.target as HTMLInputElement;
                 const value = input.value;
 
+                this.componentLabel = value;
+
                 this.dispatch(`component:${this.component?.id}:label`, {
                     label: value
                 })
+            }
+        ],
+        [
+            "button#delete-component",
+            "click",
+            (e) => {
+                this.dispatch("canvas:component:delete")
             }
         ]
     ]

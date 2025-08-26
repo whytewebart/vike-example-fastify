@@ -64,6 +64,7 @@ export class EditorCanvasBase extends MinzeElement {
                         // CREATE INDEXES
                         store.createIndex('sessionId',
                             ['sessionId', 'dropzone'], { unique: false });
+                        store.createIndex('sessionIdStrictzones', ['sessionId', 'strictzone'])
                         store.createIndex('order', ['index', "key"], { unique: true });
                     }
 
@@ -342,7 +343,7 @@ export class EditorCanvasBase extends MinzeElement {
                     let val = attrs[attr] || '';
                     typeof val !== 'string' ? val = JSON.stringify(val) : null;
                     if (attr == 'id') component.setAttribute(attr, val);
-                    else component.setAttribute('_'+attr, val)
+                    else component.setAttribute('_' + attr, val)
                 })
 
             // ADD TO PARENT
@@ -366,6 +367,14 @@ export class EditorCanvasBase extends MinzeElement {
         handlers: {
             dragstart: (e: any) => {
                 e.stopPropagation();
+
+                var _parent = this.closest('[data-dropzone-id]');
+                if (!_parent) _parent = this.closest('[strictzone]');
+                const __capabilities = JSON.parse(_parent?.getAttribute('capabilities') || '{}')
+                
+                if(__capabilities?.childrenLocked)
+                    return;
+
                 const canvas = this.dropzone.methods.canvas(e)!;
                 const comp = e.target.closest('.component')
                 this.components.select(comp);
@@ -381,7 +390,7 @@ export class EditorCanvasBase extends MinzeElement {
                 // e.stopPropagation();
                 const comp = e.target.closest('.component')
                 comp.classList.remove('dragging');
-                if(window.dragstartContainer) {
+                if (window.dragstartContainer) {
                     this.dropzone.methods.resetDropHighilght(window.dragstartContainer)
                 }
             },

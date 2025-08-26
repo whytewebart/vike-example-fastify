@@ -325,7 +325,7 @@ export class EditorComponent extends EditorCanvasBase {
             const target = slot.getAttribute('name') ?? '';
             const dropzone = this.select(`[dropzone="${target}"]`);
             if (!dropzone) continue;
-            
+
             const nodes = slot.assignedElements({ flatten: true }) as EditorComponent[];
 
             // Process each assigned node
@@ -359,7 +359,7 @@ export class EditorComponent extends EditorCanvasBase {
         this.definition.subElements?.forEach(element => {
             const el = this.select(element.selector) as HTMLElement;
             // SET UP DROPZONE
-            if (element.capabilities?.isContainer) {
+            if (element.capabilities?.isContainer && element.capabilities.isContainer !== 'strict') {
                 this.dropzone.setup(el)
                 el?.setAttribute('dropzone', element.key)
                 el?.setAttribute(
@@ -370,6 +370,15 @@ export class EditorComponent extends EditorCanvasBase {
                 if (this.entry && this.entry.dropzones[element.key]) {
                     el?.setAttribute('data-dropzone-id', this.entry.dropzones[element.key])
                 }
+            }
+
+            else if (element.capabilities?.isContainer == 'strict') {
+                el?.setAttribute('strictzone', element.key)
+                el?.setAttribute('data-strictzone-id', element.key)
+                el?.setAttribute(
+                    'capabilities',
+                    JSON.stringify(element.capabilities)
+                );
             }
         });
 
@@ -392,6 +401,10 @@ export class EditorComponent extends EditorCanvasBase {
             component.setAttribute('capabilites', JSON.stringify(componentDef.capabilities || {}));
             component.setAttribute('_styles',
                 JSON.stringify(componentDef.styleSettings?.defaultStyles))
+
+            // componentDef.expressions?.forEach(({ attribute, expr }) => {
+            //     component.setAttribute(attribute, `@expr[${expr}]@end`)
+            // })
 
             /*html
             `
@@ -437,20 +450,11 @@ export class EditorComponent extends EditorCanvasBase {
         await Promise.all([this.session.open(), this.space.open()]);
         // GET KEY
         const key = `component-${this.type}-${this.id}`
-        var dropzone = this.closest<HTMLElement>('[data-dropzone-id]')
+        const dropzone = this.closest<HTMLElement>('[data-dropzone-id]')
+        const strictzone = this.closest<HTMLElement>('[strictzone]')
         const children = Array.from(dropzone?.children || []);
         const index = children.indexOf(this);
         const session = (await this.space.findByIndex('latest', "true"))[0];
-
-        const parent = this.parentElement?.shadowRoot;
-
-        // IF DROPZONE IS NOT SET, GET PARENT DROPZONE
-        // OR GET DROPZONE FROM PARENT ELEMENT
-        if ((!dropzone || dropzone?.id === 'canvas') && parent) {
-            const slotId = this.getAttribute('slot');
-            const dropzoneKey = slotId ? `[dropzone="${slotId}"]` : '[dropzone]';
-            var ___ = parent.querySelector(dropzoneKey);
-        }
 
         if (!this.entry) {
             if (!session) return;
@@ -466,16 +470,19 @@ export class EditorComponent extends EditorCanvasBase {
                 order: index,
                 styles: this.styles,
                 subElements: this.subElements,
-                label: this.label
+                label: this.label,
+                strictzone: strictzone?.getAttribute('strictzone')!,
             };
 
+            const strictzones_ = Array.from(this.selectAll('[data-strictzone-id]') || []);
             const dropzones_ = Array.from(this.selectAll('[data-dropzone-id]') || []);
             const dropzones: Record<string, string> = {};
 
-            dropzones_.forEach(el => {
-                var name = el.getAttribute('dropzone')!;
+            ([...dropzones_, ...strictzones_] as HTMLElement[]).forEach(el => {
+                var name = el.getAttribute('dropzone')! || el.getAttribute('strictzone')!;
                 name = name === '' ? 'default' : name;
-                dropzones[name] = el.getAttribute('data-dropzone-id')!
+                if (el.getAttribute('strictzone')) name = 'strict_'+name;
+                dropzones[name] = el.dataset.dropzoneId || el.dataset.strictzoneId!
             })
 
             await this.session.add({
@@ -511,6 +518,30 @@ export class EditorComponent extends EditorCanvasBase {
             if (response.length === 0) {
                 el.setAttribute('empty-dropzone-indicator', '')
             }
+        }
+
+        // LOAD NESTED ELEMENTS - STRICTZONES
+        const strictzones = Array.from(this.selectAll('[strictzone]') || []);
+        for (const el of strictzones) {
+            const strictzoneId = el.getAttribute('data-strictzone-id');
+            const query = IDBKeyRange.only([session.id, strictzoneId]);
+            const response = await this.session.findByIndex("sessionIdStrictzones", query);
+
+            response
+                .sort((a, b) => a.order - b.order)
+                .forEach(ent => {
+                    if (this.select(`[id="${ent.id}"]`)) return;
+                    const rootElement = this.select(`[data-strictzone-id="${ent.strictzone}"]`);
+
+                    const component = this.components.create(ent.type, undefined, {
+                        id: ent.id,
+                        properties: ent.properties,
+                        styles: ent?.styles,
+                        "sub-elements": ent?.subElements,
+                    });
+
+                    rootElement?.appendChild(component);
+                });
         }
 
         // CHECK IF COMPONENT HAS CHANGED DROPZONE
@@ -612,21 +643,25 @@ export class EditorComponent extends EditorCanvasBase {
         this.draggable = true;
     }
 
-    privateCss = () => /*css*/`
-        ${this.definition?.styleSettings?.css?.(this.properties)}
+    privateCss = () => {
+        var _hostRefuse = this.hostRefuse.filter(d => !this.definition?.styleSettings?.allowHost?.includes(d));
 
-        :host {
-            position: relative !important;
-            overflow-y: clip;
+        return /*css*/`
+            ${this.definition?.styleSettings?.css?.(this.properties)}
 
-            [styles=host] {
-                ${this.hostRefuse.map(d => /*css*/`${d}: initial !important;`).join(' ')}
+            :host {
+                position: relative !important;
+                overflow-y: clip;
+
+                [styles=host] {
+                    ${_hostRefuse.map(d => /*css*/`${d}: initial !important;`).join(' ')}
+                }
             }
-        }
 
-        ${this.styleGetter}
-        ${this.subStyleGetter}
-    `
+            ${this.styleGetter}
+            ${this.subStyleGetter}
+        `
+    }
 
     css = () => /*css*/`
         ${resetcss}
@@ -874,7 +909,7 @@ export class EditorComponent extends EditorCanvasBase {
                 this._label = label;
                 this.setAttribute('_label', label);
 
-                if(!this.entry) {
+                if (!this.entry) {
                     this._entry = JSON.stringify((await this.session.get(this.id)))
                 }
 

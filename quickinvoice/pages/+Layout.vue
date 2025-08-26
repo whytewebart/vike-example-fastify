@@ -65,7 +65,7 @@
 
   <!-- <div
     id="follow-cursor"
-    class="h-30 w-30 bg-primary-600 absolute -z-10 translate--50% rounded-full cursor-pointer"
+    class="h-30 w-30 bg-primary-600 absolute -z-10 translate--50% rounded-full cursor-pointer no-scrollbar"
     :style="{ left: x + 'px', top: y + 'px' }"
   ></div> -->
   <div id="jump-to-editor" class="fixed bottom-4 right-4 z-10 space-x-2">
@@ -89,7 +89,6 @@
 import gsap from "gsap";
 import "@sjmc11/tourguidejs/src/scss/tour.scss";
 
-const bus = useEventBus("editor-w");
 function scrollToEditor() {
   document.querySelector("editor-wrapper")?.scrollIntoView({
     behavior: "smooth",

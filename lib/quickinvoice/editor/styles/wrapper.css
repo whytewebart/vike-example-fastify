@@ -66,13 +66,14 @@
     justify-content: center;
     align-items: center;
 
-    min-height: var(--calc-handles);
+    /* min-height: var(--calc-handles); */
     padding: var(--handle-padding) calc(var(--canvas-padding) - 2px);
-    overflow: hidden;
+    overflow-y: auto;
     position: relative;
     top: 0;
 
     /* background-color: #F8F8F8; */
+    @apply: hide-scrollbar;
 }
 
 /* ==========================================
@@ -181,7 +182,7 @@ div[section="blocks-panel"] editor-panel {
     }
 
     div[section="panels"] div[section="blocks-panel"] {
-        @apply bg-white b-r-1 app-scrollbar overflow-y-auto max-h-screen [&::-webkit-scrollbar]:bg-white *:b-r-1;
+        @apply bg-white b-r-1 app-scrollbar overflow-y-auto max-h-screen [&::-webkit-scrollbar]:bg-#F8F8F8 *:b-r-1;
 
         &::-webkit-scrollbar-track {
             @apply bg-white b-l-2;

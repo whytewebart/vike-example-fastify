@@ -26,17 +26,28 @@ const useInvoice = () => {
             jsPDF: {
                 unit: "px",
                 format: [
-                    595,
-                    842
+                    // 595,
+                    // 842
+                    535,
+                    760
                 ],
                 orientation: "portrait",
-                hotfixes: ["px_scaling"]
+                // hotfixes: ["px_scaling"],
+                // precision: 100
             },
             html2canvas: {
-                width: 595,
-                height: 842,
-                scale: 8
-            }
+                // width: 595,
+                // height: 842,
+                width: 535,
+                height: 760,
+                scale: 10,
+                // letterRendering: true,
+                // dpi: 192,
+            },
+            // image: {
+            //     type: 'jpeg',
+            //     quality: 0.98
+            // }
         }
 
         // var doc = new jsPDF();

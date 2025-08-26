@@ -8,7 +8,8 @@ const button: ComponentDefinition = {
 
     capabilities: {
         canHaveChildren: false,
-        canAcceptStyles: true
+        canAcceptStyles: true,
+        allowSubElementRoot: true
     },
 
     properties: [
@@ -90,7 +91,8 @@ const dropzone: ComponentDefinition = {
         canBeDeleted: true,
         canAcceptStyles: true,
         isContainer: true,
-        enableHandle: true
+        enableHandle: true,
+        allowSubElementRoot: true
     },
 
     styleSettings: {
@@ -129,7 +131,8 @@ const heading: ComponentDefinition = {
     capabilities: {
         canHaveChildren: false,
         canAcceptStyles: true,
-        canBeDeleted: true
+        canBeDeleted: true,
+        allowSubElementRoot: true
     },
 
     properties: [
@@ -191,7 +194,8 @@ const paragraph: ComponentDefinition = {
     capabilities: {
         canHaveChildren: false,
         canAcceptStyles: true,
-        canBeDeleted: true
+        canBeDeleted: true,
+        allowSubElementRoot: true
     },
 
     properties: [
@@ -238,7 +242,8 @@ const telephone: ComponentDefinition = {
     capabilities: {
         canHaveChildren: false,
         canAcceptStyles: true,
-        canBeDeleted: true
+        canBeDeleted: true,
+        allowSubElementRoot: true
     },
 
     properties: [
@@ -285,7 +290,8 @@ const divider: ComponentDefinition = {
     capabilities: {
         canHaveChildren: false,
         canAcceptStyles: true,
-        canBeDeleted: true
+        canBeDeleted: true,
+        allowSubElementRoot: true
     },
 
     properties: [
@@ -360,7 +366,8 @@ const image: ComponentDefinition = {
     capabilities: {
         canHaveChildren: false,
         canAcceptStyles: true,
-        canBeDeleted: true
+        canBeDeleted: true,
+        allowSubElementRoot: true
     },
 
     properties: [
@@ -415,7 +422,8 @@ const qrcode: ComponentDefinition = {
     capabilities: {
         canHaveChildren: false,
         canAcceptStyles: true,
-        canBeDeleted: true
+        canBeDeleted: true,
+        allowSubElementRoot: true
     },
 
     properties: [
@@ -613,7 +621,7 @@ const fixedTable: ComponentDefinition = {
         {
             key: 'thead',
             selector: 'thead',
-            name: 'Table Header',
+            name: 'Header',
         },
         {
             key: 'column',
@@ -623,12 +631,12 @@ const fixedTable: ComponentDefinition = {
         {
             key: 'body',
             selector: 'tbody',
-            name: 'Table Body',
+            name: 'Body',
         },
         {
             key: 'row',
             selector: 'tr',
-            name: 'Table Row',
+            name: 'Body Row',
         },
     ],
 
@@ -865,7 +873,8 @@ const columnGrid: ComponentDefinition = {
         canAcceptStyles: true,
         canBeDeleted: true,
         isContainer: false,
-        enableHandle: true
+        enableHandle: true,
+        allowSubElementRoot: true
     },
 
     properties: [
@@ -1068,8 +1077,13 @@ const socialLinks: ComponentDefinition = {
         {
             key: 'icon',
             selector: 'a.social-link > img',
-            name: 'Icons',
+            name: 'Icon',
             capabilities: {}
+        },
+        {
+            key: 'text',
+            selector: 'a.social-link > span',
+            name: 'Label'
         }
     ],
 
@@ -1143,7 +1157,9 @@ const signature: ComponentDefinition = {
     name: 'Signature',
     category: 'Layout',
 
-    capabilities: {},
+    capabilities: {
+        allowSubElementRoot: true
+    },
     properties: [
         {
             name: 'capture',
@@ -1226,7 +1242,9 @@ const recipient: ComponentDefinition = {
     name: 'Recipient',
     category: 'Layout',
 
-    capabilities: {},
+    capabilities: {
+        allowSubElementRoot: true
+    },
     properties: [
         {
             name: 'nameOfRecipient',
@@ -1326,7 +1344,9 @@ const money: ComponentDefinition = {
     name: 'Money',
     category: 'Layout',
 
-    capabilities: {},
+    capabilities: {
+        allowSubElementRoot: true
+    },
 
     properties: [
         {
@@ -1370,7 +1390,9 @@ const spacer: ComponentDefinition = {
     name: 'Spacer',
     category: 'Layout',
 
-    capabilities: {},
+    capabilities: {
+        allowSubElementRoot: true
+    },
 
     styleSettings: {
         allowedProperties: [

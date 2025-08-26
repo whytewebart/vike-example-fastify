@@ -1,7 +1,7 @@
 import Minze, { EventListeners, MinzeElement } from "minze";
 import { nanoid } from "nanoid";
 import css from "./properties.css?inline"
-import definition from "@/quickinvoice/definition/components";
+import { components, templates } from "@/quickinvoice/definition";
 
 // @unocss-include
 // DIMENSION TYPE DEFINITION
@@ -68,7 +68,7 @@ class PropertyEditor {
     // DEFINITION
     definition() {
         // IMPORT DEFINITION
-        const _definition = Object.values(definition)
+        const _definition = Object.values({ ...components, ...templates })
             .find(def => def.type == this.componentType);
 
         return _definition
@@ -89,7 +89,7 @@ class PropertyEditor {
 
             return /*html*/`
                 <editor-input
-                    type='${JSON.stringify(prop.type)}'
+                    type='${stringify(prop.type)}'
                     select-options='${JSON.stringify(prop.options) || []}'
                     label="${prop.name}"
                     ${
