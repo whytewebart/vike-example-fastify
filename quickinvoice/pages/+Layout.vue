@@ -39,12 +39,16 @@
           severity="secondary"
           size="small"
           pt:root="hidden! sm:flex!"
+          as="a"
+          href="mailto:wills.yte50@gmail.com"
         />
         <Button
           label="Work With Me"
           size="small"
           icon-pos="right"
           icon="i-solar-arrow-right-outline"
+          as="a"
+          href="mailto:whytewebart@gmail.com"
         />
       </nav>
     </header>
