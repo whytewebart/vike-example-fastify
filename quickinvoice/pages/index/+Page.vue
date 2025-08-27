@@ -14,10 +14,7 @@
 
   <div class="bk-col-full my-4" invoice-temp-grid>
     <div v-if="toggleTemplates">
-      <InvoiceTemplate type="template01" />
-      <InvoiceTemplate type="pastel-template" />
-      <InvoiceTemplate type="redline-template" />
-      <InvoiceTemplate />
+      <InvoiceTemplate v-for="({ type, features, name }, i) in templates" :type :name :features :index="i" />
     </div>
 
     <Button
@@ -97,11 +94,15 @@ const breakpoints = useBreakpoints({
   editor: 1000,
 });
 
-const InvoiceTemplate = (props: { type?: string }, ctx: SetupContext) => {
+type INTProp = {
+  type: string,
+  name: string,
+  features: string[],
+  index?: number
+}
+
+const InvoiceTemplate = (props: INTProp, ctx: SetupContext) => {
   const emitRegsiterTemplate = () => {
-    if (!props.type) {
-      return alert("Type is missing from component");
-    }
 
     confirm.require({
       message:
@@ -138,9 +139,9 @@ const InvoiceTemplate = (props: { type?: string }, ctx: SetupContext) => {
       reject: () => {
         toast.add({
           severity: "error",
-          summary: "Action Canceled",
+          summary: "Template not registered",
           // detail: "You have rejected",
-          life: 3000,
+          life: 2000,
         });
       },
     });
@@ -153,16 +154,36 @@ const InvoiceTemplate = (props: { type?: string }, ctx: SetupContext) => {
       onClick={emitRegsiterTemplate}
     >
       <div class="flex items-center justify-between font-600 text-sm">
-        <p class="">[01]</p>
-        <p class="">[ Logo, QR Code, Dropzone ]</p>
+        <p class="">[{props.index || '-'}]</p>
+        <p class="">[ {props.features.join(', ')} ]</p>
       </div>
-      <div class="bg-white h-xs w-full"></div>
+      <div class="bg-white h-xs w-full">
+        <img src={`/quickinvoice/assets/templates/${props.type}.jpg`} alt="" class="w-full h-full" />
+      </div>
       <h3 class="text-right text-xl font-epilogue font-500 tracking-tight">
-        Derauke Black
+        {props.name}
       </h3>
     </div>
   );
 };
+
+const templates: Omit<INTProp, 'index'>[] = [
+  {
+    type: 'simple-invoice',
+    name: 'Simple',
+    features: ['Extra Charges', 'Payment Info', 'Terms']
+  },
+  {
+    type: 'pastel-template',
+    name: 'Pastel',
+    features: ['Invoice No', 'Logo', 'Signature', 'Terms']
+  },
+  {
+    type: 'redline-template',
+    name: 'Redline Agency',
+    features: ['Invoice No', 'Payment Info', 'Terms']
+  },
+]
 
 function getPrint() {
   if (window.invoiceHTML) {
