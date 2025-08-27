@@ -1,5 +1,6 @@
 <template>
   <UserProfile class="bk-col-min" />
+  <a href="/quickinvoice" class="text-center mt-2 font-urbanist font-semibold rounded-lg">Check out Invoicespace preview</a>
   <section id="about-me" class="bk-col-max md:bk-col-full mt-8 tracking-tight relative">
     <!-- <div class="h-5 absolute left-0 right-0 top--5 mx-10 overflow-y-visible" border="2 gray b-0 dashed" flex="~ justify-center items-start">
     </div> -->
@@ -11,9 +12,10 @@
           internal tools and dynamic web experiences.
         </p>
 
-        <div class="max-md:hidden divide-x-2 bg-stone-100 h-full" flex="~ items-start">
-          <Button label="Languages" severity="secondary" pt:root="rounded-none shadow-reflect" />
-          <Button label="Projects" severity="secondary" pt:root="rounded-none" />
+        <div class="-space-x-12 hidden" flex="xmd:~">
+          <img width="128" src="/brandmark.png" alt="">
+          <img width="128" src="/whytewebart.png" alt="">
+          <!-- <img width="128" src="/rosetech.png" class="rounded-full" alt=""> -->
         </div>
       </div>
       <div class="space-y-4">
