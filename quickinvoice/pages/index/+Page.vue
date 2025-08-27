@@ -1,10 +1,10 @@
 <template>
-  <ButtonGroup pt:root="mx-a" max-xs="grid [&>[data-pc-name=button]]:rounded-md!">
+  <ButtonGroup pt:root="mx-a" max-xsm="grid [&>[data-pc-name=button]]:rounded-md! w-full">
     <Button
       label="Select invoice template"
       icon="i-solar-alt-arrow-down-outline"
       icon-pos="right"
-      pt:root="justify-between w-fit gap-x-8"
+      pt:root="justify-between gap-x-8"
       pt:label="flex-none"
       @click="toggleTemplates = !toggleTemplates"
       id="select-invoice-template"
