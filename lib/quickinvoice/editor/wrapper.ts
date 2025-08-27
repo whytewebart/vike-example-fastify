@@ -179,13 +179,14 @@ export class EditorWrapper extends EditorWrapperBase {
               /* min-height: calc(var(--canvas-height) + var(--canvas-padding) + var(--canvas-padding)); */
               min-width: calc(var(--canvas-min-width) + var(--handle-padding) + var(--handle-padding));
             }
+            
+            @media (min-height: ${this.canvas.dimension.height}px) {
+                /* [section="canvas"] { min-height: var(--calc-handles); } */
+                [section="canvas"] { max-height: var(--calc-handles); }
+                div[section="panels"] { max-height: var(--calc-handles); }
+            }
         }
 
-        @media (min-height: ${this.canvas.dimension.height}px) {
-            /* [section="canvas"] { min-height: var(--calc-handles); } */
-            [section="canvas"] { max-height: var(--calc-handles); }
-            div[section="panels"] { max-height: var(--calc-handles); }
-        }
     `;
 
   onStart() {
