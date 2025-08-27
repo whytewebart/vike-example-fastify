@@ -14,7 +14,7 @@
 
   <div class="bk-col-full my-4" invoice-temp-grid>
     <div v-if="toggleTemplates">
-      <InvoiceTemplate v-for="({ type, features, name }, i) in templates" :type :name :features :index="i" />
+      <InvoiceTemplate v-for="({ type, features, name }, i) in templates" :type :name :features :index="i+1" />
     </div>
 
     <Button
@@ -157,9 +157,7 @@ const InvoiceTemplate = (props: INTProp, ctx: SetupContext) => {
         <p class="">[{props.index || '-'}]</p>
         <p class="">[ {props.features.join(', ')} ]</p>
       </div>
-      <div class="bg-white h-xs w-full">
-        <img src={`/quickinvoice/assets/templates/${props.type}.jpg`} alt="" class="w-full h-full" />
-      </div>
+        <img src={`/quickinvoice/assets/templates/${props.type}.jpg`} alt="" class="w-full h-xs object-cover object-top" />
       <h3 class="text-right text-xl font-epilogue font-500 tracking-tight">
         {props.name}
       </h3>
