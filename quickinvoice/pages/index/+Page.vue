@@ -94,6 +94,20 @@ const breakpoints = useBreakpoints({
   editor: 1000,
 });
 
+const exports_ = import.meta.glob("../../assets/templates/*.jpg", {
+  eager: true,
+  import: "default",
+  // query: "?extractExportNames",
+});
+
+const processIcons = Object.values(exports_) as string[];
+function getMatchingImagePath(name:string) {
+  return processIcons.find(path => {
+    const filename = path.split('/').pop()?.split('.')[0];
+    return filename === name;
+  });
+}
+
 type INTProp = {
   type: string,
   name: string,
@@ -157,7 +171,7 @@ const InvoiceTemplate = (props: INTProp, ctx: SetupContext) => {
         <p class="">[{props.index || '-'}]</p>
         <p class="">[ {props.features.join(', ')} ]</p>
       </div>
-        <img src={`/quickinvoice/assets/templates/${props.type}.jpg`} alt="" class="w-full h-xs object-cover object-top" />
+        <img src={getMatchingImagePath(props.type)} alt="" class="w-full h-xs object-cover object-top" />
       <h3 class="text-right text-xl font-epilogue font-500 tracking-tight">
         {props.name}
       </h3>

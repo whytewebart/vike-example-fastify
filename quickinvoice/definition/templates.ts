@@ -2,9 +2,9 @@ import { nanoid } from "nanoid";
 
 
 const invoice_01: ComponentDefinition = {
-    type: 'template01',
+    type: 'simple-invoice',
     name: 'Template',
-    category: 'Templates',
+    category: 'Simple Invoice',
     icon: '📄',
 
     capabilities: {
