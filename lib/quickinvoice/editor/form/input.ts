@@ -3,7 +3,7 @@ import Minze, { MinzeElement } from 'minze'
 import { IndexedDBWrapper } from '../component/utils/state';
 import Compressor from 'compressorjs';
 import { nanoid } from "nanoid"
-import clm from "country-locale-map"
+import type clm from "country-locale-map"
 import parsePhoneNumber, { getCountryCallingCode } from 'libphonenumber-js';
 
 export interface EditorInput {
@@ -19,11 +19,13 @@ export interface EditorInput {
     entries: any[];
     entryId: string;
     nested: 'deep' | boolean; // Whether the input array is nested
+    _cache_load?: 'clm'
 }
 
 export class EditorInput extends MinzeElement {
     DB_VERSION = 1;
     DB_NAME = 'quickinvoice'
+    CLM:typeof clm | null = null
 
     attrs?: Attrs = [
         "type",
@@ -36,60 +38,45 @@ export class EditorInput extends MinzeElement {
         ["description", false],
         ["helptext", false],
         "entry-id",
-        ["nested", false]
+        ["nested", false],
+        
     ];
 
-    reactive?: Reactive = [["entries", []]]
+    reactive?: Reactive = [["entries", []], '_cache_load']
     static observedAttributes = ['checked', 'default-value']
     get splitLabel() {
         if (typeof this.label !== 'string') return '';
         return this.label.replace(/([a-z])([A-Z])/g, '$1 $2')
     }
 
-    countries = () => {
-        return clm.getAllCountries().map(country => {
-            var code;
-            try {
-                // @ts-ignore
-                code = getCountryCallingCode(country.alpha2);
-            } catch (error) {
-
-            }
-
-            return {
-                ...country,
-                callingCode: code
-            }
-        }).filter(d => d.callingCode)
+    loadCLM = async () => {
+        const clm = (await import('country-locale-map')).default;
+        this.CLM = clm;
+        this._cache_load = 'clm';
     }
-
-    currencies = () => {
-        const seen = new Set<string>();
-        return clm.getAllCountries().filter(country => {
-            if (seen.has(country.currency_name)) return false;
-            seen.add(country.currency_name);
-            return true;
-        });
-    }
-
 
     protected session = new IndexedDBWrapper<DB.Session>(this.DB_NAME, 'session', this.DB_VERSION)
 
     html = () => {
         // LABEL COMPONENT
         const label = /*html*/`
-            <label for="${this.label}-input" class="text-base font-semibold text-gray-700 capitalize font-space-mono mb-1 ${this.getAttribute('hide-label') ? 'hidden' : ''}">${this.splitLabel}</label>
+            <label
+                for="${this.label}-input"
+                class="text-base text-gray-700 capitalize mb-1"
+                font="space-mono semibold"
+                ${this.getAttribute('hide-label') ? 'hidden' : ''}
+            >
+                ${this.splitLabel}
+            </label>
         `;
         // WRAPPER COMPONENT
+        const type_is_object = typeof this.type !== 'string' && this.type.type === 'object';
         const wrapper = (template: string, hideLabel: boolean = false) => /*html*/`
             <div class="flex flex-col-reverse">
-                ${this.getAttribute('save-btn') == 'hide'
-                    ? '' :
-                    // @ts-ignore
-                    // this.type?.type === 'object' || this.repeater ?
-                    this.type?.type === 'object' && !this.repeater ?
+                ${
+                    this.getAttribute('save-btn') == 'hide' ? '' :
+                    type_is_object && !this.repeater ?
                     /*html*/`
-                        <!-- SAVE BUTTON -->
                         <div class="grid sticky bottom-3 z-1 my-3 mx-4 peer">
                             <button id="save-entries" class="px-4 py-1.5 font-space-mono bg-white text-blue-600 text-base transition-colors w-full rounded-none capitalize" border="1 dashed gray" hover="text-white bg-blue-700">
                                 Save ${this.label}
@@ -97,20 +84,27 @@ export class EditorInput extends MinzeElement {
                         </div>
                     ` : ''
                 }
+
                 <div
-                class="flex flex-col space-y-1 ${typeof this.type !== 'object' ? 'py-2 px-4' : ''} ${this.type?.type === 'object' ? 'bg-gray-50/30 border-y border-gray border-dashed' : ''}" peer-has-hover="bg-stone-50 border-y-2 border-blue-600">
-                ${!hideLabel ?
-                    /*html*/`
-                        ${label}
-                        ${this.description ? `<p class="text-base mt--1.2! mb-2! leading-tight text-gray-600 font-sans">${this.description}</p>` : ''}
-                        <div class="relative">
-                            ${template}
-                        </div>
-                    ` : `${template}`
-            }
-                <!-- HELP TEXT -->
-                ${this.helptext ? `<p class="text-sm text-gray-500 font-sans">${this.helptext}</p>` : ''}
-            </div>
+                    class="space-y-1 ${type_is_object ? 'bg-gray-50/30' : ''} ${typeof this.type !== 'object' ? 'py-2 px-4' : ''}"
+                    border="${type_is_object ? 'y-1 gray dashed' : ''}"
+                    
+                    flex="~ col"
+                    peer-has-hover="bg-stone-50 border-y-2 border-blue-600"
+                >
+                    ${!hideLabel ?
+                        /*html*/`
+                            ${label}
+                            ${this.description ?
+                                `<p
+                                    class="text-base mt--1.2! mb-2! leading-tight text-gray-600 font-sans"
+                                >${this.description}</p>` : ''
+                            }
+                            <div class="relative">${template}</div>
+                        ` : `${template}`
+                    }
+                    ${this.helptext ? `<p class="text-sm text-gray-500 font-sans">${this.helptext}</p>` : ''}
+                </div>
             </div>
         `;
         // FALLBACK INPUT
@@ -134,7 +128,6 @@ export class EditorInput extends MinzeElement {
                 id="${this.label}-image"
                 class="px-3 py-2 border border-gray-300 rounded-none text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-offset-2 w-full"
             />
-            
         `
         // SELECT INPUT
         const select = /*html*/`
@@ -144,9 +137,11 @@ export class EditorInput extends MinzeElement {
                 class="w-full px-3 py-2 border border-gray-300 rounded-none text-sm text-gray-800 focus:outline-none focus:ring-offset-2 focus:ring-2 focus:ring-gray-200 font-urbanist appearance-none w-full capitalize"
             >
                 <option value="" disabled selected>Select ${this.label}</option>
-                ${this.selectOptions.map(opt => /*html*/`
-                <option value="${opt}" class="uppercase" ${opt === this.defaultValue ? 'selected' : ''}>${opt}</option>
-                `).join('')}
+                ${
+                    this.selectOptions.map(opt => /*html*/`
+                        <option value="${opt}" class="uppercase" ${opt === this.defaultValue ? 'selected' : ''}>${opt}</option>
+                    `).join('')
+                }
             </select>
             <span class="i-solar-alt-arrow-down-outline ml-1 absolute top-2.2 right-4 text-slate-700 text-xl z-1"></span>
         `
@@ -159,21 +154,25 @@ export class EditorInput extends MinzeElement {
                 class="w-full px-3 py-2 border border-gray-300 rounded-none text-sm text-gray-800 focus:outline-none focus:ring-offset-2 focus:ring-2 focus:ring-gray-200 font-urbanist appearance-none w-full capitalize"
             >
                 ${
-            // this.currencies()
-            clm.getAllCountries()
-                .map(
-                    (country) => {
-                        const payload = {
-                            currency: country.currency,
-                            code: country.alpha2,
-                            language: country?.languages ? country.languages[0] : 'en'
-                        };
+                    this.CLM?.getAllCountries()
+                        .map(
+                            (country) => {
+                                const payload = {
+                                    currency: country.currency,
+                                    code: country.alpha2,
+                                    language: country?.languages ?
+                                    country.languages[0] : 'en'
+                                };
 
-                        return /*html*/`
-                            <option value='${JSON.stringify(payload)}' ${country.alpha2 === this.defaultValue?.code ? 'selected' : ''}>${country.name} - ${country.currency}</option>`
-                    }
-                ).join('')
-            }
+                                return /*html*/`
+                                    <option
+                                        value='${JSON.stringify(payload)}'
+                                        ${country.alpha2 === this.defaultValue?.code ? 'selected' : ''}
+                                    >${country.name} - ${country.currency}</option>
+                                `
+                            }
+                        ).join('')
+                }
             </select>
             <span span class="i-solar-alt-arrow-down-outline ml-1 absolute top-2.2 right-4 text-slate-700 text-xl z-1" ></span>
         `
@@ -190,21 +189,23 @@ export class EditorInput extends MinzeElement {
                         name="currencyFormat"
                     >
                         ${
-            // this.currencies()
-            clm.getAllCountries()
-                .map(
-                    (country) => {
-                        const payload = {
-                            currency: country.currency,
-                            code: country.alpha2,
-                            language: country?.languages ? country.languages[0] : 'en'
-                        };
+                            this.CLM?.getAllCountries()
+                                .map(
+                                    (country) => {
+                                        const payload = {
+                                            currency: country.currency,
+                                            code: country.alpha2,
+                                            language: country?.languages ? country.languages[0] : 'en'
+                                        };
 
-                        return /*html*/`
-                                    <option value='${JSON.stringify(payload)}' ${country.alpha2 === this.defaultValue?.code ? 'selected' : ''}>${country.name} - ${country.currency}</option>`
-                    }
-                ).join('')
-            }
+                                        return /*html*/`
+                                            <option
+                                                value='${JSON.stringify(payload)}'
+                                                ${country.alpha2 === this.defaultValue?.code ? 'selected' : ''}>${country.name} - ${country.currency}
+                                            </option>`
+                                    }
+                                ).join('')
+                            }
                     </select>
 
                     <span class="i-solar-alt-arrow-down-outline ml-1 absolute top-2.2 right-2 text-slate-700 text-xl z-1"></span>
@@ -254,10 +255,19 @@ export class EditorInput extends MinzeElement {
                         name="countryCode"
                     >
                         <option disabled selected>Select Country</option>
-                        ${this.countries().map((country) => /*html*/`
-                                <option value="${country.alpha2}"> ${country.alpha2} +${country.callingCode} </option>
-                            `).join('')
-            }
+                        ${
+                            this.CLM?.getAllCountries()
+                            .map((country) => {
+                                try {
+                                    var code = getCountryCallingCode(country.alpha2 as any);
+                                    return /*html*/`
+                                        <option value='${country.alpha2}'> ${country.alpha2} +${code}</option>
+                                    `
+                                } catch (error) {
+                                    return null
+                                }
+                            }).filter(d => d !== null).join('')
+                        }
                     </select>
 
                     <span class="i-solar-alt-arrow-down-outline ml-1 absolute top-2.2 right-2 text-slate-700 text-xl z-1"></span>
@@ -268,7 +278,7 @@ export class EditorInput extends MinzeElement {
                     id="phone"
                     class="px-3 py-2 border border-gray-300 rounded-r- text-sm text-gray-800 w-full outline-none"
                     placeholder="123-456-7890"
-                    value="${this.defaultValue}"
+                    value='${this.defaultValue}'
                 >
             </div>
         `
@@ -553,6 +563,12 @@ export class EditorInput extends MinzeElement {
         // FORMAT VALUE
         value = formatter.format(value);
         return value
+    }
+    
+    async beforeRender() {
+        if(typeof this.type === 'string' && ['currency', 'currency-format', 'tel'].includes(this.type)) {
+            await this.loadCLM();
+        }
     }
 
     async onReady() {

@@ -1,6 +1,7 @@
 import { Attrs, EventListeners, MinzeElement, Reactive } from 'minze'
 import { nanoid } from 'nanoid';
 import { IndexedDBWrapper } from '../component/utils/state';
+import { EditorComponent } from '../component';
 
 export interface EditorCanvasBase {
     selectedComponent: HTMLElement | null;
@@ -306,19 +307,6 @@ export class EditorCanvasBase extends MinzeElement {
                     }
                 }
             }
-        },
-
-        hooks: {
-            start: () => {
-                // SET LISTENERS
-                const LISTENERS_MAP = this.baseEventListeners;
-
-                this.eventListeners = [
-                    // @ts-ignore
-                    ...this.eventListeners,
-                    ...LISTENERS_MAP
-                ];
-            }
         }
     }
 
@@ -335,7 +323,7 @@ export class EditorCanvasBase extends MinzeElement {
             attrs: Record<string, any> = {}
         ) => {
             // CREATE COMPONENT ELEMENT
-            var component = document.createElement('editor-component')
+            var component = <EditorComponent>document.createElement('editor-component')
             component.setAttribute('type', type);
             // SET EMPTY DEFAULTS
             ["properties", "styles", "sub-elements", "label", "id"]
@@ -351,12 +339,14 @@ export class EditorCanvasBase extends MinzeElement {
             return component
         },
 
-        select: (component: HTMLElement | null) => {
+        select: (component: EditorComponent | null) => {
             // REMOVE SELECTED CLASS
             this.selectedComponent?.classList.remove('selected');
             this.selectAll('.selected')?.forEach(el => {
                 el.classList.remove('selected')
             })
+            
+            window.activeComponent.definition = component?.definition!;
 
             // SELECT COMPONENT
             this.selectedComponent = component;
@@ -420,21 +410,5 @@ export class EditorCanvasBase extends MinzeElement {
             this.selectedComponent = e.detail.component
         }],
     ]
-
-    protected handlers = {
-        hooks: {
-            start: () => {
-                // DEFINE REACTIVE
-                var REACTIVE_MAP = this.DEFAULT_REACTIVE;
-                if (this.reactive)
-                    REACTIVE_MAP = [
-                        ...this.DEFAULT_REACTIVE,
-                        ...this.reactive
-                    ]
-
-                this.dropzone.hooks.start();
-            }
-        }
-    }
 
 }

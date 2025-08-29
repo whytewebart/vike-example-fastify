@@ -85,7 +85,7 @@ type ExtractPropertyShape<T extends ComponentProperty[]> = {
 };
 
 // Component definition
-interface ComponentDefinition<TProps extends ComponentProperty[] = ComponentProperty[]> {
+interface ComponentDefinition {
   type: string; // Unique component type identifier
   name: string;
   category?: string;
@@ -102,7 +102,7 @@ interface ComponentDefinition<TProps extends ComponentProperty[] = ComponentProp
     }[]
   })[];
   acceptsChildrenTypes?: string[] | 'all'; // Which component types can be children
-  renderTemplate?: (properties: ExtractPropertyShape<TProps>) => string; // HTML template
+  renderTemplate?: (properties: Record<string, any>) => string; // HTML template
   // mockTemplate?: string; // HTML template
   script?: string; // Component-specific JS
   selector?: string; // SELECTOR TO APPEND COMPONENT

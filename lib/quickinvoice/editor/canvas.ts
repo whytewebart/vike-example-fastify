@@ -123,24 +123,7 @@ export class EditorCanvas extends EditorCanvasBase {
         this._cache_registered = true;
     }
 
-
-    _uniqueId = customAlphabet('abcdefghijklmnopqrstuvwxyz', 10)
-
-    isDescendantOfSlot(element: HTMLElement, shadowRoot: ShadowRoot) {
-        const slots = shadowRoot.querySelectorAll('slot');
-
-        for (const slot of slots) {
-            const assignedNodes = slot.assignedNodes({ flatten: true });
-
-            for (const node of assignedNodes) {
-                if (node.nodeType === Node.ELEMENT_NODE && node.contains(element)) {
-                    return slot;
-                }
-            }
-        }
-
-        return null;
-    }
+    _uniqueId = customAlphabet('abcdefghijklmnopqrstuvwxyz', 10);
 
     recurisveNestedFind(el: EditorComponent) {
         const element = document.createElement('div');
@@ -274,33 +257,37 @@ export class EditorCanvas extends EditorCanvasBase {
         </div>
     `
 
-    css = () => `
-        @unocss-placeholder
-
-        :host {
-            width: ${this.canvas.width}px;
-            height: ${this.canvas.height}px;
-            position: relative;
-            display: block;
-        }
-
-        :not(:defined) {
-            visibility: hidden;
-        }
-
-        ${css}
-        ${componentCss}
-
-        @media (max-width: ${this.canvas.width + this.CANVAS_PADDING + this.HANDLE_PADDING}px) {
+    css = () => {
+        
+        const pre = /*css*/`
             :host {
-                --canvas-scale: 1;
-                transform: scale(var(--canvas-scale));
-                position: absolute;
+                width: ${this.canvas.width}px;
+                height: ${this.canvas.height}px;
+                position: relative;
+                display: block;
             }
-        }
-    `
 
-    deleteComponentRecursively = async (component: HTMLElement, deleteFromDB = false) => {
+            :not(:defined) {
+                visibility: hidden;
+            }
+        `;
+
+        const post = /*css*/`
+            @media (max-width: ${this.canvas.width + this.CANVAS_PADDING + this.HANDLE_PADDING}px) {
+                :host {
+                    --canvas-scale: 1;
+                    transform: scale(var(--canvas-scale));
+                    position: absolute;
+                }
+            }
+        `
+
+        return /*css*/`
+            @unocss-placeholder ${pre}${css}${componentCss}${post};    
+        `
+    }
+
+    async deleteComponentRecursively(component: HTMLElement, deleteFromDB = false) {
         const shadowRoot = component.shadowRoot;
 
         // 1. Get all <editor-component> children inside the shadow DOM
@@ -436,8 +423,24 @@ export class EditorCanvas extends EditorCanvasBase {
     ]
 
     onStart() {
-        /* await this.space.open(); */
-        this.dropzone.hooks.start();
+        // DEFINE REACTIVE
+        var REACTIVE_MAP = this.DEFAULT_REACTIVE;
+        if (this.reactive)
+            REACTIVE_MAP = [
+                ...this.DEFAULT_REACTIVE,
+                ...this.reactive
+            ]
+
+        // SET LISTENERS
+        const LISTENERS_MAP = this.baseEventListeners;
+
+        this.eventListeners = [
+            // @ts-ignore
+            ...this.eventListeners,
+            ...LISTENERS_MAP
+        ];
+
+        window.activeComponent = {};
     }
 
     async onReady() {

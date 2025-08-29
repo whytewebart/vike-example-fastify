@@ -2,7 +2,7 @@ import type { Reactive, Attrs, Watch, EventListeners } from 'minze'
 import Minze, { MinzeElement } from 'minze'
 
 import { nanoid } from 'nanoid'
-import css from '../atoms/properties.css?inline'
+import css from '../styles/properties.css?inline'
 import { StyleEditorBase } from './base'
 
 export class SpacingEditor extends StyleEditorBase {

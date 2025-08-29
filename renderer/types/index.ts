@@ -7,6 +7,7 @@ import { FastifyReply } from "fastify/types/reply";
 import { PageContext, PageContextClient, PageContextServer } from "vike/types";
 import type { ComponentPublicInstance, App } from "vue";
 import { UseHeadInput } from "unhead";
+import { EditorComponent } from "@/lib/quickinvoice/editor/component";
 
 type Component = ComponentPublicInstance; // https://stackoverflow.com/questions/63985658/how-to-type-vue-instance-out-of-definecomponent-in-vue-3/63986086#63986086
 type Page = Component;
@@ -70,6 +71,11 @@ declare global {
     invoiceHTML?: DocumentFragment | HTMLElement;
     stretchDropzone?: string;
     rerenderMap?: Map<string, HTMLElement>;
-    dragstartContainer?: HTMLElement
+    dragstartContainer?: HTMLElement;
+
+    activeComponent: {
+      definition?: ComponentDefinition,
+      component?: EditorComponent
+    }
   }
 }

@@ -3,7 +3,7 @@ import Minze, { MinzeElement } from 'minze'
 import { StyleEditorBase } from "./base"
 
 import { nanoid } from 'nanoid'
-import css from '../atoms/properties.css?inline'
+import css from '../styles/properties.css?inline'
 
 export class LayoutEditor extends StyleEditorBase {
     // REACTIVE STATE
