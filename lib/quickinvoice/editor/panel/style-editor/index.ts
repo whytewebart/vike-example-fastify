@@ -129,7 +129,7 @@ export class StyleEditor extends MinzeElement {
                     group-open="b-b-1 sticky top-42px z-1"
                 >
                     <p class="font-space-mono font-semibold">
-                        Select Nested Elements
+                        Select Component Sections
                     </p>
                     <span class="i-solar-alt-arrow-down-bold text-xl mr-1 group-open:i-solar-alt-arrow-up-bold!"></span>
                 </summary>
