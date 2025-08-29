@@ -77,7 +77,7 @@ export class EditorInput extends MinzeElement {
                     this.getAttribute('save-btn') == 'hide' ? '' :
                     type_is_object && !this.repeater ?
                     /*html*/`
-                        <div class="grid sticky bottom-3 z-1 my-3 mx-4 peer">
+                        <div class="grid sticky bottom-3 z-1 mt-3 mb-1 mx-4 peer">
                             <button id="save-entries" class="px-4 py-1.5 font-space-mono bg-white text-blue-600 text-base transition-colors w-full rounded-none capitalize" border="1 dashed gray" hover="text-white bg-blue-700">
                                 Save ${this.label}
                             </button>
@@ -86,7 +86,7 @@ export class EditorInput extends MinzeElement {
                 }
 
                 <div
-                    class="space-y-1 ${type_is_object ? 'bg-gray-50/30' : ''} ${typeof this.type !== 'object' ? 'py-2 px-4' : ''}"
+                    class="space-y-1 ${type_is_object ? 'bg-gray-50/30 mt-2' : ''} ${type_is_object && this.repeater ? 'b-y-0! mt-0!' : ''} ${typeof this.type !== 'object' ? 'py-2 px-4' : ''}"
                     border="${type_is_object ? 'y-1 gray dashed' : ''}"
                     
                     flex="~ col"
@@ -234,7 +234,7 @@ export class EditorInput extends MinzeElement {
                     type="checkbox"
                     id="check"
                     ${this.checked ? 'checked' : ''}
-                    class="peer h-5 w-5 shrink-0 cursor-pointer appearance-none rounded border border-gray-300 checked:bg-primary-800 checked:border-primary-800 transition-all shadow-sm hover:shadow focus:ring focus:ring-primary-500"
+                    class="peer h-5 w-5 shrink-0 cursor-pointer appearance-none rounded border border-gray-300 checked:bg-blue-800 checked:border-blue-800 transition-all shadow-sm hover:shadow focus:ring focus:ring-blue-500"
                     />
                     <span class="absolute text-white opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
                         ${svgIcon}
@@ -251,7 +251,7 @@ export class EditorInput extends MinzeElement {
             >
                 <div relative>
                     <select
-                        class="block rounded-l- border border-r-0 border-gray-200 bg-gray-50 text-gray-700 text-sm px-2 py-2 focus:outline-none appearance-none min-w-25"
+                        class="block rounded-l- border border-r-0 border-gray-200 bg-gray-50 text-gray-700 text-sm pl-2 pr-8 py-2 focus:outline-none appearance-none min-w-25"
                         name="countryCode"
                     >
                         <option disabled selected>Select Country</option>
@@ -270,7 +270,7 @@ export class EditorInput extends MinzeElement {
                         }
                     </select>
 
-                    <span class="i-solar-alt-arrow-down-outline ml-1 absolute top-2.2 right-2 text-slate-700 text-xl z-1"></span>
+                    <span class="i-solar-alt-arrow-down-outline ml-2 absolute top-2.2 right-2 text-slate-700 text-xl z-1"></span>
                 </div>
                 <input
                     type="tel"
@@ -295,24 +295,29 @@ export class EditorInput extends MinzeElement {
         var localType: any = this.type;
         // ${ localType?.itemType?.type ? '' : i === 0 ? 'repeater' : ''}
         const array = /*html*/`
-            <div class="overflow-y-clip">
+            <div class="overflow-y-clip mt-2">
                 <!-- HEADER -->
                 <div
-                    class="py-3 px-4 bg-white ${this.nested && this.nested === 'deep' ? '' : this.nested ? 'top-42px! z-2' : 'z-3 shadow'} sticky top-0"
+                    class="py-3 px-4 bg-white ${this.nested && this.nested === 'deep' ? '' : this.nested ? 'top-42px! z-2' : 'z-3'} ${Array.from(this.entries).length > 0 && !this.nested ? 'shadow' : ''} sticky top-0"
                     flex="~ items-start ${this.nested ? 'gap-x-3' : 'justify-between'}"
                     border="${this.repeater ? '' : 'y-1'} gray-200"
                 >
                     <label for="${this.label}-array" class="text-base font-semibold text-gray-700 capitalize font-space-mono">${this.splitLabel} Repeater</label>
-
-                    
 
                     <button id="add-entry" class="disabled:bg-gray-300 flex rounded hover:bg-gray-100 disabled:opacity-50" ${localType?.max && this.entries.length >= localType.max ? 'disabled' : ''}>
                         <span class="i-solar-pen-new-square-outline text-2xl"></span>
                         <!-- <span class="font-space-mono font-bold whitespace-nowrap">[Create Entry]</span> -->
                     </button>
     
-                    ${this.nested ? `<div class="h-6 b-l-3 b-b-3 w-4 absolute left-4 top-12 z-10 b-gray-8"></div>` : ''}
-                    
+                    ${this.nested && Array.from(this.entries).length > 0 ? `<div class="h-5 b-l-3 b-b-3 w-4 absolute left-4 top-12 z-10 b-gray-8"></div>` : ''}
+                </div>
+                
+                <div class="py-1.5 px-4 text-base ${Array.from(this.entries).length > 0 ? 'hidden' : ''}" grid="~ cols-[1.5rem_1fr] gap-x-3">
+                    <div class="h-3 pt-1" border="l-3 b-3 gray"></div>
+                    <p class="font-urbanist font-medium">
+                        <!-- ${this.description} -->
+                        This is a list component, <span id="add-entry" class="text-blue-6 hover:underline underline-offset-3 cursor-pointer">click the icon</span> to the right to begin
+                    </p>
                 </div>
                 
                 <div class="grid relative ${this.nested ? 'pl-6 -space-y-2 overflow-y-clip' : ''}">
@@ -354,7 +359,7 @@ export class EditorInput extends MinzeElement {
             }
                                 </div>
                             </summary>
-                            <div class="relative ${this.nested ? 'ml-5.7 pl-1' : ''}">
+                            <div class="relative bg-gray-50.30 ${this.nested ? 'ml-5.7 pl-1' : ''}">
                                 <editor-input
                                     ${typeof localType?.itemType === 'string' ? 'hide-label="true"' : ''}
                                     label="${this.label}"
@@ -373,7 +378,7 @@ export class EditorInput extends MinzeElement {
                                 ` : ''}
                             </div>
     
-                            <div class="${typeof localType?.itemType === 'string' ? 'pb-1' : 'py-2'} ${this.nested ? '' : 'b-b-1'}"><div>
+                            <!-- <div class="${typeof localType?.itemType === 'string' ? 'pb-1' : 'py-2'} ${this.nested ? '' : 'b-b-1'}"><div> -->
                         </details>
                         
                     `).join('')}
@@ -392,14 +397,14 @@ export class EditorInput extends MinzeElement {
         }
 
         const object = /*html*/`
-            <div class="flex flex-col ${this.repeater ? 'bg-gray-50' : 'py-2 px-4'}">
+            <div class="flex flex-col ${this.repeater ? 'bg-gray-50' : 'pt-2 px-4'}">
                 ${!this.repeater ? /*html*/`
                         <label for="${this.label}-object" class="text-base font-semibold text-gray-700 capitalize font-space-mono">${this.splitLabel}</label>
                 ` : ''
             }
             </div>
             
-            <div class="grid -mt-2">
+            <div class="grid -mt-2 pb-2">
                 ${localType?.shape?.map((opt: ObjectField, i: number) => /*html*/`
                     <editor-input
                         label="${opt.name}"

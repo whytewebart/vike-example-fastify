@@ -21,7 +21,7 @@ export class PropertiesEditor extends MinzeElement {
     static observedAttributes = ['component-id', 'type']
 
     get definition() {
-        return window.activeComponent.definition
+        return window.activeComponent?.definition
     }
 
     stringify = (payload: any) => {

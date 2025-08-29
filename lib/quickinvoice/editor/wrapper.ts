@@ -86,7 +86,7 @@ export class EditorWrapper extends EditorWrapperBase {
     <div section="blocks-panel" class="relative">
       <!-- BLOCKS -->
       <editor-panel title="Elements" class="*:font-space-mono">
-        <!-- <div class="block" data-type="card" draggable="true">card</div> -->
+        <div class="block" data-type="card" draggable="true">card</div>
         <div class="block" data-type="heading" draggable="true">Heading</div>
         <div class="block" data-type="paragraph" draggable="true">Paragraph</div>
         <div class="block" data-type="telephone" draggable="true">Telephone</div>

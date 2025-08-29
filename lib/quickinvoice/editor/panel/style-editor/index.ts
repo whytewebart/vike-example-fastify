@@ -6,7 +6,6 @@ import { EditorComponent } from '../../component';
 
 export interface StyleEditor {
     component?: EditorComponent;
-    subElements?: Pick<SubElement, 'key' | 'name'>[];
     selectedElement?: string;
     componentToShow?: "styles" | "properties";
     allowedProperties?: string[];
@@ -14,20 +13,31 @@ export interface StyleEditor {
     editLabel: boolean;
     componentLabel?: string;
     selectedComponent: string | null;
+
+    _cache_sections?: string
 }
 
 export class StyleEditor extends MinzeElement {
 
     reactive: Reactive = [
         'componentId',
-        ['subElements', []],
         ["selectedElement", ''],
         ["componentToShow", "properties"],
         ['allowedProperties', []],
         ['editLabel', false],
         ['componentLabel', null],
-        ['selectedComponent', null]
+        ['selectedComponent', null],
+
+        '_cache_sections'
     ]
+
+    get sections(): Pick<SubElement, 'key' | 'name'>[] {
+        return JSON.parse(this._cache_sections || '[]')
+    }
+
+    watch: Watch = [['subElements', (newValue, oldValue, key, target) => {
+        console.log(newValue, oldValue)
+    }]]
 
     handleToggleClick = (event: Event) => {
         const target__ = event.target as HTMLDivElement;
@@ -106,59 +116,45 @@ export class StyleEditor extends MinzeElement {
 
     // SELECT INPUT
     elementSelect = () => {
-        const v1 = /*html*/`
-            <div class="bg-gray-50 px-4 py-2">
-                <h3 class="font-space-mono font-semibold text-lg capitalize relative -left-1 mb-1 ${!this.component ? 'hidden' : ''}">[${this.component?.dataset.name}] component </h3>
-                <div class="relative bg-white">
-                    <select
-                        name="subElement"
-                        id="subElement-select"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-none text-sm text-gray-800 focus:outline-none focus:ring-offset-2 focus:ring-2 focus:ring-gray-200 font-urbanist appearance-none w-full"
-                    >
-                        <option
-                            value=""
-                            disabled
-                        >Select Sub-Element</option>
-                        
-                        ${this.subElements?.map(opt => `<option value="${opt.key}" class="">${opt.name}</option>`).join('')}
-                    </select>
-                    <span class="i-solar-alt-arrow-down-outline ml-1 absolute top-2.2 right-4 text-slate-700 text-xl"></span>
-                </div>
-            </div>
-        `;
 
-        const v2 = /*html*/`
-            <div class="${!this.selectedComponent ? 'hidden!' : ''} ${this.subElements && this.subElements.length > 0 ? '' : 'hidden'}">
-                <details open class="group b-b-1 open:b-b-">
-                    <summary
-                        class="py-2 px-4 bg-white transition-all"
-                        flex="~ items-center justify-between"
-                        hover="cursor-pointer bg-gray-100"
-                        group-open="b-b-1 sticky top-42px z-1"
-                    >
-                        <p class="font-space-mono font-semibold">
-                            Select Nested Elements
-                        </p>
-                        <span class="i-solar-alt-arrow-down-bold text-xl mr-1 group-open:i-solar-alt-arrow-up-bold!"></span>
-                    </summary>
-                    
-                    <ul class="divide-y bg-gray-50/20 b-b-">
-                        ${this.subElements?.map(opt => `
-                            <li sub-element-option data-value="${opt.key}" class="px-3 py-1 font-space-mono transition-all" hover="bg-gray-100 cursor-pointer tracking-.8 font-bold shadow z-1">${opt.name} ${this.selectedElement === opt.key ? '<b class="tracking-normal!">[Selected]</b>' : ''} </li>
-                            `).join('')
-            }
-                    </ul>
-                    <p class="text-center font-space-mono font-bold py-2 bg-gray-50/20">
-                        <!-- [•] -->
+        return /*html*/`
+            <details
+                open
+                class="group b-b-1 ${!this.selectedComponent && this.sections.length > 0 ? 'hidden' : ''}"
+            >
+                <summary
+                    class="py-2 px-4 bg-white transition-all"
+                    flex="~ items-center justify-between"
+                    hover="cursor-pointer bg-gray-100"
+                    group-open="b-b-1 sticky top-42px z-1"
+                >
+                    <p class="font-space-mono font-semibold">
+                        Select Nested Elements
                     </p>
-                </details>
-
-            </div>
+                    <span class="i-solar-alt-arrow-down-bold text-xl mr-1 group-open:i-solar-alt-arrow-up-bold!"></span>
+                </summary>
+                
+                <ul class="divide-y bg-gray-50/20 b-b-">
+                    ${this.sections?.map(opt => /*html*/`
+                            <li
+                                sub-element-option
+                                data-value="${opt.key}"
+                                class="px-4 py-1 font-space-mono transition-all" hover="bg-gray-100 cursor-pointer tracking-.8 font-bold shadow z-1"
+                            >
+                                ${opt.name} ${this.selectedElement === opt.key ? '<b class="tracking-normal!">[Selected]</b>' : ''}
+                            </li>
+                        `).join('')
+                    }
+                </ul>
+                <p
+                    class="text-center py-2 bg-gray-50/20"
+                    font="space-mono bold"
+                ></p>
+            </details>
 
             <div
                 p="y-4 x-2"
-                class="text-center bg-gray-50 ${!this.selectedComponent ? 'hidden!' : ''}"
-                ${this.subElements && this.subElements.length > 0 ? 'hidden' : ''}
+                class="text-center bg-gray-50 ${!this.selectedComponent && this.sections.length > 0 ? '' : 'hidden'}"
             >
                 <div>
                     <p class="text-gray-500 font-urbanist text-lg trackinng-tight font-semibold pb-1">
@@ -168,13 +164,11 @@ export class StyleEditor extends MinzeElement {
                     <div border="1 blue-6" class="mx-4"></div>
                 </div>
             </div>
-        `
-
-        return v2
+        `;
     }
 
     toggleComponentToRender = () => {
-            const properties = /*html*/`
+        const properties = /*html*/`
                 <properties-editor
                     component-id='${this.component?.id}'
                     type='${this.component?.type}'
@@ -183,10 +177,10 @@ export class StyleEditor extends MinzeElement {
                 ></properties-editor>
             `
 
-            const renderElement = (tag: string) => {
-                if (!this.selectedComponent) return '';
+        const renderElement = (tag: string) => {
+            if (!this.selectedComponent) return '';
 
-                return /*html*/`
+            return /*html*/`
                     <${tag}
                         ${`component-id="${this.component?.id}"`}
                         ${this.component?.styles ? `styles='${JSON.stringify(this.component.styles)}'` : ''}
@@ -194,11 +188,11 @@ export class StyleEditor extends MinzeElement {
                         ${this.selectedElement ? `sub-element="${this.selectedElement}"` : ''}
                     ></${tag}>
                 `
-            }
+        }
 
 
-            return /*html*/`
-                <div ${this.componentToShow === 'styles' ? '' : 'hidden'}>
+        return /*html*/`
+                <div ${this.selectedComponent && this.componentToShow === 'styles' ? '' : 'hidden'}>
                     ${this.elementSelect()}
                     ${this.allowedProperties?.map(tag => renderElement(tag)).join('')}
                 </div>
@@ -211,7 +205,6 @@ export class StyleEditor extends MinzeElement {
         ${this.header()}
         ${this.toggleComponentToRender()}
 
-        <!-- SELECT COMPONENT TO START -->
         <div
             class="p-4 text-center bg-gray-50"
             ${this.selectedComponent ? 'hidden' : ''}
@@ -222,28 +215,12 @@ export class StyleEditor extends MinzeElement {
         </div>
     `
 
-    afterRender() {
-    }
-
     eventListeners: EventListeners = [
         [
             window,
             'canvas:component:selected',
             async (e) => {
-                this.component = e.detail.component;
-
-                if(!this.component) {
-                    this.selectedComponent = null;
-                    this.subElements = undefined;
-                    this.allowedProperties = undefined;
-                    
-                    return;
-                }
-
-                this.selectedComponent = this.component?.id!;
-                this.componentLabel = this.component?.getAttribute('_label') || '';
-                const componentType = this.component?.getAttribute('type');
-
+                const component_: HTMLElement = e.detail.component;
                 var definition: ComponentDefinition | undefined;
 
                 if (window.activeComponent?.definition) {
@@ -255,37 +232,46 @@ export class StyleEditor extends MinzeElement {
                                 ({ ...components, ...templates }))
                         .then((response) => {
                             definition = Object.values(response)
-                                .find(def => def.type == componentType!);
+                                .find(def => def.type == component_?.getAttribute('type')!);
                             window.activeComponent.definition = definition!;
                         })
                 }
 
+
+                if (!component_) {
+                    this.component = undefined;
+                    this.selectedComponent = null;
+                    this._cache_sections = undefined;
+                    this.allowedProperties = undefined;
+
+                    return;
+                }
+
+                this.component = e.detail.component;
+                this.selectedComponent = this.component?.id!;
+                this.componentLabel = this.component?.getAttribute('_label') || '';
+
                 // SET STYLES
                 if (definition) {
-                    this.subElements = definition.subElements?.filter(d => !d.hidden).map(({ key, name }) => ({ key, name })) || [];
+                    const ___ = definition.subElements
+                        ?.filter(d => !d.hidden)
+                        .map(({ key, name }) => ({ key, name })) || [];
+
                     this.allowedProperties = definition.styleSettings?.allowedProperties || [];
 
+                    this._cache_sections = JSON.stringify(___)
+
                     if (definition.capabilities?.allowSubElementRoot) {
-                        this.subElements = [
+                        this._cache_sections = JSON.stringify([
                             {
                                 key: 'host',
                                 name: 'Root'
                             },
-                            ...this.subElements
-                        ]
+                            ...___
+                        ])
                     }
                 }
 
-            }
-        ],
-        [
-            "select#subElement-select",
-            "input",
-            (e: InputEvent) => {
-                const input = e.target as HTMLInputElement;
-                const value = input.value;
-
-                this.selectedElement = value;
             }
         ],
         [

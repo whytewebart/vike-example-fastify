@@ -405,16 +405,19 @@ export class EditorCanvas extends EditorCanvasBase {
                     await this.deleteComponentRecursively(editor, true)
                 };
                 /* REGISTER THE TEMPLATE */
-                this.components.create(template.type, canvas!);
+                const _ = this.components.create(template.type, canvas!);
+                this.components.select(_);
                 console.log(`Template ${template.type} registered successfully.`);
             }
         ],
         [
             window, 'canvas:select:random', (e: EventDetail) => {
-                const random = this.select<HTMLElement>('editor-component');
-                if (random) {
-                    this.components.select(random)
-                }
+                const canvas = this.select("#canvas") as HTMLElement;
+                var comp = this.select<ReturnType<typeof this.components.create>>('editor-component');
+
+                if (!comp)
+                    comp = this.components.create('heading', canvas!);
+                this.components.select(comp);
             }
         ],
         [
