@@ -1,5 +1,5 @@
 import { PageContext } from "vike/types"
-import ogImage from "assets/og-image-v2.webp"
+import ogImage from "assets/sharing/ogimage.webp"
 
 export { unhead }
 
