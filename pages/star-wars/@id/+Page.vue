@@ -1,17 +1,27 @@
 <template>
-  <h1>{{ data.movie.title }}</h1>
-  <p>Release Date: {{ data.movie.release_date }}</p>
+  <h1>{{ data?.movie.title }}</h1>
+  <p>Release Date: {{ data?.movie.release_date }}</p>
   <br />
-  <p>Director: {{ data.movie.director }}</p>
+  <p>Director: {{ data?.movie.director }}</p>
   <br />
-  <p>Producer: {{ data.movie.producer }}</p>
+  <p>Producer: {{ data?.movie.producer }}</p>
+
+  <div class="bk-col-min">
+    <HealthStatus />
+  </div>
 </template>
 
 <script lang="ts" setup>
-import type { Data } from "./+data";
-const data = useData<Data>();
+const data = useData<any>();
+const h = useHealth();
+const health = storeToRefs(h);
 
-onMounted(() => {
-  console.log(usePageContext().value);
+onServerPrefetch(() => {
+  // Test [ pinia ] in vue hook
+  // Expected [ success ]
+  // h.set({
+  //   runtime: `NodeJs ${crypto.randomUUID()}`,
+  //   platform: "server",
+  // });
 });
 </script>

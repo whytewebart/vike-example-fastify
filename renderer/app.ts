@@ -98,7 +98,5 @@ async function createApp(pageContext: PageContext, ssr: boolean = true) {
     if (err) throw err;
   };
 
-  // const pageContextReactive = shallowRef(pageContext);
-
   return { app, changePage, head };
 }

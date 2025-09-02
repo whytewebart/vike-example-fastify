@@ -8,7 +8,11 @@
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "types": ["vite/client"],
     "skipLibCheck": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "paths": {
+      "@/*": ["./*"],
+      "~plugins/*": ["./renderer/plugins/*"]
+    }
   },
   "ts-node": {
     "transpileOnly": true,

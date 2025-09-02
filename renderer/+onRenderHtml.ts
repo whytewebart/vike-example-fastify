@@ -4,8 +4,9 @@ export { onRenderHtml };
 import { renderToString as renderToString_ } from "@vue/server-renderer";
 import type { App } from "vue";
 import { escapeInject, dangerouslySkipEscape } from "vike/server";
-import type { OnRenderHtmlAsync } from "vike/types";
+import type { OnRenderHtmlAsync, PageContext } from "vike/types";
 import { createApp } from "./app";
+import { callCumulativeHooks } from "./utils";
 
 const onRenderHtml: OnRenderHtmlAsync = async (
   pageContext
@@ -16,7 +17,10 @@ const onRenderHtml: OnRenderHtmlAsync = async (
 
   const { app, head } =
     await createApp(pageContext, !!pageContext.Page);
-  const appHtml = await renderToString(app);
+  const appHtml = await renderToString(app, pageContext);
+
+  const { onAfterRenderHtml } = pageContext.config;
+  await callCumulativeHooks(onAfterRenderHtml, pageContext);
 
   const {
     headTags,
@@ -46,13 +50,13 @@ const onRenderHtml: OnRenderHtmlAsync = async (
   };
 };
 
-async function renderToString(app: App) {
+async function renderToString(app: App, context: any) {
   let err: unknown;
   // Workaround: renderToString_() swallows errors in production, see https://github.com/vuejs/core/issues/7876
   app.config.errorHandler = (err_) => {
     err = err_;
   };
-  const appHtml = await renderToString_(app);
+  const appHtml = await renderToString_(app, context);
   if (err) throw err;
   return appHtml;
 }

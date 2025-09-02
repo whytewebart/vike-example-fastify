@@ -13,7 +13,7 @@
 
 import Fastify from "fastify";
 import autoLoad from "@fastify/autoload";
-import { renderPage } from "vike/server";
+import { renderPage, createDevMiddleware } from "vike/server";
 
 import { root, __dirname } from "./root.js";
 import { join } from "path";
@@ -51,16 +51,14 @@ async function buildServer() {
       wildcard: false,
     });
   } else {
-    const vite = await import("vite");
-    const viteDevMiddleware = (
-      await vite.createServer({ server: { middlewareMode: true } })
-    ).middlewares;
+    const { devMiddleware } = await createDevMiddleware({ root })
 
     // this is middleware for vite's dev servert
     instance.addHook("onRequest", async (request, reply) => {
       const next = () =>
         new Promise<void>((resolve) => {
-          viteDevMiddleware(request.raw, reply.raw, () => resolve());
+          // viteDevMiddleware(request.raw, reply.raw, () => resolve());
+          devMiddleware(request.raw, reply.raw, () => resolve());
         });
       await next();
     });
@@ -81,6 +79,7 @@ async function buildServer() {
     if (!httpResponse) return reply.callNotFound();
 
     const { statusCode, headers } = httpResponse;
+
     headers.forEach(([name, value]) => reply.raw.setHeader(name, value));
 
     reply.status(statusCode);

@@ -47,19 +47,19 @@
   <div class="w-full h-20 bg-amber mt-6">
     <p class="text-3xl">This element is within the content grid</p>
   </div>
-  <div class="w-full h-20 bg-red bk-col-min!">
+  <div class="w-full h-20 bg-red bk-col-min">
     <p class="text-3xl">This element is within the min grid</p>
   </div>
-  <div class="w-full h-20 bg-blue bk-col-max!">
+  <div class="w-full h-20 bg-blue bk-col-max">
     <p class="text-3xl">This element is within the max grid</p>
   </div>
-  <div class="w-full h-20 bg-violet bk-col-full!">
+  <div class="w-full h-20 bg-violet bk-col-full">
     <p class="text-3xl">This element is within the full grid</p>
   </div>
-  <div class="w-full h-20 bg-orange bk-col-nav!">
+  <div class="w-full h-20 bg-orange bk-col-nav">
     <p class="text-3xl">This element is within the nav grid</p>
   </div>
-  <div class="w-full h-20 bg-gray bk-col-root!">
+  <div class="w-full h-20 bg-gray bk-col-root">
     <p class="text-3xl">This element is within the root grid</p>
   </div>
 

@@ -126,7 +126,7 @@ export default {
   // https://vike.dev/meta
   meta,
   hydrationCanBeAborted: true,
-  passToClient: ["pageProps", "routeParams"],
+  passToClient: ["pageProps", "routeParams", "_piniaInitialState", "_hello", "headersOriginal"],
 
   unhead,
   // ssr: false,

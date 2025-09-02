@@ -12,7 +12,7 @@ import Link from './Link.vue';
       <Link href="/">Welcome</Link>
       <Link href="/about">About</Link>
       <Link href="/star-wars">Data Fetching</Link>
-      <Link href="/hello">Routing</Link>
+      <Link href="/ping">Routing</Link>
     </div>
     <div id="view-content" class="viewport h-full">
       <slot />

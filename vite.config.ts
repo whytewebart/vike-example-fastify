@@ -1,5 +1,6 @@
 import vue from "@vitejs/plugin-vue";
 import AutoImport from "unplugin-auto-import/vite";
+import Components from 'unplugin-vue-components/vite'
 import UnoCSS from "unocss/vite";
 
 import vike from "vike/plugin";
@@ -12,14 +13,25 @@ const config: UserConfig = {
     vike(),
     UnoCSS(),
     AutoImport({
-      imports: ["vue"],
+      imports: [
+        "vue",
+        "@vueuse/core",
+        {
+          pinia: ["storeToRefs", "defineStore"],
+        }
+      ],
       dirs: ["./composables/**"],
     }),
+    Components({
+      dirs: ["./components"],
+      directoryAsNamespace: true,
+    })
   ],
 
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./"),
+      "~plugins": path.resolve(__dirname, "./renderer/plugins")
     },
   },
 };

@@ -1,12 +1,10 @@
 export type { Component };
 
 // import { InferSeoMetaPluginOptions } from "@unhead/addons";
-import { FastifyReply } from "fastify/types/reply";
-// import { Pinia } from "pinia";
-// import { type UseHeadInput, createHead } from "unhead";
 import { PageContext, PageContextClient, PageContextServer } from "vike/types";
 import type { ComponentPublicInstance, App } from "vue";
 import { UseHeadInput } from "unhead";
+import { Pinia, StateTree } from "pinia";
 
 type Component = ComponentPublicInstance; // https://stackoverflow.com/questions/63985658/how-to-type-vue-instance-out-of-definecomponent-in-vue-3/63986086#63986086
 type Page = Component;
@@ -17,22 +15,18 @@ declare global {
     interface PageContext {
       // @ts-ignore
       Page: Page;
-      /** https://vike.dev/render */
       abortReason?: string;
       pageProps: any;
       app?: App;
 
       data?: {
-        /** Value for <title> defined dynamically by by /pages/some-page/+data.js */
         title?: string;
         description?: string;
         unhead?: UseHeadInput<any>;
       };
 
       config: {
-        /** Value for <title> defined statically by /pages/some-page/+title.js (or by `export default { title }` in /pages/some-page/+config.js) */
         title?: string;
-        /** Value for <meta name="description"> defined statically */
         description?: string;
       };
     }
@@ -46,6 +40,11 @@ declare global {
         (
           pageContext: PageContextWithApp
         ) => void | ((pageContext: PageContextWithApp) => Promise<void>)
+      >;
+      onAfterRenderHtml?: Array<
+        (
+          pageContext: PageContextServer
+        ) => void | ((pageContext: PageContextServer) => Promise<void>)
       >;
       ssrSlot?: string;
       unhead?:

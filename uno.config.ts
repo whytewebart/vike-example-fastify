@@ -8,7 +8,7 @@ import {
 } from "unocss";
 import type { Preset } from "unocss";
 import { readFile } from "fs/promises";
-import { breakoutGrid } from "./renderer/styles/presets/breakout";
+import { breakoutFn, breakoutGrid } from "./renderer/styles/presets/breakout";
 import transformerDirectives from "@unocss/transformer-directives";
 
 const presets: Preset[] = [
@@ -58,8 +58,15 @@ export default defineConfig({
     "hide-scrollbar":
       "[&::-webkit-scrollbar]:w-15px [&::-webkit-scrollbar]:opacity-0 [&::-webkit-scrollbar]:transition-all",
     // ------------
-    viewport:
-      "bk-container-[nav,full,max,min] bk-values-nav-1130 bk-content-585 bk-values-min-620 bk-values-full-900 bk-values-max-790 [&_>_*]:bk-col-content",
+    viewport: breakoutFn.defineGrid({
+      content: 585,
+      containers: [
+        { name: 'min', value: 620 },
+        { name: 'max', value: 790 },
+        { name: 'full', value: 900 },
+        { name: 'nav', value: 1130 }
+      ]
+    }),
     "router-link-active": "text-gray-7",
   },
   // ...UnoCSS options

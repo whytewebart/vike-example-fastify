@@ -2,21 +2,21 @@
 export { data }
 export type Data = Omit<Awaited<ReturnType<typeof data>>, "unhead">
 
-// The node-fetch package (which only works on the server-side) can be used since
-// this file always runs on the server-side, see https://vike.dev/data#server-side
-import fetch from 'node-fetch'
+import { ofetch } from "ofetch"
 import type { MovieDetails } from '../types'
 import type { PageContextServer } from 'vike/types'
 
 const data = async (pageContext: PageContextServer) => {
   await sleep(300) // Simulate slow network
 
-  const response = await fetch(`https://brillout.github.io/star-wars/api/films/${pageContext.routeParams!.id}.json`)
-  let movie = (await response.json()) as MovieDetails
+  const response = await ofetch<MovieDetails[]>(`http://localhost:3040/movies.json`)
+  let movie = response.find((d, index) => (index + 1).toString() === pageContext.routeParams!.id) as MovieDetails;
 
-  // We remove data we don't need because the data is passed to the client; we should
-  // minimize what is sent over the network.
   movie = minimize(movie)
+
+  // Test pinia on server hooks
+  const { ping } = useHealth(pageContext);
+  await ping()
 
   return {
     movie,
@@ -25,7 +25,7 @@ const data = async (pageContext: PageContextServer) => {
       title: movie.title,
       meta: [
         {
-          name:"description",
+          name: "description",
           content: `Star Wars: ${movie.title}`
         }
       ]

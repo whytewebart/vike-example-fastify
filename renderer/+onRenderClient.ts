@@ -46,6 +46,8 @@ const onRenderClient: OnRenderClientAsync = async (
 
     app.mount(container);
   } else {
+    objectAssign(pageContext, { app });
+
     await executeHook(pageContext.config.middleware, pageContext);
     await changePage!(pageContext);
   }

@@ -1,4 +1,4 @@
-export { breakoutGrid };
+export { breakoutGrid, breakoutFn };
 
 import { Preset } from "unocss";
 
@@ -21,10 +21,17 @@ const rules: Preset["rules"] = [
 
       // get the difference values
       for (var i = 0; i < columns.length; i++) {
-        dv[`--${columns[i - 1]}-step_01`] = __steps(columns[i]).__step_01;
-        dv[`--${columns[i]}-step_02`] = __steps(columns[i]).__step_02;
-        dv[`--${columns[i]}-step_03`] = __steps(columns[i]).__step_03;
-        dv[`--${columns[i]}`] = __steps(columns[i]).__step_04;
+        const {
+          __step_01,
+          __step_02,
+          __step_03,
+          __step_04
+        } = __steps(columns[i]);
+
+        dv[`--${columns[i - 1]}-step_01`] = __step_01;
+        dv[`--${columns[i]}-step_02`] = __step_02;
+        dv[`--${columns[i]}-step_03`] = __step_03;
+        dv[`--${columns[i]}`] = __step_04;
 
         if (i === columns.length - 1) {
           const name = `--${columns[i]}`;
@@ -104,18 +111,24 @@ const rules: Preset["rules"] = [
     },
   ],
   [
-    /^bk-content-inherit/,
+    /^bk-content-i-(inherit|[a-z]+)/,
     ([, d]) => {
       const content = "[content-start] var(--content) [content-end]";
       const rootStart = "[root-start] var(--root)";
       const rootEnd = "var(--root) [root-end]";
+
+      const handleStart = `[${d}-start] var(--${d})`;
+      const handleEnd = `var(--${d}) [${d}-end]`;
+
+      const result_1 = [handleStart, content, handleEnd].join(" ");
+      const result = d === "inherit" ? content : result_1;
 
       return {
         "--gap": "1.25em",
         "--root": "minmax(var(--gap), 1fr)",
         display: "grid",
         "align-content": "flex-start",
-        "grid-template-columns": rootStart + " " + content + " " + rootEnd,
+        "grid-template-columns": rootStart + " " + result + " " + rootEnd,
       };
     },
     {
@@ -125,13 +138,33 @@ const rules: Preset["rules"] = [
 ];
 
 const shortcuts: Preset["shortcuts"] = [
-  [/^bk-col-([a-z]+)$/, ([, c]) => `grid-col-[${c}]`],
+  [/^bk-col-([a-z]+)$/, ([, c]) => `grid-col-[${c}]!`],
+  [/^bk-inherit-([a-z]+)$/, ([, c]) => `bk-content-i-${c} [&_>_*]:bk-col-content`],
   {
-    "bk-inherit": "bk-content-inherit [&_>_*]:bk-col-content",
+    "bk-inherit": "bk-content-i-inherit [&_>_*]:bk-col-content",
     "bk-container-inherit":
       "bk-container--inherit bk-col-root! [&_>_*]:bk-col-content",
   },
 ];
+
+type BreakoutGrid = {
+  content: number | "boundary" | "bleed",
+  containers: { name: string, value: number }[]
+}
+
+const breakoutFn = {
+  defineGrid: (opts: BreakoutGrid) => {
+    const content = `bk-content-${opts.content}`;
+    const values = opts.containers
+      .sort((a, b) => b.value - a.value)
+      .map(d => `bk-values-${d.name}-${d.value}`).join(' ')
+    const container = `bk-container-[${opts.containers
+      .sort((a, b) => b.value - a.value)
+      .map(d => d.name).join(',')}]`
+
+    return container + ' ' + values + ' ' + content + ' [&_>_*]:grid-col-[content]';
+  }
+}
 
 const breakoutGrid: Preset = {
   name: "breakout-grid",
