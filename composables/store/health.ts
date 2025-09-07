@@ -4,6 +4,7 @@ export {
 
 import { createStore } from '~plugins/pinia/persist';
 import { ofetch } from "ofetch"
+import { PageContext } from 'vike/types';
 
 const useHealth = createStore('health-api', () => {
     // types.d
@@ -15,6 +16,7 @@ const useHealth = createStore('health-api', () => {
     const intervalId = ref<ReturnType<typeof setInterval> | null>(null)
     // state.metadata
     const metadata = ref<Record<string, any>>({})
+    const baseURL = ref<string | null>(null)
 
     // Getters
     const isHealthy = computed(() => status.value === 'healthy')
@@ -39,7 +41,7 @@ const useHealth = createStore('health-api', () => {
 
         try {
             await ofetch(url, {
-                baseURL: "http://localhost:3040",
+                baseURL: `http://${baseURL.value}`,
                 async onResponse({ request, response, options }) {
                     status.value = 'healthy'
                     metadata.value = response._data?.meta
@@ -98,6 +100,7 @@ const useHealth = createStore('health-api', () => {
         error,
         metadata,
         intervalId,
+        baseURL,
 
         // computed
         isHealthy,
@@ -115,7 +118,13 @@ const useHealth = createStore('health-api', () => {
     },
 
     ssr: {
+
+        beforeHydrate: (context, store) => {
+            store.$state.baseURL = context?.headers?.host || null
+        },
+
         afterHydrate: (context, store) => {
+            // store.$state.pageContext = context
             store.$state.lastChecked = store.$state.lastChecked ? new Date(store.$state.lastChecked) : null
         }
     }
