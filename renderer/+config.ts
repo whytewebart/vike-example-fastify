@@ -131,5 +131,5 @@ export default {
 
   unhead,
   // ssr: false,
-  extends: [config]
+  extends: config
 } satisfies Config;
