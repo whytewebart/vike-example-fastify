@@ -100,8 +100,6 @@ async function main() {
       process.exit(1);
     }
   });
-
-  return fastify;
 }
 
-export default await main();
+main();

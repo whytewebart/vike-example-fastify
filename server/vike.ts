@@ -20,6 +20,7 @@ async function startServer() {
   // instance.register(autoLoad, { dir: join(__dirname, "plugins") });
   // instance.register(autoLoad, { dir: join(__dirname, "routes") });
 
+  // @ts-ignore
   instance.register(import("./routes/ping"))
 
   instance.get("/server-route", (req, res) => {

@@ -1,8 +1,9 @@
 {
   "scripts": {
-    "dev": "vite dev",
-    "build": "vite build",
-    "preview": "vite build && vite preview"
+    "dev": "vike dev",
+    "build": "vike build && tsc --build ./server",
+    "preview": "vike preview",
+    "prod": "cross-env NODE_ENV=production PORT=$PORT node ./build/index.js"
   },
   "dependencies": {
     "@fastify/autoload": "^6.0.3",
