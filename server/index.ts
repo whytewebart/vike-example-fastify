@@ -87,7 +87,6 @@ async function buildServer() {
     return reply;
   });
 
-  // await instance.ready();
   return instance;
 }
 

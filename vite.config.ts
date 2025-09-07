@@ -1,6 +1,7 @@
 import vue from "@vitejs/plugin-vue";
 import AutoImport from "unplugin-auto-import/vite";
 import Components from 'unplugin-vue-components/vite'
+import vercel from 'vite-plugin-vercel';
 import UnoCSS from "unocss/vite";
 
 import vike from "vike/plugin";
@@ -25,8 +26,13 @@ const config: UserConfig = {
     Components({
       dirs: ["./components"],
       directoryAsNamespace: true,
-    })
+    }),
+    vercel()
   ],
+
+  vercel: {
+    
+  },
 
   resolve: {
     alias: {
