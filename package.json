@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "dev": "vike dev",
+    "dev": "concurrently -k -n TSC,VITE -c yellow,cyan \"tsc --watch\" \"vite dev\"",
+    "dev-old": "vike dev",
     "build": "vike build && tsc --build ./server",
     "preview": "vike preview",
     "prod": "cross-env NODE_ENV=production PORT=$PORT node ./build/index.js"
@@ -22,6 +23,7 @@
     "ajv": "^8.17.1",
     "ajv-errors": "^3.0.0",
     "ajv-formats": "^3.0.1",
+    "concurrently": "^9.2.1",
     "cookie": "^1.0.2",
     "cross-env": "^7.0.3",
     "fastify": "^5.2.1",

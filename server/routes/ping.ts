@@ -8,7 +8,7 @@ const root: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       timestamp: new Date().toISOString(),
       meta: {
         uptime: process.uptime() + ' seconds',
-        version: '1.0.0',
+        version: '1.0.1',
       },
     })
   })

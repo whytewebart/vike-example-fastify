@@ -15,13 +15,12 @@ async function startServer() {
 
   // ⚠️ Mandatory for Vike middleware
   await instance.register(rawBody)
-  // await instance.register(import("@fastify/compress"), { global: true });
   // LOAD PLUGINS AND ROUTES
-  // instance.register(autoLoad, { dir: join(__dirname, "plugins") });
-  // instance.register(autoLoad, { dir: join(__dirname, "routes") });
+  instance.register(autoLoad, { dir: join(__dirname, "../build", "plugins") });
+  instance.register(autoLoad, { dir: join(__dirname, "../build", "routes") });
 
   // @ts-ignore
-  instance.register(import("./routes/ping"))
+  // instance.register(import("./routes/ping"))
 
   instance.get("/server-route", (req, res) => {
     res.send({ hello: "World" });
