@@ -19,9 +19,6 @@ async function startServer() {
   instance.register(autoLoad, { dir: join(__dirname, "../build", "plugins") });
   instance.register(autoLoad, { dir: join(__dirname, "../build", "routes") });
 
-  // @ts-ignore
-  // instance.register(import("./routes/ping"))
-
   instance.get("/server-route", (req, res) => {
     res.send({ hello: "World" });
   });

@@ -1,9 +1,9 @@
 {
   "scripts": {
-    "dev": "concurrently -k -n TSC,VITE -c yellow,cyan \"tsc --watch\" \"vite dev\"",
-    "dev-old": "vike dev",
-    "build": "vike build && tsc --build ./server",
+    "dev": "vike dev",
     "preview": "vike preview",
+    "predev": "tsc --build ./server",
+    "build": "vike build && npm run predev",
     "prod": "cross-env NODE_ENV=production PORT=$PORT node ./build/index.js"
   },
   "dependencies": {
@@ -23,7 +23,6 @@
     "ajv": "^8.17.1",
     "ajv-errors": "^3.0.0",
     "ajv-formats": "^3.0.1",
-    "concurrently": "^9.2.1",
     "cookie": "^1.0.2",
     "cross-env": "^7.0.3",
     "fastify": "^5.2.1",
