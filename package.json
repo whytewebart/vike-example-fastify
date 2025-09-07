@@ -18,6 +18,7 @@
     "@unhead/ssr": "^1.11.15",
     "@unocss/reset": "^0.65.3",
     "@unocss/transformer-directives": "^0.65.3",
+    "@vite-plugin-vercel/vike": "^9.0.6",
     "@vitejs/plugin-vue": "^5.2.1",
     "@vue/compiler-sfc": "^3.5.13",
     "@vue/server-renderer": "^3.5.13",

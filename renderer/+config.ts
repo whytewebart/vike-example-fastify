@@ -1,5 +1,5 @@
 import type { Config, ConfigEffect } from "vike/types";
-import * as config from '@vite-plugin-vercel/vike/config';
+import config from '@vite-plugin-vercel/vike/config';
 
 const toggleSsrRelatedConfig: ConfigEffect = ({
   configDefinedAt,
