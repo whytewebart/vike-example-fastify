@@ -122,7 +122,10 @@ const useHealth = createStore('health-api', () => {
         beforeHydrate: (context, store) => {
             store.$state.baseURL = context?.urlParsed?.origin ?? `${window.location.protocol}//${window.location.hostname}`
 
-            console.log("Hydrating store 'health' with baseURL:", store.$state.baseURL, window.location, context?.urlParsed);
+            if (!import.meta.env.SSR) {
+                console.log("Hydrating store 'health' with baseURL:", store.$state.baseURL, window.location, context?.urlParsed);
+            }
+
         },
 
         afterHydrate: (context, store) => {
