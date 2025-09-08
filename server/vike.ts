@@ -7,7 +7,8 @@ import autoLoad from "@fastify/autoload";
 import { join } from "path";
 import { __dirname } from "./root.js";
 
-async function startServer() {
+export const build = async () => {
+  // Fastify entry point
   const instance = fastify({
     // ⚠️ Mandatory for HMR support
     forceCloseConnections: true
@@ -22,6 +23,12 @@ async function startServer() {
   instance.get("/server-route", (req, res) => {
     res.send({ hello: "World" });
   });
+
+  return instance
+}
+
+async function startServer() {
+  const instance = await build()
 
   await apply(instance)
   return serve(instance, {

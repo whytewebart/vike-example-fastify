@@ -131,6 +131,7 @@ export default {
   passToClient: ["pageProps", "routeParams", "_piniaInitialState", "_hello", "headersOriginal"],
 
   unhead,
+  baseAssets: '/client',
   // ssr: false,
   server: 'server/vike.ts',
   extends: [vikeServer, config]

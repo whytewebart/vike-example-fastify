@@ -1,10 +1,8 @@
 {
-  "cleanUrls": true,
-  "trailingSlash": false,
   "rewrites": [
     {
-      "source": "/((?!.*\\.(?:js|css|png|jpg|jpeg|gif|svg|ico|woff2?|ttf|eot|otf|webp|txt|xml|json|map|mp4|mp3)).*)",
-      "destination": "/api/env"
+      "source": "/(.*)",
+      "destination": "/api/serverless.ts"
     }
   ]
 }

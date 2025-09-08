@@ -9,7 +9,7 @@ import type { PageContextServer } from 'vike/types'
 const data = async (pageContext: PageContextServer) => {
   await sleep(300) // Simulate slow network
 
-  const response = await ofetch<MovieDetails[]>(`http://${pageContext.headers?.host}/movies.json`)
+  const response = await ofetch<MovieDetails[]>(`http://${pageContext.headers?.host}${import.meta.env.BASE_URL}/movies.json`)
   let movie = response.find((d, index) => (index + 1).toString() === pageContext.routeParams!.id) as MovieDetails;
 
   movie = minimize(movie)
