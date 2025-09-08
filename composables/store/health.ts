@@ -16,7 +16,7 @@ const useHealth = createStore('health-api', () => {
     const intervalId = ref<ReturnType<typeof setInterval> | null>(null)
     // state.metadata
     const metadata = ref<Record<string, any>>({})
-    const baseURL = ref<string | null>(null)
+    const baseURL = ref<string>()
 
     // Getters
     const isHealthy = computed(() => status.value === 'healthy')
@@ -41,7 +41,7 @@ const useHealth = createStore('health-api', () => {
 
         try {
             await ofetch(url, {
-                baseURL: `${baseURL.value}`,
+                baseURL: baseURL.value,
                 async onResponse({ request, response, options }) {
                     status.value = 'healthy'
                     metadata.value = response._data?.meta
@@ -120,12 +120,7 @@ const useHealth = createStore('health-api', () => {
     ssr: {
 
         beforeHydrate: (context, store) => {
-            store.$state.baseURL = context?.urlParsed?.origin ?? `${window.location.protocol}//${window.location.hostname}`
-
-            if (!import.meta.env.SSR) {
-                console.log("Hydrating store 'health' with baseURL:", store.$state.baseURL, window.location, context?.urlParsed);
-            }
-
+            store.$state.baseURL = context?.urlParsed?.origin ?? `${window.location.protocol}//${window.location.hostname}`;
         },
 
         afterHydrate: (context, store) => {
