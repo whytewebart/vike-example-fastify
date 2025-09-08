@@ -6,3 +6,4 @@ components.d.ts
 build/
 .vercel/
 .vercel
+dump
