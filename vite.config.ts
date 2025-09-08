@@ -27,8 +27,23 @@ const config: UserConfig = {
       dirs: ["./components"],
       directoryAsNamespace: true,
     }),
-    vercel()
+    vercel({
+      source: "/.*",
+    })
   ],
+
+  vercel: {
+    additionalEndpoints: [
+      {
+        // entry file to the server. Default export must be a node server or a function
+        source: "server/vike.ts",
+        // replaces default Vike target
+        destination: "ssr_",
+        // already added by default Vike route
+        route: false,
+      },
+    ],
+  },
 
   resolve: {
     alias: {
