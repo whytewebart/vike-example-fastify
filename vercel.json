@@ -1,7 +1,7 @@
 {
   "rewrites": [
     {
-      "source": "/env/(.*)",
+      "source": "/env(.*)",
       "destination": "/api/env.ts"
     }
   ]
