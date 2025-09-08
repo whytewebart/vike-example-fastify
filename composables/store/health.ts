@@ -37,7 +37,9 @@ const useHealth = createStore('health-api', () => {
 
     async function ping(url = '/ping') {
         status.value = 'checking'
-        error.value = null
+        error.value = null;
+
+        console.log("[ping] Pinging", url, "with baseURL", baseURL.value);
 
         try {
             await ofetch(url, {
@@ -114,18 +116,16 @@ const useHealth = createStore('health-api', () => {
 }, {
     persist: {
         storage: 'cookies',
-        paths: [ 'status', 'lastChecked', 'metadata' ]
+        paths: ['status', 'lastChecked', 'metadata']
     },
 
     ssr: {
-
-        beforeHydrate: (context, store) => {
-            store.$state.baseURL = context?.urlParsed?.origin ?? `https://${window.location.hostname}`;
-        },
-
         afterHydrate: (context, store) => {
             // store.$state.pageContext = context
-            store.$state.lastChecked = store.$state.lastChecked ? new Date(store.$state.lastChecked) : null
+            store.$state.lastChecked = store.$state.lastChecked
+                ? new Date(store.$state.lastChecked) : null;
+
+            store.$state.baseURL = context?.urlParsed?.origin ?? `${window.location.origin}`;
         }
     }
 })
