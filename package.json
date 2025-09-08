@@ -4,7 +4,8 @@
     "preview": "vike preview",
     "predev": "tsc --build ./server",
     "build": "vike build && npm run predev",
-    "prod": "cross-env NODE_ENV=production PORT=$PORT node ./build/index.js"
+    "prod": "node dist/server/index.js",
+    "prod-old": "cross-env NODE_ENV=production PORT=$PORT node ./build/index.js"
   },
   "dependencies": {
     "@fastify/autoload": "^6.0.3",
