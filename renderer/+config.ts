@@ -1,5 +1,4 @@
 import type { Config, ConfigEffect } from "vike/types";
-import config from '@vite-plugin-vercel/vike/config';
 import vikeServer from 'vike-server/config'
 
 const toggleSsrRelatedConfig: ConfigEffect = ({
@@ -128,12 +127,11 @@ export default {
   // https://vike.dev/meta
   meta,
   hydrationCanBeAborted: true,
-  passToClient: ["pageProps", "routeParams", "_piniaInitialState", "_hello", "headersOriginal"],
+  passToClient: ["pageProps", "routeParams", "_piniaInitialState"],
 
   unhead,
   baseAssets: '/client',
   // ssr: false,
   server: 'server/vike.ts',
-  extends: [vikeServer, config]
-  // extends: [config]
+  extends: [vikeServer]
 } satisfies Config;

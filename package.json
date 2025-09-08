@@ -3,7 +3,7 @@
     "dev": "vike dev",
     "build": "vike build && npm run predev",
     "preview": "vike preview",
-    "start": "node dist/server/index.js",
+    "start": "cross-env NODE_ENV=production PORT=$PORT node dist/server/index.js",
     "predev": "tsc --build ./server"
   },
   "dependencies": {

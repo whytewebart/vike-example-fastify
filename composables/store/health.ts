@@ -120,7 +120,7 @@ const useHealth = createStore('health-api', () => {
     ssr: {
 
         beforeHydrate: (context, store) => {
-            store.$state.baseURL = context?.urlParsed?.origin || null
+            store.$state.baseURL = context?.urlParsed?.origin ?? window.location.origin
         },
 
         afterHydrate: (context, store) => {
