@@ -41,7 +41,7 @@ const useHealth = createStore('health-api', () => {
 
         try {
             await ofetch(url, {
-                baseURL: `http://${baseURL.value}`,
+                baseURL: `${baseURL.value}`,
                 async onResponse({ request, response, options }) {
                     status.value = 'healthy'
                     metadata.value = response._data?.meta
@@ -120,7 +120,7 @@ const useHealth = createStore('health-api', () => {
     ssr: {
 
         beforeHydrate: (context, store) => {
-            store.$state.baseURL = context?.headers?.host || null
+            store.$state.baseURL = context?.urlParsed?.origin || null
         },
 
         afterHydrate: (context, store) => {

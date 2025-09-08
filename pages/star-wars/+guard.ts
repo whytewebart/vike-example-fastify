@@ -1,9 +1,8 @@
 import { redirect } from "vike/abort";
-import { GuardAsync } from "vike/types";
+import { PageContextServer } from "vike/types";
 export { guard };
 
 
-const guard: GuardAsync = async (pageContext) => {
-  const { status } = storeToRefs(useHealth(pageContext));
-//   console.log('check existing status: ', status.values)
+const guard = async (pageContext: PageContextServer) => {
+  // console.log(pageContext.urlOriginal, pageContext.urlParsed, pageContext.headers);
 };
