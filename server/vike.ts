@@ -46,8 +46,8 @@ async function startServer() {
   await apply(instance)
   return serve(instance, {
     // options
-    port: 3000,
-    hostname: 'localhost'
+    port: (process.env.PORT || 3000) as number,
+    hostname: '0.0.0.0'
   })
 }
 
