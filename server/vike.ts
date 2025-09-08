@@ -37,13 +37,18 @@ export const build = async () => {
     res.send({ hello: "World" });
   });
 
+  await apply(instance)
   return instance
 }
 
 async function startServer() {
-  const instance = await build()
 
-  await apply(instance)
+  if(process.env.VERCEL) {
+    console.log("Running in Vercel environment, skipping standalone server start.")
+    return;
+  }
+
+  const instance = await build()
   return serve(instance, {
     // options
     port: (process.env.PORT || 3000) as number,
