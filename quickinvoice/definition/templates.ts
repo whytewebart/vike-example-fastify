@@ -1508,8 +1508,428 @@ const invoice_03: ComponentDefinition = {
     `
 };
 
+const invoice_04: ComponentDefinition = {
+    type: 'independent-template',
+    name: 'Freelance Invoice',
+    category: 'Templates',
+    icon: '📄',
+
+    capabilities: {
+        canHaveChildren: false,
+        canAcceptStyles: true,
+        canBeDeleted: false,
+        childrenLocked: true,
+        allowSubElementRoot: true
+    },
+
+    properties: [
+        {
+            name: 'businessName',
+            type: 'text',
+            defaultValue: 'INDEPENDENT'
+        },
+        {
+            name: 'tagline',
+            type: 'text',
+            defaultValue: 'Freelance Graphics Designer'
+        },
+        {
+            name: 'invoiceInformation',
+            type: {
+                type: 'object',
+                shape: [
+                    {
+                        name: 'invoiceNumber',
+                        type: 'text',
+                        defaultValue: '1234456'
+                    },
+                    {
+                        name: 'date',
+                        type: 'date',
+                        defaultValue: ''
+                    },
+                    {
+                        name: 'dueDate',
+                        type: 'date',
+                        defaultValue: ''
+                    },
+                ]
+            },
+            defaultValue: {
+                invoiceNumber: '1234456',
+                date: new Date().toISOString().split('T')[0],
+                dueDate: new Date().toISOString().split('T')[0],
+            }
+        },
+        {
+            name: 'recipient',
+            type: {
+                type: 'object',
+                shape: [
+                    {
+                        name: 'name',
+                        type: 'text',
+                        defaultValue: ''
+                    },
+                    {
+                        name: 'phoneNumber',
+                        type: 'tel',
+                        defaultValue: ''
+                    },
+                    {
+                        name: 'email',
+                        type: 'text',
+                        defaultValue: ''
+                    }
+                ]
+            },
+            defaultValue: {
+                name: 'Elizabeth Wotton',
+                phoneNumber: '+1 (925) 650-7226',
+                email: 'MarianoCampos@nowhere.com'
+            }
+        },
+        {
+            name: 'personal',
+            type: {
+                type: 'object',
+                shape: [
+                    {
+                        name: 'name',
+                        type: 'text',
+                        defaultValue: ''
+                    },
+                    {
+                        name: 'phoneNumber',
+                        type: 'tel',
+                        defaultValue: ''
+                    },
+                    {
+                        name: 'email',
+                        type: 'text',
+                        defaultValue: ''
+                    }
+                ]
+            },
+            defaultValue: {
+                name: 'John Doe',
+                phoneNumber: '+1 (311) 555-2368',
+                email: 'johndoe@example.com'
+            }
+        },
+        {
+            name: 'lineItems',
+            type: {
+                type: 'array',
+                itemType: {
+                    type: 'object',
+                    shape: [
+                        {
+                            name: 'description',
+                            type: 'text',
+                            defaultValue: 'UI Design'
+                        },
+                        { name: 'price', type: 'number', defaultValue: 4500 },
+                    ]
+                }
+            },
+            defaultValue: [
+                {
+                    id: nanoid(),
+                    description: 'Graphic Design Services',
+                    price: 750
+                }
+            ],
+            description: 'Invoice table rows'
+        },
+        {
+            name: 'currency',
+            type: 'currency',
+            defaultValue: ''
+        },
+        {
+            name: 'tax',
+            type: 'number',
+            defaultValue: 7.5
+        },
+        {
+            name: 'paymentMethod',
+            type: "text",
+            defaultValue: "Bank Transfer"
+        },
+        {
+            name: 'terms',
+            type: 'rich-text',
+            defaultValue: `Payment is due within 30 days of the invoice date unless otherwise agreed upon in writing. Late payments will incur a late fee of 1.5% per month on the outstanding balance`
+        },
+        {
+            name: 'thankYouMessage',
+            type: {
+                type: 'object',
+                shape: [
+                    {
+                        name: 'line1',
+                        type: 'text',
+                        defaultValue: ''
+                    },
+                    {
+                        name: 'line2',
+                        type: 'text',
+                        defaultValue: ''
+                    }
+                ]
+            },
+            defaultValue: {
+                line1: 'Thank you for your business!',
+                line2: 'We appreciate your business and look forward to serving you again.'
+            }
+        }
+    ],
+
+    defaultChildren: [],
+
+    styleSettings: {
+        allowedProperties: [
+            "typography-editor",
+            "background-editor"
+        ],
+        allowHost: [
+            'width',
+            'height'
+        ],
+        defaultStyles: {
+            'height': '100%',
+            'width': '100%'
+        },
+        css(properties) {
+            return /*css*/ `
+                [styles=host] {
+                    padding: 16px;
+                    font-family: 'Victor Mono', monospace;
+                    font-size: 11px;
+                }
+
+                [styles=host] * {
+                    font-family: inherit
+                }
+
+                header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-start;
+                }
+
+                .invoice-title {
+                    font-size: 1.875em; /* text-3xl */
+                    font-weight: bold;
+                    margin: 0;
+                }
+
+                .invoice-subtitle {
+                    font-weight: bold;
+                    font-size: 0.875em; /* text-sm */
+                }
+
+                .invoice-meta {
+                    text-align: right;
+                }
+
+                .invoice-meta p {
+                    margin: 0;
+                    font-size: 0.8em;
+                    /* margin-top: 2px; */
+                }
+
+                .section {
+                    margin-top: 1.2em;
+                    font-family: 'DM Mono', monospace;
+                }
+
+                .contact-info {
+                display: flex;
+                justify-content: space-between;
+                }
+
+                .ship-to {
+                display: flex;
+                gap: 1em;
+                }
+
+                .ship-to-title {
+                font-weight: 600;
+                font-size: 0.875em;
+                margin-bottom: 0.5em;
+                }
+
+                table {
+                width: 100%;
+                margin-top: 2.2em;
+                border-collapse: collapse;
+                }
+
+                th {
+                text-align: left;
+                font-family: 'DM Mono', monospace;
+                font-weight: 500;
+                font-size: 1em;
+                border-bottom: 1px solid #ccc;
+                padding-bottom: .3em;
+                margin-bottom: .3em;
+                }
+
+                td {
+                padding-top: .2em;
+                padding-bottom: .2em;
+                }
+
+                td:last-child {
+                text-align: right;
+                }
+
+                .summary, .terms {
+                margin-top: 1.2em;
+                }
+
+                .summary h2,
+                .terms h2 {
+                font-size: 1.5em;
+                font-weight: 900;
+                margin-bottom: 0.3em;
+                }
+
+                .summary-content,
+                .terms-content {
+                border-top: 1px solid #ccc;
+                padding-top: 1em;
+                }
+
+                .summary-row,
+                .terms-row {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 0.25em;
+                font-weight: 900;
+                }
+
+                .terms p {
+                padding-bottom: 0.8em;
+                max-width: 60%;
+                margin: 0;
+                }
+
+                .thank-you {
+                margin-top: 2.2em;
+                text-align: center;
+                }
+
+                .thank-you p:first-child {
+                font-weight: 800;
+                font-size: 1.1em;
+                font-family: 'DM Mono', monospace;
+                }
+
+                .thank-you p:last-child {
+                font-size: 1em;
+                margin-top: 0.5em;
+                padding: 0 1em;
+                }
+            `;
+        },
+    },
+
+    renderTemplate: (properties) => /*html*/ `
+        <div styles="host">
+            <header>
+      <div>
+        <h1 class="invoice-title" data-text="@expr[properties.businessName]@end"></h1>
+        <p class="invoice-subtitle" data-text="@expr[properties.tagline]@end"></p>
+      </div>
+
+      <div class="invoice-meta">
+        <p>Invoice #<span data-text="@expr[properties.invoiceInformation.invoiceNumber]@end"></span></p>
+        <p>Date: <span data-text="@expr[new Intl.DateTimeFormat('en-US', {month: 'long', day: 'numeric', year: 'numeric' }).format(new Date(properties.invoiceInformation.date))]@end"></span></p>
+        <p>Due: <span data-text="@expr[new Intl.DateTimeFormat('en-US', {month: 'long', day: 'numeric', year: 'numeric' }).format(new Date(properties.invoiceInformation.dueDate))]@end"></span></p>
+      </div>
+    </header>
+
+    <div class="section contact-info">
+      <div>
+        <p class="font-semibold" data-text="@expr[properties.personal.name]@end"></p>
+        <p data-text="@expr[properties.personal.phoneNumber]@end"></p>
+        <p data-text="@expr[properties.personal.email]@end"></p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="ship-to">
+        <p class="ship-to-title">Addressed To:</p>
+        <div class="leading-tight">
+          <p class="font-semibold" data-text="@expr[properties.recipient.name]@end"></p>
+          <p data-text="@expr[properties.recipient.phoneNumber]@end"></p>
+          <p data-text="@expr[properties.recipient.email]@end"></p>
+        </div>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-each="@expr[properties.lineItems]@end" data-key="entry">
+          <td data-text="@expr[entry.description]@end"></td>
+          <td data-text="@expr[fmtCurrency(entry.price, properties.currency)]@end"></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="summary">
+      <h2>Invoice Summary</h2>
+      <div class="summary-content">
+        <div class="summary-row">
+          <span>Subtotal:</span>
+          <span data-text="@expr[fmtCurrency(properties.lineItems.reduce((acc, item) => acc + item.price, 0), properties.currency)]@end"></span>
+        </div>
+        <div class="summary-row">
+          <span>Tax (<span data-text="@expr[properties.tax]@end"></span>%):</span>
+          <span data-text="@expr[fmtCurrency(properties.lineItems.reduce((acc, item) => acc + item.price, 0) * properties.tax / 100, properties.currency)]@end"></span>
+        </div>
+        <div class="summary-row">
+          <span>Total:</span>
+          <span data-text="@expr[fmtCurrency(properties.lineItems.reduce((acc, item) => acc + item.price, 0) * (1 + properties.tax / 100), properties.currency)]@end"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="terms">
+      <h2>Payment Terms</h2>
+      <div class="terms-content">
+        <p data-text="@expr[properties.terms]@end"></p>
+        <div class="terms-row">
+          <span>Payment Method:</span>
+          <span data-text="@expr[properties.paymentMethod]@end"></span>
+        </div>
+        <div class="terms-row">
+          <span>Payment Due By:</span>
+          <span data-text="@expr[new Intl.DateTimeFormat('en-US', {month: 'long', day: 'numeric', year: 'numeric' }).format(new Date(properties.invoiceInformation.dueDate))]@end"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="thank-you">
+      <p data-text="@expr[properties.thankYouMessage.line1]@end"></p>
+      <p data-text="@expr[properties.thankYouMessage.line2]@end"></p>
+    </div>
+        </div>
+    `
+};
+
 export default {
     invoice_01,
     invoice_02,
-    invoice_03
+    invoice_03,
+    invoice_04
 }

@@ -94,7 +94,7 @@ const breakpoints = useBreakpoints({
   editor: 1000,
 });
 
-const exports_ = import.meta.glob("../../assets/templates/*.jpg", {
+const exports_ = import.meta.glob("../../assets/templates/*.{jpg,png}", {
   eager: true,
   import: "default",
   // query: "?extractExportNames",
@@ -193,6 +193,11 @@ const templates: Omit<INTProp, 'index'>[] = [
   {
     type: 'redline-template',
     name: 'Redline Agency',
+    features: ['Invoice No', 'Payment Info', 'Terms']
+  },
+  {
+    type: 'independent-template',
+    name: 'Independent Agency',
     features: ['Invoice No', 'Payment Info', 'Terms']
   },
 ]
