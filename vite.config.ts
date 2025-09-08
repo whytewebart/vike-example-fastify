@@ -26,8 +26,7 @@ const config: UserConfig = {
     Components({
       dirs: ["./components"],
       directoryAsNamespace: true,
-    }),
-    vercel()
+    })
   ],
 
   resolve: {
