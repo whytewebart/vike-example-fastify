@@ -7,12 +7,25 @@ import autoLoad from "@fastify/autoload";
 import { join } from "path";
 import { __dirname } from "./root.js";
 
+const production = { logger: true };
+const development = {
+  logger: {
+    transport: {
+      target: "pino-pretty",
+      options: {
+        translateTime: "HH:MM:ss Z",
+        ignore: "pid,hostname",
+      },
+    },
+  },
+  forceCloseConnections: true // ⚠️ Mandatory for HMR support 
+};
+
+const isProduction = process.env.NODE_ENV === "production";
+
 export const build = async () => {
   // Fastify entry point
-  const instance = fastify({
-    // ⚠️ Mandatory for HMR support
-    forceCloseConnections: true
-  })
+  const instance = fastify(isProduction ? production : development)
 
   // ⚠️ Mandatory for Vike middleware
   await instance.register(rawBody)
