@@ -385,6 +385,34 @@ const image: ComponentDefinition = {
             name: 'caption',
             type: 'text',
             defaultValue: ''
+        },
+        {
+            name: 'imageFit',
+            type: 'select',
+            options: [
+                'initial',
+                'contain',
+                'cover',
+                'fill',
+                'scale-down'
+            ],
+            defaultValue: 'contain'
+        },
+        {
+            name: 'position',
+            type: 'select',
+            options: [
+                'top',
+                'top left',
+                'top right',
+                'left',
+                'center',
+                'right',
+                'bottom',
+                'bottom left',
+                'bottom right'
+            ],
+            defaultValue: 'center'
         }
     ],
 
@@ -394,12 +422,21 @@ const image: ComponentDefinition = {
             'layout-editor',
             'spacing-editor',
         ],
+        allowHost: [
+            'width',
+            'height'
+        ],
         defaultStyles: {},
         css: (properties) => /*css*/`
             img[src=""] {
                 background-color: #f0f0f0;
                 max-width: 100%;
                 height: auto;
+            }
+
+            img {
+                object-position: ${ properties.position || 'center' };
+                object-fit: ${ properties.imageFit || 'contain' };
             }
         `
     },
@@ -486,7 +523,7 @@ const qrcode: ComponentDefinition = {
                 data-attr-data.prop.light.color="@expr[properties.background]@end"
                 data-attr-data.prop.width="@expr[properties.size]@end"
                 data-attr-data.prop.margin="@expr[properties.margin]@end"
-                data-attr-alt="@expr[properties.value}]@end"
+                data-attr-alt="@expr[properties.value]@end"
                 data-qrcode="@expr[properties.value]@end"
             ></canvas>
         `;
@@ -498,7 +535,7 @@ const qrcode: ComponentDefinition = {
                 data-attr-data.prop.light.color="@expr[properties.background]@end"
                 data-attr-data.prop.width="@expr[properties.size]@end"
                 data-attr-data.prop.margin="@expr[properties.margin]@end"
-                data-attr-alt="@expr[properties.value}]@end"
+                data-attr-alt="@expr[properties.value]@end"
                 data-qrcode="@expr[properties.value]@end"
             />
         `
@@ -1173,6 +1210,11 @@ const signature: ComponentDefinition = {
             defaultValue: 100
         },
         {
+            name: 'fontSize',
+            type: 'number',
+            defaultValue: 15
+        },
+        {
             name: 'useCapture',
             type: 'boolean',
             defaultValue: false
@@ -1201,7 +1243,7 @@ const signature: ComponentDefinition = {
                 [styles=host] {
                     p {
                         font-family: 'Priestacy', sans-serif;
-                        font-size: 15pt;
+                        font-size: ${properties.fontSize || 14}pt;
                         color: ${properties.color};
                         display: ${properties.useCapture ? 'none' : 'block'}
                     }

@@ -109,7 +109,7 @@ export class EditorComponent extends EditorCanvasBase {
             payload += Object.entries(this.subElements?.[key]?.styles || {})
                 .map(([key, value]) => `${this.camelToKebab(key)}: ${value};`)
                 .join(' ');
-            payload += '}';
+            payload += '};';
         })
 
         return payload
@@ -659,7 +659,7 @@ export class EditorComponent extends EditorCanvasBase {
             }
 
             ${this.styleGetter}
-            ${this.subStyleGetter}
+            [styles=host] { ${this.subStyleGetter} }
         `
     }
 

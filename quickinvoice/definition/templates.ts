@@ -636,7 +636,7 @@ const invoice_02: ComponentDefinition = {
                     type: 'text'
                 },
                 {
-                    name:'capture',
+                    name: 'capture',
                     defaultValue: '',
                     type: 'image'
                 }
@@ -1927,9 +1927,587 @@ const invoice_04: ComponentDefinition = {
     `
 };
 
+const invoice_05: ComponentDefinition = {
+    type: 'corporate-template',
+    name: 'Corporate Invoice',
+    category: 'Templates',
+    icon: '📄',
+
+    capabilities: {
+        canHaveChildren: false,
+        canAcceptStyles: true,
+        canBeDeleted: false,
+        childrenLocked: true,
+        allowSubElementRoot: true
+    },
+
+    properties: [
+        {
+            name: 'businessName',
+            type: 'rich-text',
+            defaultValue: 'Whyte WebArt\n(Creative Studio)'
+        },
+        {
+            name: 'website',
+            type: 'text',
+            defaultValue: 'https://whytewebart.com',
+            helptext: "Enter your web address / social media username"
+        },
+        {
+            name: 'issuedOn',
+            type: 'date',
+            defaultValue: new Date().toISOString().split('T')[0]
+        },
+        {
+            name: 'registration',
+            type: {
+                type: 'object',
+                shape: [
+                    {
+                        name: 'no',
+                        type: 'text',
+                        defaultValue: '',
+                        helptext: 'Enter your registration number'
+                    },
+                    {
+                        name: 'showNumber',
+                        type: 'boolean',
+                        defaultValue: false
+                    }
+                ]
+            },
+            defaultValue: {
+                no: '928301',
+                showNumber: true
+            }
+        },
+        {
+            name: 'invoiceNumber',
+            type: 'text',
+            defaultValue: '1234569'
+        },
+        {
+            name: 'metadata',
+            type: {
+                type: 'array',
+                itemType: {
+                    type: 'object',
+                    shape: [
+                        {
+                            name: 'title',
+                            type: 'text',
+                            defaultValue: 'Help Line'
+                        },
+                        {
+                            name: 'content',
+                            type: 'rich-text',
+                            defaultValue: '+1 (234) 914 672'
+                        }
+                    ]
+                },
+                max: 2
+            },
+            defaultValue: []
+        },
+        {
+            name: 'recipient',
+            type: {
+                type: 'object',
+                shape: [
+                    {
+                        name: 'name',
+                        type: 'text',
+                        defaultValue: ''
+                    },
+                    {
+                        name: 'phoneNumber',
+                        type: 'tel',
+                        defaultValue: ''
+                    },
+                    {
+                        name: 'address',
+                        type: 'rich-text',
+                        defaultValue: ''
+                    }
+                ]
+            },
+            defaultValue: {
+                name: 'Elizabeth Wotton',
+                phoneNumber: '+1 (925) 650-7226',
+                address: '846 North Front Ave, Montgomery, Alabama, 25109'
+            }
+        },
+        {
+            name: 'personal',
+            type: {
+                type: 'object',
+                shape: [
+                    {
+                        name: 'name',
+                        type: 'text',
+                        defaultValue: ''
+                    },
+                    {
+                        name: 'position',
+                        type: 'text',
+                        defaultValue: ''
+                    },
+                    {
+                        name: 'phoneNumber',
+                        type: 'tel',
+                        defaultValue: ''
+                    },
+                    {
+                        name: 'email',
+                        type: 'text',
+                        defaultValue: ''
+                    }
+                ]
+            },
+            defaultValue: {
+                name: 'John Doe',
+                position: 'Director',
+                phoneNumber: '+1 (311) 555-2368',
+                email: 'johndoe@example.com'
+            }
+        },
+        {
+            name: 'lineItems',
+            type: {
+                type: 'array',
+                itemType: {
+                    type: 'object',
+                    shape: [
+                        {
+                            name: 'description',
+                            type: 'text',
+                            defaultValue: 'Analytics and Reporting'
+                        },
+                        { name: 'unit', type: 'number', defaultValue: 1 },
+                        { name: 'price', type: 'number', defaultValue: 4500 },
+                        {
+                            name: 'detail',
+                            type: 'rich-text',
+                            defaultValue: ''
+                        },
+                        {
+                            name: 'showIcon',
+                            type: 'boolean',
+                            defaultValue: true
+                        }
+                    ]
+                }
+            },
+            defaultValue: [
+                {
+                    id: nanoid(),
+                    description: 'Analytics and Reporting',
+                    unit: 1,
+                    price: 1300,
+                    detail: 'Integration of analytics tools to track website traffic, user behavior, and conversion rates.'
+                }
+            ],
+            description: 'Invoice table rows'
+        },
+        {
+            name: 'tableSummary',
+            type: {
+                type: 'array',
+                itemType: {
+                    type: 'object',
+                    shape: [
+                        {
+                            name: 'title',
+                            type: "text",
+                            defaultValue: 'Shipping'
+                        },
+                        {
+                            name: 'value',
+                            type: 'number',
+                            defaultValue: 200
+                        },
+                        {
+                            name: 'applyAs',
+                            type: 'select',
+                            options: [
+                                'flat',
+                                'percentage'
+                            ],
+                            defaultValue: 'flat'
+                        }
+                    ]
+                }
+            },
+            defaultValue: [
+                {
+                    id: nanoid(),
+                    title: 'Tax',
+                    value: 7.5,
+                    applyAs: 'percentage'
+                }
+            ]
+        },
+        {
+            name: 'currency',
+            type: 'currency',
+            defaultValue: ''
+        },
+        {
+            name: 'terms',
+            type: 'rich-text',
+            defaultValue: `50% deposit required before project start.
+Balance due upon completion, prior to delivery.
+Invoices payable within 14 days.
+Late payments may incur a 5% monthly fee.
+Additional work outside scope billed separately.
+Final deliverables remain property of Whyte WebArt until full payment is received.`
+        },
+        {
+            name: 'hideTerms',
+            type: 'boolean',
+            defaultValue: false
+        }
+    ],
+
+    defaultChildren: [
+        {
+            name: 'Business Logo',
+            type: 'image',
+            selector: '#brand-logo',
+            properties: [
+                {
+                    name: 'src',
+                    defaultValue: 'https://cdn.prod.website-files.com/6365d860c7b7a7191055eb8a/66eeb030e508f6bded1fc406_AlphaWave.svg',
+                    type: 'url'
+                }
+            ],
+            styleSettings: {
+                defaultStyles: {
+                    width: '50px',
+                    height: '50px'
+                }
+            }
+        },
+        {
+            name: 'QR Code',
+            type: 'qrcode',
+            selector: '#qr-code',
+            properties: [
+                {
+                    name: 'size',
+                    defaultValue: 100,
+                    type: 'number'
+                }
+            ],
+        },
+        {
+            name: 'Signature',
+            type: 'signature',
+            selector: '#signature',
+            properties: [
+                {
+                    name: 'type',
+                    defaultValue: 'Laurice Therlautt',
+                    type: 'text'
+                },
+                {
+                    name: 'capture',
+                    defaultValue: '',
+                    type: 'image'
+                }
+            ]
+        }
+    ],
+
+    subElements: [
+        {
+            key: 'brandlogo',
+            selector: '#brand-logo',
+            name: 'Business Logo',
+            hidden: true,
+            capabilities: {
+                isContainer: 'strict',
+                canBeDeleted: false,
+                childrenLocked: true,
+                canAcceptStyles: false,
+                canHaveChildren: false
+            }
+        },
+        {
+            key: 'sendersignature',
+            selector: '#signature',
+            name: 'Signature',
+            hidden: true,
+            capabilities: {
+                isContainer: 'strict',
+                canBeDeleted: true,
+                childrenLocked: true,
+                canAcceptStyles: false,
+                canHaveChildren: false
+            }
+        },
+        {
+            key: 'invoiceqrcode',
+            selector: '#qr-code',
+            name: 'QR Code',
+            hidden: true,
+            capabilities: {
+                isContainer: 'strict',
+                canBeDeleted: true,
+                childrenLocked: true,
+                canAcceptStyles: false,
+                canHaveChildren: false
+            }
+        },
+        {
+            key: 'businessname',
+            selector: '.business-name',
+            name: 'Business Name',
+        },
+        {
+            key: 'link',
+            selector: '.c-7',
+            name: 'Website / Social Link',
+        },
+        {
+            key: 'table',
+            selector: 'div[table] > ul[body]',
+            name: 'Table',
+        }
+    ],
+
+    styleSettings: {
+        allowedProperties: [
+            "typography-editor",
+            "background-editor"
+        ],
+        allowHost: [
+            'width',
+            'height'
+        ],
+        defaultStyles: {
+            'height': '100%',
+            'width': '100%'
+        },
+        css(properties) {
+            return /*css*/ `
+                [styles=host] {
+                    padding: 2em 1em;
+                    font-family: 'Space Mono';
+                    font-size: 9px;
+                    display: grid; grid-template-rows: auto auto 1fr; 
+                    
+                    --c-indigo-600: #4f46e5;
+                    --c-neutral-100: #fafafaff;
+                    --c-neutral-200: #e5e5e5;
+                    --c-gray-300: #d1d5db;
+                }
+
+                [styles=host] * {
+                    font-family: inherit
+                }
+
+                header[main] div[left] p:has(b):not(:first-of-type) {
+                    margin-top: .5em;
+                }
+
+                .c-3 { display: flex; justify-content: space-between; align-items: flex-start; }
+                /* .c-4 { font-family: "DM Mono"; } */
+                .c-5 { text-transform: uppercase; }
+                .c-6.business-name { white-space: pre; color: var(--c-indigo-600); font-weight: 700; }
+                .c-7 { padding: 0.25em 0.5em; background-color: var(--c-neutral-100); color: var(--c-indigo-600); border-radius: 0.375em; width: fit-content; }
+                .c-8 { display: grid; grid-template-columns: 2.5em 1fr; column-gap: 1em; }
+                .c-9 { height: .7em; border-left: 2px solid; border-bottom: 2px solid; }
+                .c-10 > :not([hidden]) ~ :not([hidden]) { margin-top: -0.25em !important; }
+                .c-11 {
+                    text-transform: uppercase;
+                    /* font-family: "DM Mono"; */
+                }
+                .c-12 { text-align: right; display: grid; justify-items: end; row-gap: 1.5rem; }
+                /* .c-13 { width: 50px; height: 50px; background-color: var(--c-neutral-200); } */
+                .c-14 { display: grid; }
+                .c-15 { display: grid; grid-template-columns: auto minmax(0, 12em); }
+                .c-16 { white-space: pre-wrap; }
+                .c-17 { margin-top: 2.5rem; width: 100%; }
+                .c-18 { display: grid; grid-template-columns: 4fr 1fr 1fr 1fr 1fr 1fr; padding-top: 0.25rem; padding-bottom: 0.25rem; }
+                .c-19 { visibility: hidden; }
+                .c-20 { text-align: center; }
+                .c-21 { visibility: hidden; height: 0px; }
+                .c-22 { background-color: white; border-radius: 1em; overflow: clip; border: 1px solid var(--c-gray-300); }
+                .c-23:not(:nth-last-child(-n+2)) { border-bottom: 1px solid var(--c-gray-300); }
+                .c-24 { padding-top: 0.5em; padding-bottom: 0.5em; display: grid; grid-template-columns: 4fr 1fr 1fr 1fr 1fr 1fr; }
+                .c-25 { font-weight: 700; padding-left: 0.375rem; }
+                .c-26 { text-align: center; color: var(--c-indigo-600); }
+                .c-27 { display: none !important; }
+                .c-28 {
+                    background-color: var(--c-neutral-100);
+                    padding: 0.5em 0.375rem;
+                    border-top: 1px solid var(--c-gray-300);
+                    display: grid;
+                    grid-template-columns: auto 1fr;
+                    column-gap: 0.5em;
+                }
+                .c-28 p { margin-top: .4em; }
+                .c-29 { width: 2em; }
+                .c-30 { display: grid; justify-items: end; margin-top: 1.8em; width: fit-content; float: right; }
+                .c-30 > li > p:last-child { text-align: right; }
+                .c-31 { width: 100%; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 4em; list-style-type: none; }
+                .c-32 { border-top: 1px solid; width: 100%; margin: 0.2em 0; list-style-type: none; }
+                .c-33 { display: grid; justify-items: end; align-items: end; align-content: end; row-gap: 1.5rem; }
+                .c-34 { text-align: right; float: inline-end; display: grid; }
+                .c-35 { white-space: pre-wrap; max-width: 20rem; }
+                .c-36 { width: 100%; display: grid; grid-template-columns: 1fr auto; align-items: end; justify-content: space-between; align-content: end; column-gap: 3rem; }
+                .c-37 { width: 100%; display: grid; grid-template-columns: auto auto auto; column-gap: 1.25rem; justify-content: flex-start; align-items: end; }
+                .c-38 {
+                    padding-bottom: 0.5em;
+                    border-bottom: 2px solid #a3a3a3;
+
+                    display: grid;
+                    /* grid-template-columns: auto 1fr; */
+                    align-items: end;
+                    
+                    &:has(div#signature:not(:empty)) {
+                        border-bottom: none;
+                        padding-bottom: 0;
+                        row-gap: 1em;
+                    }
+                }
+                /* .c-39 { width: 100px; height: 100px; background-color: var(--c-neutral-200); } */
+            `;
+        },
+    },
+
+    renderTemplate: (properties) => /*html*/ `
+        <div styles="host">
+            <header main class="c-3">
+            <div left>
+                <p class="c-4"><b>ISSUED ON</b></p>
+                <p data-text="@expr[ new Intl.DateTimeFormat('de-DE').format(new Date(properties.issuedOn)) ]@end"></p>
+                <p class="c-4 c-5"><b>Beneficiary</b></p>
+                <p class="c-6 business-name" data-text="@expr[properties.businessName]@end"></p>
+                <p class="c-7" data-text="@expr[properties.website]@end"></p>
+                <p class="c-4 c-5"><b>Metadata</b></p>
+                <div class="c-8">
+                    <div class="c-9"></div>
+                    <div class="c-10">
+                        <p data-if="@expr[properties.registration.showNumber]@end"><b class="c-11">Reg no:</b> <span data-text="@expr[properties.registration.no]@end"></span></p>
+                        <p><b class="c-11">Invoice no:</b> <span data-text="@expr[properties.invoiceNumber]@end"></span></p>
+
+                        <p data-each="@expr[properties.metadata]@end" data-key="entry">
+                            <b class="c-11" data-text="@expr[entry.title]@end"></b>
+                            <span data-text="@expr[entry.content]@end"></span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div right class="c-12">
+                <div class="c-13" id="brand-logo"></div>
+                <div class="c-14">
+                    <p><b class="c-11">Reciepient / to</b></p>
+                    <p><b class="c-11">Name:</b> <span data-text="@expr[properties.recipient.name]@end"></span></p>
+                    <p><b class="c-11">Phone:</b> <span data-text="@expr[properties.recipient.phoneNumber]@end"></span></p>
+                    <div class="c-15">
+                        <p><b class="c-11">Address:</b></p>
+                        <p class="c-16"><span data-text="@expr[properties.recipient.address]@end"></span></p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div table class="c-17">
+            <header class="c-18">
+                <p class="c-19"><b class="c-11">Description</b></p>
+                <p class="c-20"><b class="c-11">Unit</b></p>
+                <p class="c-20"><b class="c-11">Price</b></p>
+                <p class="c-21"><b class="c-11">empty-block</b></p>
+                <p class="c-20"><b class="c-11">SubTotal</b></p>
+                <p class="c-21"><b class="c-11">empty-block</b></p>
+            </header>
+
+            <ul body class="c-22">
+                <li data-each="@expr[properties.lineItems]@end" data-key="entry" class="c-23">
+                    <div class="c-24">
+                        <p class="c-25" data-text="@expr[entry.description]@end"></p>
+                        <p class="c-26" data-text="@expr[entry.unit]@end"></p>
+                        <p class="c-26" data-text="@expr[entry.price]@end"></p>
+                        <span></span>
+                        <p class="c-20" data-text="@expr[fmtCurrency(entry.price * entry.unit, properties.currency)]@end"></p>
+                        <span></span>
+                    </div>
+                    <div class="c-28" data-if="@expr[entry.detail?.length > 0]@end">
+                        <svg data-if="@expr[entry.showIcon]@end" class="c-29" viewBox="0 0 24.505 24.508" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g transform="translate(0 0)">
+                                <path d="M0.765791 0C1.18873 0 1.53158 0.342888 1.53158 0.765863C1.53158 2.559 2.26164 3.60466 3.12749 4.22858C4.03317 4.8811 5.14305 5.10575 5.87107 5.10575L14.2335 5.10575L10.4352 1.30707C10.154 1.00531 10.1623 0.535071 10.4539 0.243417C10.7456 -0.0482364 11.2158 -0.0565324 11.5175 0.224653L16.6228 5.33041C16.9214 5.62942 16.9214 6.11381 16.6228 6.41282L11.5175 11.5186C11.3266 11.7235 11.0391 11.8078 10.7677 11.7385C10.4964 11.6692 10.2845 11.4573 10.2153 11.186C10.146 10.9146 10.2303 10.6271 10.4352 10.4362L14.2335 6.63748L5.87107 6.63748C4.898 6.63748 3.45423 6.35156 2.23305 5.47235C0.972044 4.56352 0 3.05733 0 0.765863C0 0.342888 0.342856 0 0.765791 0L0.765791 0Z" fill="#888888" fill-rule="evenodd" transform="translate(3.828 6.382)" />
+                            </g>
+                        </svg>
+                        <p data-text="@expr[entry.detail]@end"></p>
+                    </div>
+                </li>
+            </ul>
+
+            <ul class="c-30">
+                <li class="c-31">
+                    <p><b class="c-11">SubTotal</b></p>
+                    <p data-text="@expr[fmtCurrency(properties.lineItems.reduce((sum, item) => sum + (Number(item.price) * Number(item.unit)), 0), properties.currency)]@end"></p>
+                </li>
+                <li class="c-31" data-each="@expr[properties.tableSummary]@end" data-key="charge">
+                    <p><b class="c-11" data-text="@expr[charge.title + (charge.applyAs == 'percentage' ? (' (' + charge.value + '%)') : '')]@end"></b></p>
+                    <p data-text="@expr[
+                                charge.applyAs == 'flat' ? fmtCurrency(charge.value, properties.currency) : charge.applyAs == 'percentage' ? fmtCurrency(properties.lineItems.reduce((sum, item) => sum + (Number(item.price) * Number(item.unit)), 0) * (charge.value / 100), properties.currency) : '']@end"></p>
+                </li>
+                <li class="c-32"></li>
+                <li class="c-31">
+                    <p><b class="c-11">SubTotal</b></p>
+                    <p data-text="@expr[
+                            fmtCurrency(
+    properties.lineItems.reduce((sum, item) => sum + (Number(item.price) * Number(item.unit)), 0) +
+    properties.tableSummary.reduce((sum, item) => {
+        const subtotal = properties.lineItems.reduce((s, i) => s + (Number(i.price) * Number(i.unit)), 0);
+        return sum + (item.applyAs === 'flat' ? Number(item.value) : subtotal * (Number(item.value) / 100));
+    }, 0)
+    , properties.currency)
+
+                                ]@end"></p>
+                </li>
+            </ul>
+        </div>
+
+        <div class="c-33">
+            <div class="c-34" data-if="@expr[ !properties.hideTerms ]@end">
+                <p><b class="c-11">Payment Terms</b></p>
+                <p class="c-35" data-text="@expr[properties.terms]@end">
+            </div>
+
+            <div class="c-36">
+                <div class="c-37">
+                    <div>
+                        <p data-text="@expr[properties.personal.name]@end"></p>
+                        <p data-text="@expr[properties.personal.position]@end"></p>
+                    </div>
+
+                    <div class="c-38">
+                        <p><b class="c-11">Signature</b></p>
+                        <div id="signature"></div>
+                    </div>
+
+                    <div>
+                        <p data-text="@expr[properties.personal.phoneNumber]@end">1</p>
+                        <p data-text="@expr[properties.personal.email]@end"></p>
+                    </div>
+                </div>
+
+                <div class="c-39" id="qr-code"></div>
+            </div>
+        </div>
+        </div>
+    `
+};
+
 export default {
     invoice_01,
     invoice_02,
     invoice_03,
-    invoice_04
+    invoice_04,
+    invoice_05
 }

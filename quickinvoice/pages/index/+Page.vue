@@ -200,6 +200,11 @@ const templates: Omit<INTProp, 'index'>[] = [
     name: 'Independent Agency',
     features: ['Invoice No', 'Payment Info', 'Terms']
   },
+  {
+    type: 'corporate-template',
+    name: 'Corporate Business',
+    features: ['Invoice No', 'Payment Info', 'Terms']
+  },
 ]
 
 function getPrint() {
