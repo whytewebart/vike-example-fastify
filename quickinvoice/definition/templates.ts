@@ -2183,7 +2183,7 @@ Final deliverables remain property of Whyte WebArt until full payment is receive
             ],
             styleSettings: {
                 defaultStyles: {
-                    width: '50px',
+                    width: '200px',
                     height: '50px'
                 }
             }
