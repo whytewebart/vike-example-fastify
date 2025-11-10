@@ -3,8 +3,11 @@ dist/
 # Auto-generated type declarations
 auto-imports.d.ts
 components.d.ts
+vue.d.ts
 build/
 .vercel/
 .vercel
 .env
 dump/
+local/
+drizzle/

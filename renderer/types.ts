@@ -3,8 +3,8 @@ export type { Component };
 // import { InferSeoMetaPluginOptions } from "@unhead/addons";
 import { PageContext, PageContextClient, PageContextServer } from "vike/types";
 import type { ComponentPublicInstance, App } from "vue";
-import { UseHeadInput } from "unhead";
-import { Pinia, StateTree } from "pinia";
+import { Unhead } from "unhead/server";
+import { UseHeadInput } from "unhead/types";
 
 type Component = ComponentPublicInstance; // https://stackoverflow.com/questions/63985658/how-to-type-vue-instance-out-of-definecomponent-in-vue-3/63986086#63986086
 type Page = Component;
@@ -22,7 +22,7 @@ declare global {
       data?: {
         title?: string;
         description?: string;
-        unhead?: UseHeadInput<any>;
+        unhead?: UnheadInput;
       };
 
       config: {
@@ -47,14 +47,12 @@ declare global {
         ) => void | ((pageContext: PageContextServer) => Promise<void>)
       >;
       ssrSlot?: string;
-      unhead?:
-        | UseHeadInput<any>
-        | ((pageContext: PageContext) => UseHeadInput<any>);
+      unhead: Vike.meta;
       secrets?: Record<string, string>;
     }
   }
 
-  type UnheadInput = UseHeadInput<any>;
+  // type UnheadInput = Parameters<Unhead['push']>[0];
   type ReturnContext = Vike.PageContext["data"] & {
     [key: string]: any;
   };

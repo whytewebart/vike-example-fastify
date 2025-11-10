@@ -1,14 +1,37 @@
-import fastify from 'fastify'
+import fastify, { FastifyServerOptions } from 'fastify'
 import rawBody from 'fastify-raw-body'
-import { apply } from 'vike-server/fastify'
-import { serve } from 'vike-server/fastify/serve'
+import { apply, serve } from '@photonjs/fastify'
 
 import autoLoad from "@fastify/autoload";
 import { join } from "path";
-import { __dirname } from "./root.js";
+import { __dirname, prod } from "./root.ts";
 
-const production = { logger: true };
-const development = {
+// ajv
+import ajvErrors from 'ajv-errors';
+import addFormats from 'ajv-formats';
+import ajvMerge from 'ajv-merge-patch';
+
+const shared: FastifyServerOptions = {
+  ajv: {
+    customOptions: {
+      allErrors: true,
+      useDefaults: true,
+      messages: true,
+    },
+
+    plugins: [
+      [ajvErrors.default, {
+        keepErrors: true,
+        singleError: false
+      }],
+      [addFormats.default, {}],
+      [ajvMerge, {}]
+    ]
+  }
+};
+
+const production = Object.assign(shared, { logger: true });
+const development = Object.assign(shared, {
   logger: {
     transport: {
       target: "pino-pretty",
@@ -19,23 +42,22 @@ const development = {
     },
   },
   forceCloseConnections: true // ⚠️ Mandatory for HMR support 
-};
-
-const isProduction = process.env.NODE_ENV === "production";
+});
 
 export const build = async () => {
   // Fastify entry point
-  const instance = fastify(isProduction ? production : development)
+  const instance = fastify(prod ? production : development)
+  const __directory = prod ? join(__dirname, '../build') : __dirname;
 
   // ⚠️ Mandatory for Vike middleware
   await instance.register(rawBody)
   // LOAD PLUGINS AND ROUTES
-  instance.register(autoLoad, { dir: join(__dirname, "../build", "plugins") });
-  instance.register(autoLoad, { dir: join(__dirname, "../build", "routes") });
-
-  instance.get("/server-route", (req, res) => {
-    res.send({ hello: "World" });
-  });
+  instance.register(autoLoad, { dir: join(__directory, "plugins") });
+  instance.register(autoLoad, { dir: join(__directory, "routes") });
+  instance.register(autoLoad, {
+    dir: join(__directory, 'schemas'),
+    indexPattern: /^loader.ts$/i
+  })
 
   await apply(instance)
   return instance
@@ -43,7 +65,7 @@ export const build = async () => {
 
 async function startServer() {
 
-  if(process.env.VERCEL) {
+  if (process.env.VERCEL) {
     console.log("Running in Vercel environment, skipping standalone server start.")
     return;
   }
@@ -56,4 +78,4 @@ async function startServer() {
   })
 }
 
-export default startServer()
+export default await startServer()

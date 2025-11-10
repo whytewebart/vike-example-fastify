@@ -18,8 +18,7 @@ import {
 } from "./utils";
 import { Component } from "./types";
 import PageShell from "./PageShell.vue";
-
-import unHeadPlugin from "./plugins/unhead";
+import { useUnhead } from "./plugins/unhead";
 
 type ChangePage = (pageContext: PageContext) => Promise<void>;
 async function createApp(pageContext: PageContext, ssr: boolean = true) {
@@ -66,9 +65,6 @@ async function createApp(pageContext: PageContext, ssr: boolean = true) {
     : createVueApp(RootComponent);
   objectAssign(pageContext, { app });
 
-  const { setup } = unHeadPlugin();
-  const head = await setup(pageContextRef.value)["server"]();
-
   const { onCreateApp } = pageContext.config;
   await callCumulativeHooks(onCreateApp, pageContext);
 
@@ -90,13 +86,12 @@ async function createApp(pageContext: PageContext, ssr: boolean = true) {
     dataRef.value = pageContext.data;
     pageContextRef.value = pageContext;
     pageRef.value = pageContext.Page;
-    // @ts-ignore
-    layoutRef.value = pageContext.config.Layout;
-    setup(pageContextRef.value)["client"]();
+    layoutRef.value = (pageContext.config.Layout ?? []) as any;
+    useUnhead(pageContext)
     await nextTick();
     returned = true;
     if (err) throw err;
   };
 
-  return { app, changePage, head };
+  return { app, changePage };
 }

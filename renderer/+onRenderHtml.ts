@@ -4,49 +4,39 @@ export { onRenderHtml };
 import { renderToString as renderToString_ } from "@vue/server-renderer";
 import type { App } from "vue";
 import { escapeInject, dangerouslySkipEscape } from "vike/server";
-import type { OnRenderHtmlAsync, PageContext } from "vike/types";
+import type { PageContextServer } from "vike/types";
 import { createApp } from "./app";
 import { callCumulativeHooks } from "./utils";
+import { useUnhead } from "./plugins/unhead";
 
-const onRenderHtml: OnRenderHtmlAsync = async (
-  pageContext
-): ReturnType<OnRenderHtmlAsync> => {
-  // This onRenderHtml() hook only supports SSR, see https://vike.dev/render-modes for how to modify
-  // onRenderHtml() to support SPA
-  // if (!pageContext.Page) throw new Error('My render() hook expects pageContext.Page to be defined')
-
-  const { app, head } =
-    await createApp(pageContext, !!pageContext.Page);
+const onRenderHtml = async (pageContext: PageContextServer) => {
+  const { app } = await createApp(pageContext, !!pageContext.Page);
   const appHtml = await renderToString(app, pageContext);
+  const { render } = useUnhead(pageContext)
 
   const { onAfterRenderHtml } = pageContext.config;
   await callCumulativeHooks(onAfterRenderHtml, pageContext);
 
-  const {
-    headTags,
-    bodyAttrs,
-    htmlAttrs,
-    bodyTags,
-    bodyTagsOpen
-  } = head;
+  const marker = '<!--- html --->';
+  const skeleton = /*html*/`
+    <!DOCTYPE html>
+    <html lang="en">
+      <head></head>
+      <body>${marker}</body>
+    </html>
+  `;
 
-  const documentHtml = escapeInject/*html*/ `<!DOCTYPE html>
-    <html ${dangerouslySkipEscape(htmlAttrs)}>
-      <head>
-        ${dangerouslySkipEscape(headTags)}
-      </head>
-      <body ${dangerouslySkipEscape(bodyAttrs)}>
-       ${dangerouslySkipEscape(bodyTagsOpen)}
-        <div id="app">${dangerouslySkipEscape(appHtml)}</div>
-         ${dangerouslySkipEscape(bodyTags)}
-      </body>
-    </html>`;
+  const frame = await render(skeleton);
+  const [before, after] = frame.split(marker);
+  const html = await render(appHtml);
+
+  const documentHtml = escapeInject`${
+    dangerouslySkipEscape(`${before}${html}${after}`)
+  }`
 
   return {
     documentHtml,
-    pageContext: {
-      // We can add custom pageContext properties here, see https://vike.dev/pageContext#custom
-    },
+    pageContext: {},
   };
 };
 

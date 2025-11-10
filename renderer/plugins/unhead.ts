@@ -1,64 +1,40 @@
-import { createHead, UseHeadInput } from "unhead";
-import { renderSSRHead } from "@unhead/ssr";
+import { transformHtmlTemplate } from "unhead/server";
 import { PageContext } from "vike/types";
 
-class useUnhead {
-  pageContext: PageContext;
-  unhead?: Vike.Config["unhead"];
-  head = createHead({ plugins: [] });
-  parsed: UseHeadInput<any>;
+const parse = (unheadInput: Vike.meta, pageContext: PageContext) => {
+  const unheadToParse = unheadInput
 
-  constructor(pageContext: PageContext) {
-    this.pageContext = pageContext;
-    this.unhead =
-      this.pageContext.config.unhead || this.pageContext.data?.unhead;
+  if (typeof unheadToParse === "function")
+    return unheadToParse(pageContext);
+  if (!unheadToParse) return {};
 
-      // this is parsed unhead from the pageContext.config
-    this.parsed = this.parse();
-    const parsed_data = this.parse(this.pageContext.data?.unhead);
-    this.head.push({
-      // ...pageContext.config.unhead,
-      ...this.parsed,
-      ...parsed_data
-    });
-  }
+  if (Array.isArray(unheadToParse)) {
+    const values = [];
 
-  parse(unheadInput?: typeof this.unhead) {
-    const unheadToParse = unheadInput ?? this.unhead;
-
-    if (typeof unheadToParse === "function")
-      return unheadToParse(this.pageContext);
-    if (!unheadToParse) return {};
-
-    if (Array.isArray(unheadToParse)) {
-      const values = [];
-
-      for (const iterator of unheadToParse) {
-        var result = this.parse(iterator);
-        values.push(result);
-      }
-
-      values.reverse().forEach((d) => this.head.push(d));
-      return {};
+    for (const iterator of unheadToParse) {
+      var result = <Vike.meta>parse(iterator, pageContext);
+      values.push(result);
     }
-    return unheadToParse;
-  }
 
-  async server() {
-    const HeadTags = await renderSSRHead(this.head);
-    return HeadTags;
+    return values.reverse()
   }
-
-  client() {}
+  return unheadToParse;
 }
 
-const unHeadPlugin = () => {
-  return {
-    name: "unhead",
-    setup: (pageContext: PageContext) => {
-      return new useUnhead(pageContext);
-    },
-  };
-};
+export const useUnhead = (pageContext: PageContext) => {
+  const payload = pageContext.config.unhead || pageContext.data?.unhead;
+  const head = pageContext.unhead;
 
-export default unHeadPlugin;
+  const entries = parse(payload, pageContext);
+  Array.isArray(entries) ? entries.forEach((d) => head.push(d)) : head.push(entries);
+
+  const render = async (template: string) => {
+    const html = await transformHtmlTemplate(head, template)
+    return html
+  };
+
+  return {
+    head,
+    render
+  }
+}

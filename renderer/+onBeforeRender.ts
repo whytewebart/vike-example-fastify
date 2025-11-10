@@ -1,10 +1,8 @@
 export { onBeforeRender }
-import type { OnBeforeRenderAsync } from 'vike/types'
+import type { PageContextServer } from 'vike/types'
 import { stringify } from './plugins/pinia/utils';
 
-const onBeforeRender: OnBeforeRenderAsync = async (
-    pageContext
-): ReturnType<OnBeforeRenderAsync> => {
+const onBeforeRender = async (pageContext: PageContextServer) =>  {
     const state = stringify(pageContext.store?.state.value);
     const payload: Partial<typeof pageContext> = {}
 

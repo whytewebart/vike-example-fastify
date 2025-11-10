@@ -1,7 +1,6 @@
 // import * as chalk from 'chalk';
 import fp from 'fastify-plugin';
-import { createReadStream, writeFile } from 'fs';
-import { FastifyPluginAsync } from 'fastify';
+import type { FastifyPluginAsync } from 'fastify';
 /**
  * This plugins adds some utilities to handle http errors
  *

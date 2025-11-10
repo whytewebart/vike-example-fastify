@@ -1,26 +1,7 @@
 import fp from 'fastify-plugin';
-import { FastifyPluginAsync } from 'fastify';
+import type { FastifyPluginAsync } from 'fastify';
 
-// CUSTOM SCHEMA && STRING FORMATTING
-import { Ajv } from 'ajv';
-import ajvErrors from 'ajv-errors';
-import addFormats from 'ajv-formats';
-// ------------------------------
-const ajv = new Ajv({
-    allErrors: true,
-    useDefaults: true,
-    messages: true,
-});
-// --------
-ajvErrors.default(ajv, {
-    keepErrors: true,
-    singleError: false
-}); addFormats.default(ajv);
-// ------------------------------
 export default fp<FastifyPluginAsync>(async (fastify, opts) => {
-    fastify.setValidatorCompiler(({ schema, method, url, httpPart }) => {
-        return ajv.compile(schema)
-    });
 
     fastify.setErrorHandler(function (error, request, reply) {
         if (error.validation) {
@@ -47,7 +28,7 @@ export default fp<FastifyPluginAsync>(async (fastify, opts) => {
     fastify.register(function (instance, options, done) {
         instance.setNotFoundHandler(function (request, reply) {
             instance.log.error("Not Found")
-            reply.status(404).send({
+            return reply.status(404).send({
                 status: '404 Not Found',
                 message: "Route doesn't exist"
             })
@@ -55,7 +36,7 @@ export default fp<FastifyPluginAsync>(async (fastify, opts) => {
         done()
     });
 
-    fastify.get("/validate", {
+    fastify.get("/__validate__", {
         schema: {
             querystring: {
                 type: 'object',

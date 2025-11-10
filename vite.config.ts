@@ -1,7 +1,8 @@
 import vue from "@vitejs/plugin-vue";
+import vueJsx from "@vitejs/plugin-vue-jsx";
+
 import AutoImport from "unplugin-auto-import/vite";
 import Components from 'unplugin-vue-components/vite'
-import vercel from 'vite-plugin-vercel';
 import UnoCSS from "unocss/vite";
 
 import vike from "vike/plugin";
@@ -11,6 +12,7 @@ import path from "path";
 const config: UserConfig = {
   plugins: [
     vue(),
+    vueJsx(),
     vike(),
     UnoCSS(),
     AutoImport({
@@ -32,7 +34,7 @@ const config: UserConfig = {
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./"),
-      "~plugins": path.resolve(__dirname, "./renderer/plugins")
+      "@plugins": path.resolve(__dirname, "./renderer/plugins")
     },
   },
 };

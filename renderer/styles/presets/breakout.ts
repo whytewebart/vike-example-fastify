@@ -135,6 +135,7 @@ const rules: Preset["rules"] = [
       internal: true,
     },
   ],
+  ["remove-margin", { "--gap": "0em" }]
 ];
 
 const shortcuts: Preset["shortcuts"] = [
@@ -142,8 +143,9 @@ const shortcuts: Preset["shortcuts"] = [
   [/^bk-inherit-([a-z]+)$/, ([, c]) => `bk-content-i-${c} [&_>_*]:bk-col-content`],
   {
     "bk-inherit": "bk-content-i-inherit [&_>_*]:bk-col-content",
-    "bk-container-inherit":
-      "bk-container--inherit bk-col-root! [&_>_*]:bk-col-content",
+    "bk-container-inherit": "bk-container--inherit bk-col-root! [&_>_*]:bk-col-content",
+    boundary: "max-w-[var(--boundary)]",
+    "boundary-bleed": "max-w-[var(--boundary-bleed)]",
   },
 ];
 

@@ -2,7 +2,7 @@ export {
     useHealth
 }
 
-import { createStore } from '~plugins/pinia/persist';
+import { createStore } from '@plugins/pinia/persist';
 import { ofetch } from "ofetch"
 import { PageContext } from 'vike/types';
 

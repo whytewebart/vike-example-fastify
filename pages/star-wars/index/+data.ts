@@ -11,7 +11,7 @@ import type { PageContextServer } from 'vike/types'
 const data = async (pageContext: PageContextServer) => {
   await sleep(700) // Simulate slow network
   // Fetch data from the server-side endpoint
-  const response = await ofetch<MovieDetails[]>(`http://${pageContext.urlParsed?.origin}${import.meta.env.BASE_URL}/movies.json`)
+  const response = await ofetch<MovieDetails[]>(`${pageContext.urlParsed?.origin}${import.meta.env.BASE_URL}/movies.json`)
 
   // We remove data we don't need because the data is passed to the client; we should
   // minimize what is sent over the network.

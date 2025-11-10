@@ -1,5 +1,6 @@
 import type { Config, ConfigEffect } from "vike/types";
-import vikeServer from 'vike-server/config'
+// import vikeServer from 'vike-server/config'
+import vikePhoton from 'vike-photon/config'
 
 const toggleSsrRelatedConfig: ConfigEffect = ({
   configDefinedAt,
@@ -111,12 +112,13 @@ const unhead: Config["unhead"] = {
   ],
 
   htmlAttrs: {
-    lang: "en",
-    // class: ["dark"]
+    lang: "en"
   },
 
   bodyAttrs: {
-    class: ["text-sm"],
+    class: [
+      "isolate"
+    ],
   },
 };
 
@@ -131,7 +133,8 @@ export default {
 
   unhead,
   baseAssets: '/client',
-  // ssr: false,
-  server: 'server/vike.ts',
-  extends: [vikeServer]
+  photon: {
+    server: 'server/vike.ts'
+  },
+  extends: [vikePhoton]
 } satisfies Config;
