@@ -47,11 +47,12 @@ const development = Object.assign(shared, {
 });
 
 export const instance = () => {
+	console.log("instance", prod ? "production" : "development", prod);
 	return fastify(prod ? production : development);
 };
 
 export const build = async (i: FastifyInstance) => {
-	const __directory = prod ? join(__dirname, "../build") : __dirname;
+	const __directory = __dirname;
 
 	// LOAD PLUGINS
 	await i.register(rawBody);
