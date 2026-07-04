@@ -11,53 +11,53 @@ type Page = Component;
 
 // https://vike.dev/pageContext#typescript
 declare global {
-  namespace Vike {
-    interface PageContext {
-      // @ts-ignore
-      Page: Page;
-      abortReason?: string;
-      pageProps: any;
-      app?: App;
+	namespace Vike {
+		interface PageContext {
+			// @ts-ignore
+			Page: Page;
+			abortReason?: string;
+			pageProps: any;
+			app?: App;
 
-      data?: {
-        title?: string;
-        description?: string;
-        unhead?: UnheadInput;
-      };
+			data?: {
+				title?: string;
+				description?: string;
+				unhead?: UnheadInput;
+			};
 
-      config: {
-        title?: string;
-        description?: string;
-      };
-    }
+			config: {
+				title?: string;
+				description?: string;
+			};
+		}
 
-    interface Config {
-      nested?: boolean;
-      middleware?: ((pageContext: PageContext) => Promise<void>)[];
-      Layout?: Page | Page[];
-      ssr?: boolean;
-      onCreateApp?: Array<
-        (
-          pageContext: PageContextWithApp
-        ) => void | ((pageContext: PageContextWithApp) => Promise<void>)
-      >;
-      onAfterRenderHtml?: Array<
-        (
-          pageContext: PageContextServer
-        ) => void | ((pageContext: PageContextServer) => Promise<void>)
-      >;
-      ssrSlot?: string;
-      unhead: Vike.meta;
-      secrets?: Record<string, string>;
-    }
-  }
+		interface Config {
+			nested?: boolean;
+			middleware?: ((pageContext: PageContext) => Promise<void>)[];
+			Layout?: Page | Page[];
+			ssr?: boolean;
+			onCreateApp?: Array<
+				(
+					pageContext: PageContextWithApp,
+				) => void | ((pageContext: PageContextWithApp) => Promise<void>)
+			>;
+			onAfterRenderHtml?: Array<
+				(
+					pageContext: PageContextServer,
+				) => void | ((pageContext: PageContextServer) => Promise<void>)
+			>;
+			ssrSlot?: string;
+			unhead?: Vike.meta;
+			secrets?: Record<string, string>;
+		}
+	}
 
-  // type UnheadInput = Parameters<Unhead['push']>[0];
-  type ReturnContext = Vike.PageContext["data"] & {
-    [key: string]: any;
-  };
-  type MiddlewareAsync = (pageContext: PageContextClient) => Promise<void>;
-  type PageContextWithApp = PageContext & {
-    app: NonNullable<PageContext["app"]>;
-  };
+	// type UnheadInput = Parameters<Unhead['push']>[0];
+	type ReturnContext = Vike.PageContext["data"] & {
+		[key: string]: any;
+	};
+	type MiddlewareAsync = (pageContext: PageContextClient) => Promise<void>;
+	type PageContextWithApp = PageContext & {
+		app: NonNullable<PageContext["app"]>;
+	};
 }
