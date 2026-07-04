@@ -17,23 +17,21 @@ const shared: FastifyServerOptions = {
 			useDefaults: true,
 			messages: true,
 		},
-
 		plugins: [
-			[
-				ajvErrors.default,
-				{
-					keepErrors: true,
-					singleError: false,
-				},
-			],
+			[ajvErrors.default, { keepErrors: true, singleError: false }],
 			[addFormats.default, {}],
 			[ajvMerge, {}],
 		],
 	},
 };
 
-const production = Object.assign(shared, { logger: true });
-const development = Object.assign(shared, {
+const production: FastifyServerOptions = {
+	...shared,
+	logger: true,
+};
+
+const development: FastifyServerOptions = {
+	...shared,
 	logger: {
 		transport: {
 			target: "pino-pretty",
@@ -43,8 +41,7 @@ const development = Object.assign(shared, {
 			},
 		},
 	},
-	forceCloseConnections: true, // ⚠️ Mandatory for HMR support
-});
+};
 
 export const instance = () => {
 	console.log("instance", prod ? "production" : "development", prod);
