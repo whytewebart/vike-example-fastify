@@ -5,11 +5,11 @@ const root: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
 		"/ping",
 		{
 			schema: {
-				response: {
-					200: {
-						$ref: "server:ping",
-					},
-				},
+				// response: {
+				// 	200: {
+				// 		$ref: "server:ping",
+				// 	},
+				// },
 			},
 		},
 		async (request, reply) => {
