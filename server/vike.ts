@@ -53,6 +53,8 @@ export const build = async (i: FastifyInstance) => {
 
 	// LOAD PLUGINS
 	await i.register(rawBody);
+	// REGISTER PING
+	i.register(import("./routes/ping.js"));
 	// AUTLOAD PLUGINS AND ROUTES
 	// i.register(autoLoad, { dir: join(__directory, "plugins") });
 	// i.register(autoLoad, { dir: join(__directory, "routes") });
