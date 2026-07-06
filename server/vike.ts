@@ -21,7 +21,7 @@ const shared: FastifyServerOptions = {
 			[ajvErrors.default, { keepErrors: true, singleError: false }],
 			[addFormats.default, {}],
 			[ajvMerge, {}],
-		],
+		] as any,
 	},
 };
 
@@ -54,12 +54,15 @@ export const build = async (i: FastifyInstance) => {
 	// LOAD PLUGINS
 	await i.register(rawBody);
 	// AUTLOAD PLUGINS AND ROUTES
-	i.register(autoLoad, { dir: join(__directory, "plugins") });
-	i.register(autoLoad, { dir: join(__directory, "routes") });
-	i.register(autoLoad, {
-		dir: join(__directory, "schemas"),
-		indexPattern: /^loader.ts$/i,
-	});
+	// i.register(autoLoad, { dir: join(__directory, "plugins") });
+	// i.register(autoLoad, { dir: join(__directory, "routes") });
+	// i.register(autoLoad, {
+	// 	dir: join(__directory, "schemas"),
+	// 	indexPattern: /^loader.ts$/i,
+	// });
+
+	// TEST ROUTE
+	i.get("/effective", () => "This route is effective");
 
 	return i;
 };

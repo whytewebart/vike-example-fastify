@@ -5,13 +5,12 @@ import type { PageContext, PageContextServer } from "vike/types";
 import { CanonicalPlugin } from "unhead/plugins";
 
 export async function onCreatePageContext(pageContext: PageContext) {
+	var canonicalHost = pageContext.urlParsed.hostname ?? undefined;
+	if (!canonicalHost && pageContext.isClientSide)
+		canonicalHost = window.location.hostname;
+
 	const headOpts: Parameters<typeof createHead>[0] = {
-		plugins: [
-			CanonicalPlugin({
-				canonicalHost:
-					pageContext.urlParsed.hostname ?? window.location.hostname,
-			}),
-		],
+		plugins: [CanonicalPlugin({ canonicalHost })],
 	};
 	pageContext.store = createPinia();
 
