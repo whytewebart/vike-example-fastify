@@ -32,7 +32,7 @@ export function instance(): FastifyInstance {
 	return fastify(options);
 }
 
-export async function build(i: FastifyInstance): Promise<FastifyInstance> {
+export async function build(i: FastifyTyped): Promise<FastifyInstance> {
 	// directory
 	const _directory = prod ? join(_dirname, "../build") : _dirname;
 
@@ -63,7 +63,10 @@ export async function build(i: FastifyInstance): Promise<FastifyInstance> {
 		{
 			schema: {
 				querystring: {
-					path: { type: "string", default: "." },
+					type: "object",
+					properties: {
+						path: { type: "string", default: "." },
+					},
 				},
 			},
 		},
