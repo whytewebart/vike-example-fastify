@@ -32,9 +32,6 @@ importers:
       '@libsql/client':
         specifier: ^0.15.15
         version: 0.15.15
-      '@libsql/linux-x64-gnu':
-        specifier: ^0.5.29
-        version: 0.5.29
       '@tailwindcss/vite':
         specifier: ^4.3.2
         version: 4.3.2(vite@7.3.6(@types/node@24.13.2)(jiti@2.7.0)(lightningcss@1.32.0)(sass@1.101.0)(stylus@0.57.0)(tsx@4.22.5)(yaml@2.9.0))
@@ -5504,7 +5501,8 @@ snapshots:
   '@libsql/linux-arm64-musl@0.5.29':
     optional: true
 
-  '@libsql/linux-x64-gnu@0.5.29': {}
+  '@libsql/linux-x64-gnu@0.5.29':
+    optional: true
 
   '@libsql/linux-x64-musl@0.5.29':
     optional: true
