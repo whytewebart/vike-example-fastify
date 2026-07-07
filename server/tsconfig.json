@@ -18,7 +18,7 @@
 	"compilerOptions": {
 		"target": "es2022",
 		"module": "esnext",
-		"outDir": "../dist/client/build",
+		"outDir": "../dist/build",
 		"rewriteRelativeImportExtensions": true,
 		"noImplicitAny": false,
 		"useUnknownInCatchVariables": false,

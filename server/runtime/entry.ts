@@ -1,7 +1,7 @@
 import fastify, { type FastifyInstance } from "fastify";
 import autoLoad from "@fastify/autoload";
 import rawBody from "fastify-raw-body";
-import { existsSync } from "fs";
+import { existsSync, readdirSync } from "fs";
 import { join } from "path";
 import { _dirname } from "../shared/dirname.ts";
 import { options } from "./options.ts";
@@ -40,12 +40,12 @@ export async function build(i: FastifyInstance): Promise<FastifyInstance> {
 	await i.register(rawBody);
 
 	// Autoload plugins, routes, and schema loaders
-	void i.register(autoLoad, { dir: join(_directory, "plugins") });
-	void i.register(autoLoad, { dir: join(_directory, "routes") });
-	void i.register(autoLoad, {
-		dir: join(_directory, "schemas"),
-		indexPattern: /^\+loader\.(ts|js)$/i,
-	});
+	// void i.register(autoLoad, { dir: join(_directory, "plugins") });
+	// void i.register(autoLoad, { dir: join(_directory, "routes") });
+	// void i.register(autoLoad, {
+	// 	dir: join(_directory, "schemas"),
+	// 	indexPattern: /^\+loader\.(ts|js)$/i,
+	// });
 
 	// Autoload structure, helpers, and loaders for the "++helper" / "+loader" convention
 	for (const { directory, suffix } of CONVENTION_DIRECTORIES) {
@@ -55,6 +55,14 @@ export async function build(i: FastifyInstance): Promise<FastifyInstance> {
 		void i.register(autoLoad, { dir, matchFilter: helperPattern(suffix) });
 		void i.register(autoLoad, { dir, indexPattern: LOADER_PATTERN });
 	}
+
+	i.get("/vercel", async (req, res) => {
+		// read all files in current directory
+		const files = readdirSync(_directory);
+		// read all files in parent directory
+		const parentFiles = readdirSync(join(_directory, ".."));
+		res.send({ files, parentFiles });
+	});
 
 	return i;
 }
