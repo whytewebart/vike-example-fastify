@@ -6,8 +6,9 @@ import { _dirname } from "../shared/dirname.ts";
 
 export default fp<FastifyTypeBox>(
 	async function (fastify, opts) {
+		const schemaGlob = import.meta.glob("./*");
 		const modules = await imports.loadModules(
-			join(_dirname, "./schemas"),
+			schemaGlob,
 			/^\+loader\.(ts|js)$|\.md$|\.map$/i,
 		);
 		const schemas = Object.values(modules).flatMap((mod) =>

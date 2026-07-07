@@ -39,15 +39,29 @@ export async function build(i: FastifyTyped): Promise<FastifyInstance> {
 	// Mandatory for Vike middleware
 	await i.register(rawBody);
 
-	/*
-		// Autoload plugins, routes, and schema loaders
-		void i.register(autoLoad, { dir: join(_directory, "plugins") });
-		void i.register(autoLoad, { dir: join(_directory, "routes") });
-		void i.register(autoLoad, {
-			dir: join(_directory, "schemas"),
-			indexPattern: /^\+loader\.(ts|js)$/i,
-		});
-	*/
+	await i.register(import("./plugins/autoload.ts"), {
+		list: import.meta.glob("../plugins/**/*.ts", { eager: true }),
+		base: "../plugins",
+		pluginOptions: {
+			logLevel: "warn",
+		},
+	});
+
+	await i.register(import("./plugins/autoload.ts"), {
+		list: import.meta.glob("../routes/**/*.ts", { eager: true }),
+		base: "../routes",
+		pluginOptions: {
+			logLevel: "warn",
+		},
+	});
+
+	await i.register(import("./plugins/autoload.ts"), {
+		list: import.meta.glob("../schemas/+loader.{ts,js}", { eager: true }),
+		base: "../schemas",
+		pluginOptions: {
+			logLevel: "warn",
+		},
+	});
 
 	// Autoload structure, helpers, and loaders for the "++helper" / "+loader" convention
 	for (const { directory, suffix } of CONVENTION_DIRECTORIES) {
