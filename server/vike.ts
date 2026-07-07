@@ -2,13 +2,14 @@ import fastify, { FastifyInstance, FastifyServerOptions } from "fastify";
 import rawBody from "fastify-raw-body";
 
 import autoLoad from "@fastify/autoload";
-import { join } from "path";
+import { dirname, join } from "path";
 import { __dirname, prod } from "./root.ts";
 
 // ajv
 import ajvErrors from "ajv-errors";
 import addFormats from "ajv-formats";
 import ajvMerge from "ajv-merge-patch";
+import { fileURLToPath } from "url";
 
 const shared: FastifyServerOptions = {
 	ajv: {
@@ -49,19 +50,20 @@ export const instance = () => {
 };
 
 export const build = async (i: FastifyInstance) => {
-	const __directory = __dirname;
+	const __filename = fileURLToPath(import.meta.url);
+	const __directory = dirname(__filename);
 
 	// LOAD PLUGINS
 	await i.register(rawBody);
 	// REGISTER PING
-	i.register(import("./routes/ping.js"));
+	// i.register(import("./routes/ping.js"));
 	// AUTLOAD PLUGINS AND ROUTES
-	// i.register(autoLoad, { dir: join(__directory, "plugins") });
-	// i.register(autoLoad, { dir: join(__directory, "routes") });
-	// i.register(autoLoad, {
-	// 	dir: join(__directory, "schemas"),
-	// 	indexPattern: /^loader.ts$/i,
-	// });
+	i.register(autoLoad, { dir: join(__directory, "plugins") });
+	i.register(autoLoad, { dir: join(__directory, "routes") });
+	i.register(autoLoad, {
+		dir: join(__directory, "schemas"),
+		indexPattern: /^loader.ts$/i,
+	});
 
 	// TEST ROUTE
 	i.get("/effective", () => "This route is effective");
