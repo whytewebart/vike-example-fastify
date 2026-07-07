@@ -1,6 +1,4 @@
-import type { FastifyPluginAsync } from "fastify";
-
-const root: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
+const root: FastifyTypeBox = async (fastify, opts): Promise<void> => {
 	fastify.get(
 		"/ping",
 		{

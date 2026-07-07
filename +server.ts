@@ -1,7 +1,7 @@
 // +server.ts
 import type { Server } from "vike/types";
 import vike, { toFetchHandler } from "@vikejs/fastify";
-import { build, instance as app } from "./server/vike";
+import { build, instance as app } from "./server/runtime/entry";
 
 let appPromise: Promise<Awaited<ReturnType<typeof build>>> | undefined;
 

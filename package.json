@@ -1,14 +1,15 @@
 {
 	"scripts": {
 		"dev": "vike dev",
-		"build": "vike build",
-		"prod": "vike build && node ./dist/server/index.mjs",
-		"build-old": "vike build && npm run build-server",
-		"preview": "node server/scripts/predev.js && vike preview",
+		"build": "vike build && npm run complie",
+		"preview": "npm run env && vike preview",
+		"complie": "tsc --build ./server",
 		"start": "cross-env NODE_ENV=production PORT=$PORT node dist/server/index.js",
-		"build-server": "tsc --build ./server"
+		"env": "node server/scripts/predev.js",
+		"folders": "node server/scripts/tree.js"
 	},
 	"dependencies": {
+		"@fastify/ajv-compiler": "^4.0.5",
 		"@fastify/autoload": "^6.3.1",
 		"@fastify/env": "^5.0.3",
 		"@fastify/type-provider-json-schema-to-ts": "^5.0.0",
