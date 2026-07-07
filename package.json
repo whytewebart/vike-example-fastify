@@ -61,7 +61,6 @@
 	},
 	"type": "module",
 	"devDependencies": {
-		"@types/ajv-merge-patch": "^4.1.4",
 		"@types/js-cookie": "^3.0.6",
 		"@types/node": "^24.13.2",
 		"drizzle-kit": "^0.31.10",
@@ -73,6 +72,7 @@
 	},
 	"packageManager": "pnpm@11.8.0",
 	"optionalDependencies": {
-		"@libsql/linux-x64-gnu": "^0.6.0"
+		"@libsql/linux-x64-gnu": "^0.6.0",
+		"@types/ajv-merge-patch": "^4.1.4"
 	}
 }
