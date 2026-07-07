@@ -5,6 +5,7 @@ import { existsSync } from "fs";
 import { join } from "path";
 import { _dirname } from "../shared/dirname.ts";
 import { options } from "./options.ts";
+import { prod } from "../shared/environment.ts";
 
 /** Directories that follow the "++helper" / "+loader" naming convention. */
 interface ConventionDirectory {
@@ -32,6 +33,9 @@ export function instance(): FastifyInstance {
 }
 
 export async function build(i: FastifyInstance): Promise<FastifyInstance> {
+	// directory
+	const _directory = prod ? join(_dirname, "../build") : _dirname;
+
 	// Mandatory for Vike middleware
 	await i.register(rawBody);
 
