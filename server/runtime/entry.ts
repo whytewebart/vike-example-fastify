@@ -40,16 +40,16 @@ export async function build(i: FastifyInstance): Promise<FastifyInstance> {
 	await i.register(rawBody);
 
 	// Autoload plugins, routes, and schema loaders
-	void i.register(autoLoad, { dir: join(_dirname, "plugins") });
-	void i.register(autoLoad, { dir: join(_dirname, "routes") });
+	void i.register(autoLoad, { dir: join(_directory, "plugins") });
+	void i.register(autoLoad, { dir: join(_directory, "routes") });
 	void i.register(autoLoad, {
-		dir: join(_dirname, "schemas"),
+		dir: join(_directory, "schemas"),
 		indexPattern: /^\+loader\.(ts|js)$/i,
 	});
 
 	// Autoload structure, helpers, and loaders for the "++helper" / "+loader" convention
 	for (const { directory, suffix } of CONVENTION_DIRECTORIES) {
-		const dir = join(_dirname, directory);
+		const dir = join(_directory, directory);
 		if (!existsSync(dir)) continue;
 
 		void i.register(autoLoad, { dir, matchFilter: helperPattern(suffix) });
