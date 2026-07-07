@@ -32,6 +32,10 @@ interface GlobNode {
 	children: Map<string, GlobNode>;
 }
 
+interface LoadedRoute {
+	[key: string]: any;
+}
+
 const fastifyGlobAutoload: FastifyPluginAsync<
 	FastifyGlobAutoloadOptions
 > = async (
@@ -146,7 +150,7 @@ const fastifyGlobAutoload: FastifyPluginAsync<
 			}),
 		);
 
-		const loadedRoutes = [];
+		const loadedRoutes: LoadedRoute[] = [];
 
 		for (const { file, moduleContent } of resolvedRouteModules) {
 			// Robustly extract the executable plugin function (handles default, CJS interop, and direct exports)
