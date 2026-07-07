@@ -28,6 +28,6 @@ export default fastifyPlugin(
 
 declare module "fastify" {
 	export interface FastifyInstance {
-		db: ReturnType<typeof drizzle>;
+		// db: ReturnType<typeof drizzle>;
 	}
 }
