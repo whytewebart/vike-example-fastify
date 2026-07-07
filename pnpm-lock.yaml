@@ -140,9 +140,6 @@ importers:
       vike:
         specifier: ^0.4.260
         version: 0.4.260(fastify@5.9.0)(h3@1.15.11)(hono@4.12.27)(srvx@0.11.20)(vite@7.3.6(@types/node@24.13.2)(jiti@2.7.0)(lightningcss@1.32.0)(sass@1.101.0)(stylus@0.57.0)(tsx@4.22.5)(yaml@2.9.0))
-      vike-server:
-        specifier: ^1.0.25
-        version: 1.0.25(fastify@5.9.0)(h3@1.15.11)(hono@4.12.27)(srvx@0.11.20)(vike@0.4.260(fastify@5.9.0)(h3@1.15.11)(hono@4.12.27)(srvx@0.11.20)(vite@7.3.6(@types/node@24.13.2)(jiti@2.7.0)(lightningcss@1.32.0)(sass@1.101.0)(stylus@0.57.0)(tsx@4.22.5)(yaml@2.9.0)))(vite@7.3.6(@types/node@24.13.2)(jiti@2.7.0)(lightningcss@1.32.0)(sass@1.101.0)(stylus@0.57.0)(tsx@4.22.5)(yaml@2.9.0))
       vite:
         specifier: ^7.3.6
         version: 7.3.6(@types/node@24.13.2)(jiti@2.7.0)(lightningcss@1.32.0)(sass@1.101.0)(stylus@0.57.0)(tsx@4.22.5)(yaml@2.9.0)
@@ -1905,9 +1902,6 @@ packages:
       vite:
         optional: true
 
-  '@universal-middleware/compress@0.2.36':
-    resolution: {integrity: sha512-cfa7yCc/Q59gxUFW9V55GGjVNDHF1KdVLadK9cbxTwHk/0UpGdX0KS68g0eE3HzZkPm1WZJCZaTJ/Lvf1bbZXw==}
-
   '@universal-middleware/core@0.4.18':
     resolution: {integrity: sha512-HOyL82N/OtLQCFePXUwIdcx9PLEHfyF2hqoEd037wBpRpH8DkdGMH9TFXS00tpERYvESMm7TKPXayAfroDXKQg==}
     peerDependencies:
@@ -1940,29 +1934,14 @@ packages:
       srvx:
         optional: true
 
-  '@universal-middleware/elysia@0.4.8':
-    resolution: {integrity: sha512-6cDEPq96blz5x17rsNJjRmDqD4o0XrGB+6lFElEThtIBAUn1Y38OqMn1+yf7Ycdc5w45mr4T1uimfH9tAdU2Ug==}
-
   '@universal-middleware/express@0.4.30':
     resolution: {integrity: sha512-vkaqurRbPFMYSACaG+iWpDbFlvbV/GTQ0wHx8Aqg9I7f5HxFHoos4F7E/oUIa352FXcJPflQM0CJXgkHTW+QeQ==}
 
   '@universal-middleware/fastify@0.5.26':
     resolution: {integrity: sha512-DUImESs9taUeMOSvJcSB/gvK0M90wQXXwRNP5Rhjto5GTXiHair2yRjxhhjVqXAms63G/du5xrzoOIO1JBB3NQ==}
 
-  '@universal-middleware/h3@0.4.17':
-    resolution: {integrity: sha512-Zx01aG9nt7DaQLEX7CarXFfJhafSDwNp6wHghCo2DZJqtX5lvfUix0ah76CFxKfpKfhaa4Fisx2evzYrZYn4rw==}
-
-  '@universal-middleware/hattip@0.4.16':
-    resolution: {integrity: sha512-MwTkKgzpiln1mxnPF/+LSr8jl4PY+ofL51C7fsrXbb7MZWIfy79NdRWmEdu2xpKoSLhZ0P5h6FLBlme30gU8yg==}
-
-  '@universal-middleware/hono@0.4.21':
-    resolution: {integrity: sha512-HvzvJ/4DIbj8z/OWzirZZGBhWbv/w/UTNUMLKt35U3wVUJRPDZVRm3SzJR55jQfoN4MBD6DvAT5jKFjdZzsPQg==}
-
   '@universal-middleware/node@0.2.1':
     resolution: {integrity: sha512-AKeljt63mp66sQP9DHn4aNZZgWW+mD82ysSVlISe/v1opYyIDfqYvuo+BJ3JJvjVzQncxkp/Z4al9q5wEA5FqA==}
-
-  '@universal-middleware/sirv@0.1.26':
-    resolution: {integrity: sha512-NkcW13KnqMGLUarrvZq6p2H0x9ux50cVldrmqhI/o70NLeLaEaKA9zg1q6sJed0dsZ6gZr4JcJfB3Zfs90yuGg==}
 
   '@unocss/cli@66.7.4':
     resolution: {integrity: sha512-ujqzt7An9Y1BUL0xMFQvF219nLwz7hF2lh/E97YhzB8lI8xA/T/VB7+njXXBEADV4Jp/5qGVaAatME9tadCqBw==}
@@ -4564,15 +4543,6 @@ packages:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
     engines: {node: '>= 0.8'}
 
-  vike-server@1.0.25:
-    resolution: {integrity: sha512-drzqh062+1go2ZNR8A1SfNPxnMEGSdcPqWdlLaxq6JvgJXS0xDWh0utbwtTVz1ig8TVwrlutj/rq9JN/pP4caQ==}
-    peerDependencies:
-      vike: '>=0.4.231'
-      vite: '>=6'
-    peerDependenciesMeta:
-      vite:
-        optional: true
-
   vike@0.4.260:
     resolution: {integrity: sha512-9HMYNO3ZZw21W/FpP6eqgRd+yz+fgRW16KGhrG2BlYjW23gAZTGx4vtx8sDQXRKKnspSsQsUSA2POsJqfxEZ2g==}
     engines: {node: '>=20.19.0'}
@@ -6146,8 +6116,6 @@ snapshots:
       - hono
       - srvx
 
-  '@universal-middleware/compress@0.2.36': {}
-
   '@universal-middleware/core@0.4.18(fastify@5.9.0)(h3@1.15.11)(hono@4.12.27)(srvx@0.11.20)':
     dependencies:
       regexparam: 3.0.0
@@ -6157,20 +6125,6 @@ snapshots:
       h3: 1.15.11
       hono: 4.12.27
       srvx: 0.11.20
-
-  '@universal-middleware/elysia@0.4.8(fastify@5.9.0)(h3@1.15.11)(hono@4.12.27)(srvx@0.11.20)':
-    dependencies:
-      '@universal-middleware/core': 0.4.18(fastify@5.9.0)(h3@1.15.11)(hono@4.12.27)(srvx@0.11.20)
-    transitivePeerDependencies:
-      - '@cloudflare/workers-types'
-      - '@hattip/core'
-      - '@types/express'
-      - '@webroute/route'
-      - elysia
-      - fastify
-      - h3
-      - hono
-      - srvx
 
   '@universal-middleware/express@0.4.30(fastify@5.9.0)(h3@1.15.11)(hono@4.12.27)(srvx@0.11.20)':
     dependencies:
@@ -6203,48 +6157,6 @@ snapshots:
       - hono
       - srvx
 
-  '@universal-middleware/h3@0.4.17(fastify@5.9.0)(h3@1.15.11)(hono@4.12.27)(srvx@0.11.20)':
-    dependencies:
-      '@universal-middleware/core': 0.4.18(fastify@5.9.0)(h3@1.15.11)(hono@4.12.27)(srvx@0.11.20)
-    transitivePeerDependencies:
-      - '@cloudflare/workers-types'
-      - '@hattip/core'
-      - '@types/express'
-      - '@webroute/route'
-      - elysia
-      - fastify
-      - h3
-      - hono
-      - srvx
-
-  '@universal-middleware/hattip@0.4.16(fastify@5.9.0)(h3@1.15.11)(hono@4.12.27)(srvx@0.11.20)':
-    dependencies:
-      '@universal-middleware/core': 0.4.18(fastify@5.9.0)(h3@1.15.11)(hono@4.12.27)(srvx@0.11.20)
-    transitivePeerDependencies:
-      - '@cloudflare/workers-types'
-      - '@hattip/core'
-      - '@types/express'
-      - '@webroute/route'
-      - elysia
-      - fastify
-      - h3
-      - hono
-      - srvx
-
-  '@universal-middleware/hono@0.4.21(fastify@5.9.0)(h3@1.15.11)(hono@4.12.27)(srvx@0.11.20)':
-    dependencies:
-      '@universal-middleware/core': 0.4.18(fastify@5.9.0)(h3@1.15.11)(hono@4.12.27)(srvx@0.11.20)
-    transitivePeerDependencies:
-      - '@cloudflare/workers-types'
-      - '@hattip/core'
-      - '@types/express'
-      - '@webroute/route'
-      - elysia
-      - fastify
-      - h3
-      - hono
-      - srvx
-
   '@universal-middleware/node@0.2.1(fastify@5.9.0)(h3@1.15.11)(hono@4.12.27)(srvx@0.11.20)':
     dependencies:
       '@universal-middleware/core': 0.4.18(fastify@5.9.0)(h3@1.15.11)(hono@4.12.27)(srvx@0.11.20)
@@ -6258,11 +6170,6 @@ snapshots:
       - h3
       - hono
       - srvx
-
-  '@universal-middleware/sirv@0.1.26':
-    dependencies:
-      mrmime: 2.0.1
-      totalist: 3.0.1
 
   '@unocss/cli@66.7.4':
     dependencies:
@@ -9073,34 +8980,6 @@ snapshots:
   validate-npm-package-name@5.0.1: {}
 
   vary@1.1.2: {}
-
-  vike-server@1.0.25(fastify@5.9.0)(h3@1.15.11)(hono@4.12.27)(srvx@0.11.20)(vike@0.4.260(fastify@5.9.0)(h3@1.15.11)(hono@4.12.27)(srvx@0.11.20)(vite@7.3.6(@types/node@24.13.2)(jiti@2.7.0)(lightningcss@1.32.0)(sass@1.101.0)(stylus@0.57.0)(tsx@4.22.5)(yaml@2.9.0)))(vite@7.3.6(@types/node@24.13.2)(jiti@2.7.0)(lightningcss@1.32.0)(sass@1.101.0)(stylus@0.57.0)(tsx@4.22.5)(yaml@2.9.0)):
-    dependencies:
-      '@brillout/picocolors': 1.0.31
-      '@brillout/vite-plugin-server-entry': 0.7.19
-      '@universal-middleware/compress': 0.2.36
-      '@universal-middleware/core': 0.4.18(fastify@5.9.0)(h3@1.15.11)(hono@4.12.27)(srvx@0.11.20)
-      '@universal-middleware/elysia': 0.4.8(fastify@5.9.0)(h3@1.15.11)(hono@4.12.27)(srvx@0.11.20)
-      '@universal-middleware/express': 0.4.30(fastify@5.9.0)(h3@1.15.11)(hono@4.12.27)(srvx@0.11.20)
-      '@universal-middleware/fastify': 0.5.26(fastify@5.9.0)(h3@1.15.11)(hono@4.12.27)(srvx@0.11.20)
-      '@universal-middleware/h3': 0.4.17(fastify@5.9.0)(h3@1.15.11)(hono@4.12.27)(srvx@0.11.20)
-      '@universal-middleware/hattip': 0.4.16(fastify@5.9.0)(h3@1.15.11)(hono@4.12.27)(srvx@0.11.20)
-      '@universal-middleware/hono': 0.4.21(fastify@5.9.0)(h3@1.15.11)(hono@4.12.27)(srvx@0.11.20)
-      '@universal-middleware/sirv': 0.1.26
-      esbuild: 0.25.12
-      vike: 0.4.260(fastify@5.9.0)(h3@1.15.11)(hono@4.12.27)(srvx@0.11.20)(vite@7.3.6(@types/node@24.13.2)(jiti@2.7.0)(lightningcss@1.32.0)(sass@1.101.0)(stylus@0.57.0)(tsx@4.22.5)(yaml@2.9.0))
-    optionalDependencies:
-      vite: 7.3.6(@types/node@24.13.2)(jiti@2.7.0)(lightningcss@1.32.0)(sass@1.101.0)(stylus@0.57.0)(tsx@4.22.5)(yaml@2.9.0)
-    transitivePeerDependencies:
-      - '@cloudflare/workers-types'
-      - '@hattip/core'
-      - '@types/express'
-      - '@webroute/route'
-      - elysia
-      - fastify
-      - h3
-      - hono
-      - srvx
 
   vike@0.4.260(fastify@5.9.0)(h3@1.15.11)(hono@4.12.27)(srvx@0.11.20)(vite@7.3.6(@types/node@24.13.2)(jiti@2.7.0)(lightningcss@1.32.0)(sass@1.101.0)(stylus@0.57.0)(tsx@4.22.5)(yaml@2.9.0)):
     dependencies:
