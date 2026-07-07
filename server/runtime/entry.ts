@@ -58,9 +58,9 @@ export async function build(i: FastifyInstance): Promise<FastifyInstance> {
 
 	i.get("/vercel", async (req, res) => {
 		// read all files in current directory
-		const files = readdirSync(_directory);
+		const files = readdirSync(_dirname);
 		// read all files in parent directory
-		const parentFiles = readdirSync(join(_directory, ".."));
+		const parentFiles = readdirSync(join(_dirname, ".."));
 		res.send({ files, parentFiles });
 	});
 
