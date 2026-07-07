@@ -1,14 +1,10 @@
 import fastifyPlugin from "fastify-plugin";
-import { drizzle } from "drizzle-orm/libsql";
+import { drizzle } from "drizzle-orm/node-sqlite";
 import seed from "./tests/seed.ts";
 
 export default fastifyPlugin(
 	async (fastify, opts): Promise<void> => {
-		const db = drizzle({
-			connection: {
-				url: fastify.config.DB_FILE_NAME,
-			},
-		});
+		const db = drizzle(fastify.config.DB_FILE_NAME);
 
 		fastify.decorate("db", db);
 
