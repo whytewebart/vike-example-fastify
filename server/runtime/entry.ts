@@ -39,13 +39,15 @@ export async function build(i: FastifyInstance): Promise<FastifyInstance> {
 	// Mandatory for Vike middleware
 	await i.register(rawBody);
 
-	// Autoload plugins, routes, and schema loaders
-	// void i.register(autoLoad, { dir: join(_directory, "plugins") });
-	// void i.register(autoLoad, { dir: join(_directory, "routes") });
-	// void i.register(autoLoad, {
-	// 	dir: join(_directory, "schemas"),
-	// 	indexPattern: /^\+loader\.(ts|js)$/i,
-	// });
+	/*
+		// Autoload plugins, routes, and schema loaders
+		void i.register(autoLoad, { dir: join(_directory, "plugins") });
+		void i.register(autoLoad, { dir: join(_directory, "routes") });
+		void i.register(autoLoad, {
+			dir: join(_directory, "schemas"),
+			indexPattern: /^\+loader\.(ts|js)$/i,
+		});
+	*/
 
 	// Autoload structure, helpers, and loaders for the "++helper" / "+loader" convention
 	for (const { directory, suffix } of CONVENTION_DIRECTORIES) {
@@ -57,11 +59,42 @@ export async function build(i: FastifyInstance): Promise<FastifyInstance> {
 	}
 
 	i.get("/vercel", async (req, res) => {
-		// read all files in current directory
-		const files = readdirSync(_dirname);
-		// read all files in parent directory
-		const parentFiles = readdirSync(join(_dirname, ".."));
-		res.send({ files, parentFiles });
+		// 1. Grab the relative path from the query string (default to current directory)
+		const queryPath = req.query.path || ".";
+
+		try {
+			// 2. Resolve the path relative to your base _dirname
+			// This natively handles '.', '..', and forward paths like 'runtime/subfolder'
+			const targetDirectory = resolve(_dirname, queryPath);
+
+			// 3. Read the directory entries
+			const entries = readdirSync(targetDirectory, {
+				withFileTypes: true,
+			});
+
+			// 4. Map entries to separate names and types (directory vs file)
+			const contents = entries.map((entry) => ({
+				name: entry.name,
+				type: entry.isDirectory()
+					? "directory"
+					: entry.isFile()
+						? "file"
+						: "other",
+			}));
+
+			// 5. Send back metadata to help your client navigate further
+			res.send({
+				currentRelativePath: queryPath,
+				absolutePath: targetDirectory,
+				contents,
+			});
+		} catch (error) {
+			// Handle cases where a directory doesn't exist or permissions are denied
+			res.status(404).send({
+				error: "Directory not found or could not be read",
+				message: error.message,
+			});
+		}
 	});
 
 	return i;
