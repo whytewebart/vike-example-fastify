@@ -1,77 +1,53 @@
 import fastify, { type FastifyInstance } from "fastify";
-import autoLoad from "@fastify/autoload";
 import rawBody from "fastify-raw-body";
-import { existsSync, readdirSync } from "fs";
-import { join, resolve } from "path";
+import { readdirSync } from "fs";
+import { resolve } from "path";
 import { _dirname } from "../shared/dirname.ts";
 import { options } from "./options.ts";
-import { prod } from "../shared/environment.ts";
 
-/** Directories that follow the "++helper" / "+loader" naming convention. */
-interface ConventionDirectory {
-	directory: string;
-	/** Suffix matched against filenames, e.g. "user.service.ts". */
-	suffix: string;
-}
-
-const CONVENTION_DIRECTORIES: ConventionDirectory[] = [
-	{ directory: "services", suffix: "service" },
-	{ directory: "builders", suffix: "builder" },
-	{ directory: "events", suffix: "listener" },
-	{ directory: "notifications", suffix: "notif" },
-	{ directory: "jobs", suffix: "job" },
-];
-
-const LOADER_PATTERN = /\+loader\.(ts|js)$/i;
-
-function helperPattern(suffix: string): RegExp {
-	return new RegExp(`(\\+\\+helper|\\w+\\.${suffix})\\.(ts|js)$`);
-}
+import AUTOLOAD_REGISTRY from "./plugins/registry.ts";
 
 export function instance(): FastifyInstance {
 	return fastify(options);
 }
 
 export async function build(i: FastifyTyped): Promise<FastifyInstance> {
-	// directory
-	const _directory = prod ? join(_dirname, "../build") : _dirname;
-
 	// Mandatory for Vike middleware
 	await i.register(rawBody);
 
+	// 1. Standard Plugins
 	await i.register(import("./plugins/autoload.ts"), {
 		list: import.meta.glob("../plugins/**/*.ts", { eager: true }),
 		base: "../plugins",
-		pluginOptions: {
-			logLevel: "warn",
-		},
+		pluginOptions: { logLevel: "warn" },
 	});
 
+	// 2. HTTP Routes
 	await i.register(import("./plugins/autoload.ts"), {
 		list: import.meta.glob("../routes/**/*.ts", { eager: true }),
 		base: "../routes",
-		pluginOptions: {
-			logLevel: "warn",
-		},
+		pluginOptions: { logLevel: "warn" },
 	});
 
+	// 3. Schemas
 	await i.register(import("./plugins/autoload.ts"), {
 		list: import.meta.glob("../schemas/+loader.{ts,js}", { eager: true }),
 		base: "../schemas",
-		pluginOptions: {
-			logLevel: "warn",
-		},
+		pluginOptions: { logLevel: "warn" },
 	});
 
-	// Autoload structure, helpers, and loaders for the "++helper" / "+loader" convention
-	for (const { directory, suffix } of CONVENTION_DIRECTORIES) {
-		const dir = join(_directory, directory);
-		if (!existsSync(dir)) continue;
+	// 4. Backend Conventions (Services, Builders, Events, Notifications, Jobs)
+	// Using an array of globs captures all your convention suffixes in one pass.
+	// dirNameRoutePrefix is disabled to prevent these from becoming URL endpoints.
+	await i.register(import("./plugins/autoload.ts"), {
+		list: AUTOLOAD_REGISTRY,
+		base: "..",
+		dirNameRoutePrefix: false,
+		pluginOptions: { logLevel: "warn" },
+	});
 
-		void i.register(autoLoad, { dir, matchFilter: helperPattern(suffix) });
-		void i.register(autoLoad, { dir, indexPattern: LOADER_PATTERN });
-	}
-
+	// 5. Runtime Debugging Route
+	// Kept fs/path operations here as this is explicitly a runtime filesystem inspector.
 	i.get(
 		"/vercel",
 		{
@@ -85,20 +61,14 @@ export async function build(i: FastifyTyped): Promise<FastifyInstance> {
 			},
 		},
 		async (req, res) => {
-			// 1. Grab the relative path from the query string (default to current directory)
-			const queryPath = req.query.path;
+			const queryPath = req.query.path || ".";
 
 			try {
-				// 2. Resolve the path relative to your base _dirname
-				// This natively handles '.', '..', and forward paths like 'runtime/subfolder'
 				const targetDirectory = resolve(_dirname, queryPath);
-
-				// 3. Read the directory entries
 				const entries = readdirSync(targetDirectory, {
 					withFileTypes: true,
 				});
 
-				// 4. Map entries to separate names and types (directory vs file)
 				const contents = entries.map((entry) => ({
 					name: entry.name,
 					type: entry.isDirectory()
@@ -108,14 +78,12 @@ export async function build(i: FastifyTyped): Promise<FastifyInstance> {
 							: "other",
 				}));
 
-				// 5. Send back metadata to help your client navigate further
 				res.send({
 					currentRelativePath: queryPath,
 					absolutePath: targetDirectory,
 					contents,
 				});
-			} catch (error) {
-				// Handle cases where a directory doesn't exist or permissions are denied
+			} catch (error: any) {
 				res.status(404).send({
 					error: "Directory not found or could not be read",
 					message: error.message,

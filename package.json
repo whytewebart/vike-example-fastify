@@ -1,12 +1,14 @@
 {
 	"scripts": {
 		"dev": "vike dev",
-		"build": "vike build && npm run complie",
+		"build": "vike build",
 		"preview": "npm run env && vike preview",
 		"complie": "tsc --build ./server",
 		"start": "cross-env NODE_ENV=production PORT=$PORT node dist/server/index.js",
 		"env": "node server/scripts/predev.js",
-		"folders": "node server/scripts/tree.js"
+		"folders": "node server/scripts/tree.js",
+		"registry:add": "tsx server/scripts/registry.ts create",
+		"registry:rm": "tsx server/scripts/registry.ts remove"
 	},
 	"dependencies": {
 		"@fastify/ajv-compiler": "^4.0.5",
