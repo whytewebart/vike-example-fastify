@@ -1,3 +1,3 @@
 export default {
-	stream: "node",
+	stream: "web",
 };
