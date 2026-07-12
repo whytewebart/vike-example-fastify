@@ -12,7 +12,7 @@ useSeoMeta({
   description: 'My about page',
   ogDescription: 'Still about my about page',
   ogTitle: 'About',
-  ogImage: 'https://example.com/image.png',
+  ogImage: 'image.png',
   twitterCard: 'summary_large_image',
 })
 </script>

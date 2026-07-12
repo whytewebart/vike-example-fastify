@@ -1,4 +1,5 @@
 <template>
+	<main id="main-content">
 	<div
 		class="max-w-sm py-4 h-dvh max-h-screen-xl sticky top-0"
 		grid="~ content-between"
@@ -12,7 +13,7 @@
 		</ul>
 
 		<div class="font-mono space-y-5xl">
-			<img src="/logo.svg" alt="" />
+			<img src="/favicon.svg" alt="" />
 
 			<div flex="~ items-end justify-between">
 				<div>
@@ -28,6 +29,8 @@
 	<div>
 		<slot />
 	</div>
+
+	</main>
 </template>
 
 <script lang="ts" setup>
@@ -65,23 +68,12 @@ const links = reactive([
 ]);
 </script>
 
-<style lang="scss">
-body {
-	--at-apply: bg-stone-100;
-	#view--content {
-		--at-apply: min-h-screen;
-	}
-}
-
-#view--container {
-	--at-apply: viewport;
-	#view--content {
-		--at-apply: bk-col-nav grid grid-cols-[auto_1fr] grid-items-start;
-	}
-}
-</style>
-
 <style lang="scss" scoped>
+main#main-content {
+
+	--at-apply: bk-col-nav grid grid-cols-[auto_1fr] grid-items-start;
+}
+
 ul {
 	--at-apply: flex gap-x-4 gap-y-.7 flex-wrap;
 	li > a {

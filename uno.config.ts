@@ -7,7 +7,6 @@ import {
 	presetWind4,
 	transformerDirectives,
 } from "unocss";
-import { presetShadcn } from "unocss-preset-shadcn";
 import type { Preset } from "unocss";
 
 import { breakoutFn, breakoutGrid } from "./renderer/styles/presets/breakout";

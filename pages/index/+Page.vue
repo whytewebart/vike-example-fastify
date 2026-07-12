@@ -6,7 +6,7 @@
 		<Button
 			variant="destructive"
 			size="lg"
-			class="ring ring-offset-2 ring-red-200"
+			class="ring ring-red-400 ring-offset-4"
 			>Get Started</Button
 		>
 	</div>

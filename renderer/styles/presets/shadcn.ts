@@ -229,11 +229,6 @@ export function presetShadcnVue(options: ShadcnVuePresetOptions = {}) {
 								* {
 								  border-color: hsl(var(--border));
 								}
-
-								body {
-								  background-color: hsl(var(--background));
-								  color: hsl(var(--foreground));
-								}
 							`.trim(),
 					},
 				]
