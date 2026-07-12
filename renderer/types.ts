@@ -46,7 +46,6 @@ declare global {
 					pageContext: PageContextServer,
 				) => void | ((pageContext: PageContextServer) => Promise<void>)
 			>;
-			ssrSlot?: string;
 			unhead?: Vike.meta;
 			secrets?: Record<string, string>;
 		}

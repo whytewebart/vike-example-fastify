@@ -43,13 +43,6 @@ const meta: Config["meta"] = {
 		cumulative: true,
 	},
 
-	ssrSlot: {
-		env: {
-			server: true,
-			client: true,
-		},
-	},
-
 	secrets: {
 		env: { server: true },
 	},

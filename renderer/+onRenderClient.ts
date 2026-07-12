@@ -18,19 +18,9 @@ const onRenderClient = async (pageContext: PageContextClient) => {
     // First rendering/hydration
     /**
      * If the container is empty, it means the page is client-side rendered. Otherwise, it's server-side rendered.
-     * If the ssrSlot is defined, we check if it's empty to determine if the page (nested) is client-side rendered.
      */
-    // const container = document.getElementById("mount")!;
     const container = document.body;
-    // If nested layout is SPA rendered
-    const ssrSlot = pageContext.config.ssrSlot
-      ? document.getElementById(pageContext.config.ssrSlot)
-      : null;
-
-    const ssr = ssrSlot
-      ? ssrSlot?.children.length !== 0
-      : container.children.length > 0;
-
+    const ssr = container.children.length > 0;
     const res = await createApp(pageContext, ssr);
 
     app = res.app;
@@ -39,7 +29,7 @@ const onRenderClient = async (pageContext: PageContextClient) => {
 
     if (!ssr) await executeHook(pageContext.config.middleware, pageContext);
     app.mount(container);
-    
+
   } else {
     objectAssign(pageContext, { app });
 
