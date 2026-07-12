@@ -10,8 +10,8 @@ import { serialize } from "@plugins/pinia/utils";
 const onCreateApp = async (pageContext: PageContextWithApp) => {
 	const { app } = pageContext;
 	if (!app) return;
-	// Add the UI plugin
 	if (pageContext.isClientSide) {
+		// Add the UI plugin
 	}
 
 	// Setup SEO / UnHead

@@ -12,7 +12,6 @@ import type {
 	RawRequestDefaultExpression,
 	RawServerDefault,
 } from "fastify";
-import { ObjectId } from "mongodb";
 
 export {};
 
@@ -23,14 +22,7 @@ type deserialize = [
 			format: "date-time";
 		};
 		output: Date;
-	},
-	{
-		pattern: {
-			type: "string";
-			format: "objectId";
-		};
-		output: ObjectId;
-	},
+	}
 ];
 
 type suboptions = {
@@ -57,7 +49,7 @@ declare global {
 	type FastifyTypeBox = FastifyPluginAsyncJsonSchemaToTs<typeOptions>;
 
 	namespace Registry {
-		type Id = string | ObjectId;
+		type Id = string;
 		interface Schemas {}
 		type select<T extends keyof Registry.Schemas> = FromSchema<
 			Registry.Schemas[T],

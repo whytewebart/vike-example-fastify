@@ -6,7 +6,6 @@ import { FastifyServerOptions } from "fastify";
 import ajvErrors from "ajv-errors";
 import addFormats from "ajv-formats";
 import ajvMerge from "ajv-merge-patch";
-import { ajvObjectIdPlugin } from "./plugins/ajv.extends.ts";
 
 // AJV SCHEMAS
 import Ajv from "ajv/dist/2019.js";
@@ -67,7 +66,6 @@ const shared: FastifyServerOptions = {
 			],
 			[addFormats.default, {}],
 			[ajvMerge, {}],
-			[ajvObjectIdPlugin, {}],
 		],
 	},
 

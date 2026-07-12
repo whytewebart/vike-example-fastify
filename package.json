@@ -12,7 +12,6 @@
 	},
 	"dependencies": {
 		"@fastify/ajv-compiler": "^4.0.5",
-		"@fastify/autoload": "^6.3.1",
 		"@fastify/env": "^5.0.3",
 		"@fastify/type-provider-json-schema-to-ts": "^5.0.0",
 		"@hugeicons/core-free-icons": "^4.2.2",
@@ -35,7 +34,6 @@
 		"clsx": "^2.1.1",
 		"cookie": "^1.1.1",
 		"cross-env": "^10.1.0",
-		"dotenv": "^17.4.2",
 		"drizzle-orm": "1.0.0-rc.4",
 		"fastify": "^5.9.0",
 		"fastify-plugin": "^5.1.0",

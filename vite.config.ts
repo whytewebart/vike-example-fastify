@@ -18,6 +18,7 @@ const config: UserConfig = {
 		vueJsx(),
 		vike(),
 		vercel(),
+		// TailwindCSS conflicts with UnoCSS, if you want to use TailwindCSS especially with Shadcn UI, disable UnoCSS
 		// TailwindCSS(),
 		UnoCSS(),
 		AutoImport({
