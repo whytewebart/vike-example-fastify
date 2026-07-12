@@ -43,6 +43,11 @@ const meta: Config["meta"] = {
 		cumulative: true,
 	},
 
+	stream: {
+		env: { server: true },
+		cumulative: true,
+	},
+
 	secrets: {
 		env: { server: true },
 	},

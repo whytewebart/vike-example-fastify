@@ -3,7 +3,6 @@ import {
 	presetAttributify,
 	presetIcons,
 	presetWebFonts,
-	presetWind3,
 	presetWind4,
 	transformerDirectives,
 } from "unocss";
@@ -15,7 +14,7 @@ import { presetShadcnVue } from "./renderer/styles/presets/shadcn";
 const presets: Preset[] = [
 	presetWind4({
 		preflights: {
-			theme: true,
+			theme: 'on-demand',
 		},
 	}),
 	presetShadcnVue(),

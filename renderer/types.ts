@@ -48,6 +48,10 @@ declare global {
 			>;
 			unhead?: Vike.meta;
 			secrets?: Record<string, string>;
+			stream?:
+        | boolean
+        | 'node'
+        | 'web'
 		}
 	}
 
