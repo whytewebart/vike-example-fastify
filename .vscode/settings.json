@@ -1,4 +1,0 @@
-{
-    "terminal.integrated.scrollback": 15000,
-    "typescript.tsdk": "node_modules\\typescript\\lib"
-}
