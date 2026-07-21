@@ -1,0 +1,66 @@
+export type { Component };
+
+// import { InferSeoMetaPluginOptions } from "@unhead/addons";
+import { PageContext, PageContextClient, PageContextServer } from "vike/types";
+import type { ComponentPublicInstance, App } from "vue";
+import { Unhead } from "unhead/server";
+import { UseHeadInput } from "unhead/types";
+
+type Component = ComponentPublicInstance; // https://stackoverflow.com/questions/63985658/how-to-type-vue-instance-out-of-definecomponent-in-vue-3/63986086#63986086
+type Page = Component;
+
+// https://vike.dev/pageContext#typescript
+declare global {
+	namespace Vike {
+		interface PageContext {
+			// @ts-ignore
+			Page: Page;
+			abortReason?: string;
+			pageProps: any;
+			app?: App;
+
+			data?: {
+				title?: string;
+				description?: string;
+				unhead?: UnheadInput;
+			};
+
+			config: {
+				title?: string;
+				description?: string;
+			};
+		}
+
+		interface Config {
+			nested?: boolean;
+			middleware?: ((pageContext: PageContext) => Promise<void>)[];
+			Layout?: Page | Page[];
+			ssr?: boolean;
+			onCreateApp?: Array<
+				(
+					pageContext: PageContextWithApp,
+				) => void | ((pageContext: PageContextWithApp) => Promise<void>)
+			>;
+			onAfterRenderHtml?: Array<
+				(
+					pageContext: PageContextServer,
+				) => void | ((pageContext: PageContextServer) => Promise<void>)
+			>;
+			unhead?: Vike.meta;
+			secrets?: Record<string, string>;
+			stream?:
+        | boolean
+        | 'node'
+        | 'web'
+		}
+	}
+
+	// type UnheadInput = Parameters<Unhead['push']>[0];
+	type ReturnContext = Vike.PageContext["data"] & {
+		[key: string]: any;
+	};
+	type MiddlewareAsync = (pageContext: PageContextClient) => Promise<void>;
+	type PageContextWithApp = PageContext & {
+		app: NonNullable<PageContext["app"]>;
+	};
+}

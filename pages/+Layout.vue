@@ -392,10 +392,10 @@ import architecture from "@/assets/patterns/architecture.svg?raw";
 import implementation from "@/assets/patterns/implementation.svg?raw";
 import delivery from "@/assets/patterns/delivery.svg?raw";
 // ASSETS: PROCESS ICONS
-import blocks from "@/assets/icons/blocks.png?url";
-import codeblock from "@/assets/icons/codeblock.png?url";
-import folder from "@/assets/icons/folder.png?url";
-import target from "@/assets/icons/target.png?url";
+// import blocks from "@/assets/icons/blocks.png?url";
+// import codeblock from "@/assets/icons/codeblock.png?url";
+// import folder from "@/assets/icons/folder.png?url";
+// import target from "@/assets/icons/target.png?url";
 import { Response } from "./+data";
 // ASSETS: SERVICES.JSON
 import services from "@/assets/services.json";
@@ -441,7 +441,7 @@ const process = [
 		summary:
 			"Every successful system starts with clarity. Before writing code, I focus on understanding the real problem.",
 
-		icon: folder,
+		// icon: folder,
 	},
 	{
 		stage: "Architecture",
@@ -449,7 +449,7 @@ const process = [
 		summary:
 			"With clarity established, the next step is defining how the system should behave—structurally and logically.",
 
-		icon: blocks,
+		// icon: blocks,
 	},
 	{
 		stage: "Implementation",
@@ -457,7 +457,7 @@ const process = [
 		summary:
 			"Development is executed against a defined structure. The focus is on writing clean, reusable, and predictable code that aligns with the system design.",
 
-		icon: codeblock,
+		// icon: codeblock,
 	},
 	{
 		stage: "Refinement & Delivery",
@@ -465,7 +465,7 @@ const process = [
 		summary:
 			"Before delivery, the system is refined for performance, usability, and long-term reliability. This ensures the product doesn’t just work—it works well.",
 
-		icon: target,
+		// icon: target,
 	},
 ];
 

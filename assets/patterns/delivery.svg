@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg width="112" height="96" viewBox="0 0 112 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g>
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" />
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" transform="translate(16 0)" />
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" transform="translate(32 0)" />
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" transform="translate(48 0)" />
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" transform="translate(64 0)" />
+    <rect width="16" height="16" fill="var(--svg-n-fill, #1780E3)" fill-rule="evenodd" transform="translate(80 0)" />
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" transform="translate(96 0)" />
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" transform="translate(0 16)" />
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" transform="translate(16 16)" />
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" transform="translate(32 16)" />
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" transform="translate(48 16)" />
+    <rect width="16" height="16" fill="var(--svg-n-fill, #1780E3)" fill-rule="evenodd" transform="translate(64 16)" />
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" transform="translate(80 16)" />
+    <rect width="16" height="16" fill="var(--svg-n-fill, #1780E3)" fill-rule="evenodd" transform="translate(96 16)" />
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" transform="translate(0 32)" />
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" transform="translate(16 32)" />
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" transform="translate(32 32)" />
+    <rect width="16" height="16" fill="var(--svg-n-fill, #1780E3)" fill-rule="evenodd" transform="translate(48 32)" />
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" transform="translate(64 32)" />
+    <rect width="16" height="16" fill="var(--svg-n-fill, #1780E3)" fill-rule="evenodd" transform="translate(80 32)" />
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" transform="translate(96 32)" />
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" transform="translate(0 48)" />
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" transform="translate(16 48)" />
+    <rect width="16" height="16" fill="var(--svg-n-fill, #1780E3)" fill-rule="evenodd" transform="translate(32 48)" />
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" transform="translate(48 48)" />
+    <rect width="16" height="16" fill="var(--svg-n-fill, #1780E3)" fill-rule="evenodd" transform="translate(64 48)" />
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" transform="translate(80 48)" />
+    <rect width="16" height="16" fill="var(--svg-n-fill, #1780E3)" fill-rule="evenodd" transform="translate(96 48)" />
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" transform="translate(0 64)" />
+    <rect width="16" height="16" fill="var(--svg-n-fill, #1780E3)" fill-rule="evenodd" transform="translate(16 64)" />
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" transform="translate(32 64)" />
+    <rect width="16" height="16" fill="var(--svg-n-fill, #1780E3)" fill-rule="evenodd" transform="translate(48 64)" />
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" transform="translate(64 64)" />
+    <rect width="16" height="16" fill="var(--svg-n-fill, #1780E3)" fill-rule="evenodd" transform="translate(80 64)" />
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" transform="translate(96 64)" />
+    <rect width="16" height="16" fill="var(--svg-n-fill, #1780E3)" fill-rule="evenodd" transform="translate(0 80)" />
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" transform="translate(16 80)" />
+    <rect width="16" height="16" fill="var(--svg-n-fill, #1780E3)" fill-rule="evenodd" transform="translate(32 80)" />
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" transform="translate(48 80)" />
+    <rect width="16" height="16" fill="var(--svg-n-fill, #1780E3)" fill-rule="evenodd" transform="translate(64 80)" />
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" transform="translate(80 80)" />
+    <rect width="16" height="16" fill="var(--svg-n-fill, #1780E3)" fill-rule="evenodd" transform="translate(96 80)" />
+  </g>
+</svg>

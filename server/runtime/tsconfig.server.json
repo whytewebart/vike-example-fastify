@@ -1,0 +1,20 @@
+{
+	"extends": "fastify-tsconfig",
+	"compilerOptions": {
+		"outDir": "../../.server",
+		"sourceMap": true,
+		"rewriteRelativeImportExtensions": true,
+		"noImplicitAny": false,
+		"useUnknownInCatchVariables": false,
+		"moduleResolution": "Bundler",
+		"module": "preserve",
+		"esModuleInterop": true,
+		"resolveJsonModule": true,
+		"noUnusedLocals": false,
+		"noStrictGenericChecks": false,
+		// "noUnusedParameters": true
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true
+	},
+	"include": ["../"]
+}

@@ -1,0 +1,31 @@
+// {
+// 	"extends": "../tsconfig.json",
+// 	"compilerOptions": {
+// 		// "module": "Node16",
+// 		// "moduleResolution": "Node16",
+// 		"module": "esnext",
+// 		"outDir": "../dist/build",
+// 		"allowImportingTsExtensions": true,
+// 		"resolveJsonModule": true,
+// 		"noEmit": true,
+// 		"noStrictGenericChecks": false,
+// 		"strict": true
+// 	}
+// }
+
+{
+	"extends": "../tsconfig.json",
+	"compilerOptions": {
+		"target": "es2022",
+		"module": "esnext",
+		"outDir": "../dist/build",
+		"rewriteRelativeImportExtensions": true,
+		"noImplicitAny": false,
+		"useUnknownInCatchVariables": false,
+		"resolveJsonModule": true,
+		"esModuleInterop": true,
+		"noStrictGenericChecks": false,
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true
+	}
+}

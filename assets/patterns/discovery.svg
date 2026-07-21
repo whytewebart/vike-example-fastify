@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg width="96" height="64" viewBox="0 0 96 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g>
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" />
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" transform="translate(16 0)" />
+    <g transform="translate(32 0)">
+      <path d="M0 0C0 0 16 0 16 0L16 16L0 16C0 16 0 0 0 0Z" fill="#8F8F8F" fill-rule="evenodd" />
+      <path d="M0 0C0 0 16 0 16 0L16 16L0 16C0 16 0 0 0 0Z" fill="var(--svg-n-fill, #1780E3)" fill-rule="evenodd" />
+    </g>
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" transform="translate(48 0)" />
+    <g transform="translate(64 0)">
+      <path d="M0 0C0 0 16 0 16 0L16 16L0 16C0 16 0 0 0 0Z" fill="#8F8F8F" fill-rule="evenodd" />
+      <path d="M0 0C0 0 16 0 16 0L16 16L0 16C0 16 0 0 0 0Z" fill="var(--svg-n-fill, #1780E3)" fill-rule="evenodd" />
+    </g>
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" transform="translate(80 0)" />
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" transform="translate(0 16)" />
+    <g transform="translate(16 16)">
+      <path d="M0 0C0 0 16 0 16 0L16 16L0 16C0 16 0 0 0 0Z" fill="#8F8F8F" fill-rule="evenodd" />
+      <path d="M0 0C0 0 16 0 16 0L16 16L0 16C0 16 0 0 0 0Z" fill="var(--svg-n-fill, #1780E3)" fill-rule="evenodd" />
+    </g>
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" transform="translate(32 16)" />
+    <g transform="translate(48 16)">
+      <path d="M0 0C0 0 16 0 16 0L16 16L0 16C0 16 0 0 0 0Z" fill="#8F8F8F" fill-rule="evenodd" />
+      <path d="M0 0C0 0 16 0 16 0L16 16L0 16C0 16 0 0 0 0Z" fill="var(--svg-n-fill, #1780E3)" fill-rule="evenodd" />
+    </g>
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" transform="translate(64 16)" />
+    <g transform="translate(80 16)">
+      <path d="M0 0C0 0 16 0 16 0L16 16L0 16C0 16 0 0 0 0Z" fill="#8F8F8F" fill-rule="evenodd" />
+      <path d="M0 0C0 0 16 0 16 0L16 16L0 16C0 16 0 0 0 0Z" fill="var(--svg-n-fill, #1780E3)" fill-rule="evenodd" />
+    </g>
+    <g transform="translate(0 32)">
+      <path d="M0 0C0 0 16 0 16 0L16 16L0 16C0 16 0 0 0 0Z" fill="#8F8F8F" fill-rule="evenodd" />
+      <path d="M0 0C0 0 16 0 16 0L16 16L0 16C0 16 0 0 0 0Z" fill="var(--svg-n-fill, #1780E3)" fill-rule="evenodd" />
+    </g>
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" transform="translate(16 32)" />
+    <g transform="translate(32 32)">
+      <path d="M0 0C0 0 16 0 16 0L16 16L0 16C0 16 0 0 0 0Z" fill="#8F8F8F" fill-rule="evenodd" />
+      <path d="M0 0C0 0 16 0 16 0L16 16L0 16C0 16 0 0 0 0Z" fill="var(--svg-n-fill, #1780E3)" fill-rule="evenodd" />
+    </g>
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" transform="translate(48 32)" />
+    <g transform="translate(64 32)">
+      <path d="M0 0C0 0 16 0 16 0L16 16L0 16C0 16 0 0 0 0Z" fill="#8F8F8F" fill-rule="evenodd" />
+      <path d="M0 0C0 0 16 0 16 0L16 16L0 16C0 16 0 0 0 0Z" fill="var(--svg-n-fill, #1780E3)" fill-rule="evenodd" />
+    </g>
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" transform="translate(80 32)" />
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" transform="translate(0 48)" />
+    <g transform="translate(16 48)">
+      <path d="M0 0C0 0 16 0 16 0L16 16L0 16C0 16 0 0 0 0Z" fill="#8F8F8F" fill-rule="evenodd" />
+      <path d="M0 0C0 0 16 0 16 0L16 16L0 16C0 16 0 0 0 0Z" fill="var(--svg-n-fill, #1780E3)" fill-rule="evenodd" />
+    </g>
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" transform="translate(32 48)" />
+    <g transform="translate(48 48)">
+      <path d="M0 0C0 0 16 0 16 0L16 16L0 16C0 16 0 0 0 0Z" fill="#8F8F8F" fill-rule="evenodd" />
+      <path d="M0 0C0 0 16 0 16 0L16 16L0 16C0 16 0 0 0 0Z" fill="var(--svg-n-fill, #1780E3)" fill-rule="evenodd" />
+    </g>
+    <rect width="16" height="16" fill="none" fill-rule="evenodd" transform="translate(64 48)" />
+    <g transform="translate(80 48)">
+      <path d="M0 0C0 0 16 0 16 0L16 16L0 16C0 16 0 0 0 0Z" fill="#8F8F8F" fill-rule="evenodd" />
+      <path d="M0 0C0 0 16 0 16 0L16 16L0 16C0 16 0 0 0 0Z" fill="var(--svg-n-fill, #1780E3)" fill-rule="evenodd" />
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,133 @@
+[33m6270127[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m refs/heads/main@{Tue Jul 21 17:41:44 2026}: reset: moving to HEAD^
+[33m6270127[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{Tue Jul 21 17:41:44 2026}: reset: moving to HEAD^
+[33m8293c1b[m[33m ([m[1;32mv3[m[33m)[m HEAD@{Tue Jul 21 17:41:18 2026}: checkout: moving from main to main
+[33m8293c1b[m[33m ([m[1;32mv3[m[33m)[m HEAD@{Tue Jul 21 17:41:12 2026}: checkout: moving from v3 to main
+[33m8293c1b[m[33m ([m[1;32mv3[m[33m)[m refs/heads/v3@{Tue Jul 21 17:40:55 2026}: branch: Created from 8293c1b5015f067644b8a6d98e04ee9d25b5087d
+[33m8293c1b[m[33m ([m[1;32mv3[m[33m)[m HEAD@{Tue Jul 21 17:40:55 2026}: checkout: moving from v2 to v3
+[33md593e46[m[33m ([m[1;32mv2[m[33m)[m HEAD@{Tue Jul 21 17:40:01 2026}: reset: moving to HEAD
+[33md593e46[m[33m ([m[1;32mv2[m[33m)[m HEAD@{Tue Jul 21 17:34:54 2026}: checkout: moving from v2 to v2
+[33md593e46[m[33m ([m[1;32mv2[m[33m)[m HEAD@{Tue Jul 21 17:34:29 2026}: checkout: moving from v2 to v2
+[33md593e46[m[33m ([m[1;32mv2[m[33m)[m HEAD@{Tue Jul 21 17:34:24 2026}: checkout: moving from main to v2
+[33m8293c1b[m[33m ([m[1;32mv3[m[33m)[m HEAD@{Tue Jul 21 17:34:13 2026}: reset: moving to HEAD
+[33m8293c1b[m[33m ([m[1;32mv3[m[33m)[m refs/heads/main@{Thu Jul 16 09:29:39 2026}: commit: Add boilerplate code
+[33m8293c1b[m[33m ([m[1;32mv3[m[33m)[m HEAD@{Thu Jul 16 09:29:39 2026}: commit: Add boilerplate code
+[33m6270127[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m refs/heads/main@{Thu Jul 16 09:23:16 2026}: clone: from https://github.com/whytewebart/vike-example-fastify.git
+[33m6270127[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m refs/remotes/origin/HEAD@{Thu Jul 16 09:23:16 2026}: clone: from https://github.com/whytewebart/vike-example-fastify.git
+[33m6270127[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{Thu Jul 16 09:23:16 2026}: clone: from https://github.com/whytewebart/vike-example-fastify.git
+[33md593e46[m[33m ([m[1;32mv2[m[33m)[m refs/heads/v2@{Thu Jul 16 09:15:07 2026}: commit: Remove existing project files
+[33m1e61469[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m refs/heads/v2@{Thu Jul 16 09:10:18 2026}: branch: Created from HEAD
+[33m1e61469[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m refs/remotes/origin/main@{Tue Sep 9 21:17:22 2025}: update by push
+[33mde4a8fc[m refs/remotes/origin/main@{Tue Sep 9 21:14:08 2025}: update by push
+[33m9888f23[m refs/remotes/origin/main@{Mon Sep 8 19:11:54 2025}: update by push
+[33mef5f65b[m refs/remotes/origin/main@{Sun Aug 31 08:09:26 2025}: update by push
+[33m9f85595[m refs/remotes/origin/main@{Fri Aug 29 11:37:04 2025}: update by push
+[33m6031293[m refs/remotes/origin/main@{Fri Aug 29 10:24:21 2025}: update by push
+[33m6223acb[m refs/remotes/origin/main@{Fri Aug 29 10:12:37 2025}: update by push
+[33m5f098ca[m[33m ([m[1;31morigin/interactive-feat[m[33m, [m[1;32minteractive-feat[m[33m)[m refs/remotes/origin/main@{Wed Aug 27 12:24:16 2025}: update by push
+[33m5f098ca[m[33m ([m[1;31morigin/interactive-feat[m[33m, [m[1;32minteractive-feat[m[33m)[m refs/remotes/origin/interactive-feat@{Wed Aug 27 12:04:04 2025}: update by push
+[33m5f098ca[m[33m ([m[1;31morigin/interactive-feat[m[33m, [m[1;32minteractive-feat[m[33m)[m refs/heads/interactive-feat@{Wed Aug 27 12:03:45 2025}: commit: feat: update Button components to link to email addresses for improved contact options
+[33m8634efe[m refs/remotes/origin/interactive-feat@{Wed Aug 27 11:54:28 2025}: update by push
+[33m8634efe[m refs/heads/interactive-feat@{Wed Aug 27 11:54:16 2025}: commit: fix: adjust index for InvoiceTemplate rendering and update image styling for better layout
+[33mbfd974a[m refs/heads/interactive-feat@{Wed Aug 27 11:52:10 2025}: commit: feat: add new invoice templates and refactor InvoiceTemplate component for dynamic rendering
+[33maeb5e77[m refs/remotes/origin/interactive-feat@{Wed Aug 27 07:49:42 2025}: update by push
+[33maeb5e77[m refs/heads/interactive-feat@{Wed Aug 27 07:48:08 2025}: commit: fix: update ButtonGroup max-xs property for improved layout consistency
+[33mf521ed2[m refs/heads/interactive-feat@{Wed Aug 27 07:47:56 2025}: commit: feat: add new images for branding and update invoice template button styling
+[33m087171b[m refs/heads/interactive-feat@{Wed Aug 27 07:38:54 2025}: commit: refactor: adjust CSS properties for canvas and panels to improve layout responsiveness
+[33m8ff1fd3[m refs/remotes/origin/interactive-feat@{Tue Aug 26 22:09:09 2025}: update by push
+[33m8ff1fd3[m refs/heads/interactive-feat@{Tue Aug 26 22:08:26 2025}: commit: feat: enhance UI components and improve functionality
+[33mb692cd2[m refs/remotes/origin/interactive-feat@{Wed Aug 13 11:57:21 2025}: update by push
+[33mb692cd2[m refs/heads/interactive-feat@{Wed Aug 13 11:57:05 2025}: commit: refactor: remove 'condensed' option from fixedTable component styles
+[33m6d90e7f[m refs/heads/interactive-feat@{Wed Aug 13 11:32:15 2025}: commit: feat: Update social media icons and enhance download button functionality
+[33m4e94ffd[m refs/remotes/origin/interactive-feat@{Tue Aug 12 21:59:27 2025}: update by push
+[33m4e94ffd[m refs/heads/interactive-feat@{Tue Aug 12 21:59:16 2025}: commit: feat: Update invoice printing logic to enhance structure and styling for better output
+[33m0e0895f[m refs/remotes/origin/interactive-feat@{Tue Aug 12 19:33:35 2025}: update by push
+[33m0e0895f[m refs/heads/interactive-feat@{Tue Aug 12 19:33:21 2025}: commit: refactor: remove afterRender method to streamline component registration process
+[33m8099ed3[m refs/heads/interactive-feat@{Tue Aug 12 19:33:12 2025}: commit: feat: Add reload button to refresh layout and improve user experience
+[33m2b6a1a0[m refs/remotes/origin/interactive-feat@{Tue Aug 12 17:30:58 2025}: update by push
+[33m2b6a1a0[m refs/heads/interactive-feat@{Tue Aug 12 17:30:47 2025}: commit: refactor: remove unused download utilities and streamline invoice printing logic
+[33m2590fa1[m refs/remotes/origin/interactive-feat@{Mon Aug 11 03:42:19 2025}: update by push
+[33m2590fa1[m refs/heads/interactive-feat@{Mon Aug 11 03:42:07 2025}: commit: feat: Enhance component deletion logic to handle shadow DOM and slotted elements
+[33m9f30081[m refs/heads/interactive-feat@{Mon Aug 11 03:35:27 2025}: commit: feat: Add label attribute to components and enhance label handling in style editor
+[33m24b83ba[m refs/heads/interactive-feat@{Mon Aug 11 02:28:18 2025}: commit: feat: Update component property display and enhance layout for better user guidance
+[33m62f47e6[m refs/heads/interactive-feat@{Sun Aug 10 17:36:57 2025}: commit: feat: Enhance invoice layout and templates
+[33m74677de[m refs/remotes/origin/interactive-feat@{Mon Aug 4 17:19:52 2025}: update by push
+[33m74677de[m refs/heads/interactive-feat@{Mon Aug 4 17:19:34 2025}: commit: feat: update dialog styling for improved responsiveness and overflow handling
+[33m368308c[m refs/heads/interactive-feat@{Mon Aug 4 17:14:56 2025}: commit: feat: add click event handler for download invoice button and update button ID for accessibility
+[33m1636144[m refs/heads/interactive-feat@{Mon Aug 4 17:13:13 2025}: commit: feat: Enhance invoice layout and functionality
+[33madd01db[m refs/remotes/origin/interactive-feat@{Fri Aug 1 22:57:12 2025}: update by push
+[33madd01db[m refs/heads/interactive-feat@{Fri Aug 1 22:56:54 2025}: commit: feat: implement column grid component and enhance header layout with dynamic properties
+[33m199ac3d[m refs/remotes/origin/interactive-feat@{Wed Jul 30 22:19:13 2025}: update by push
+[33m199ac3d[m refs/heads/interactive-feat@{Wed Jul 30 22:18:27 2025}: commit: feat: enhance editor functionality with dynamic component creation and layout handling
+[33md44f4d9[m refs/remotes/origin/interactive-feat@{Tue Jul 29 23:55:04 2025}: update by push
+[33md44f4d9[m refs/heads/interactive-feat@{Tue Jul 29 23:54:52 2025}: commit: feat: add fixed table component and update dynamic table structure in invoice definition
+[33m81daf59[m refs/heads/interactive-feat@{Tue Jul 29 17:35:31 2025}: commit: fix: handle TypeScript error for country calling code retrieval and ensure proper type casting for phone number input
+[33m3c456c7[m refs/remotes/origin/interactive-feat@{Tue Jul 29 17:34:39 2025}: update by push
+[33m3c456c7[m refs/heads/interactive-feat@{Tue Jul 29 17:34:27 2025}: commit: feat: add dynamic table component and enhance invoice template selection UI
+[33m3c990ed[m refs/heads/interactive-feat@{Mon Jul 28 14:13:29 2025}: commit: refactor: enable mousemove event listener for drag functionality
+[33mcfe12c0[m refs/remotes/origin/interactive-feat@{Mon Jul 28 13:00:03 2025}: update by push
+[33mcfe12c0[m refs/heads/interactive-feat@{Mon Jul 28 12:59:42 2025}: commit: refactor: update event listeners and improve layout styling for consistency
+[33m6588f49[m refs/remotes/origin/interactive-feat@{Mon Jul 28 10:23:02 2025}: update by push
+[33m6588f49[m refs/heads/interactive-feat@{Mon Jul 28 10:22:53 2025}: commit: refactor: improve header layout and styling for better responsiveness
+[33m72ca715[m refs/remotes/origin/interactive-feat@{Mon Jul 28 10:17:03 2025}: update by push
+[33m72ca715[m refs/heads/interactive-feat@{Mon Jul 28 10:16:51 2025}: commit: refactor: update layout and styling for improved UI
+[33mfcc0908[m refs/remotes/origin/interactive-feat@{Sun Jul 27 20:29:39 2025}: update by push
+[33mfcc0908[m refs/heads/interactive-feat@{Sun Jul 27 20:28:58 2025}: commit: feat: add QR code generation and phone number input with country code selection
+[33m87fc59c[m refs/remotes/origin/interactive-feat@{Fri Jul 25 21:06:13 2025}: update by push
+[33m87fc59c[m refs/heads/interactive-feat@{Fri Jul 25 21:06:02 2025}: commit: feat: Refactor EditorComponent and EditorWrapper for improved structure and styling; add constants for better maintainability
+[33mc4906df[m refs/remotes/origin/interactive-feat@{Thu Jul 24 20:11:24 2025}: update by push
+[33mc4906df[m refs/heads/interactive-feat@{Thu Jul 24 20:10:31 2025}: commit: feat: add component editor styles and functionality
+[33m4a8c28a[m refs/remotes/origin/interactive-feat@{Tue Jun 24 19:08:08 2025}: update by push
+[33m4a8c28a[m refs/heads/interactive-feat@{Tue Jun 24 19:06:44 2025}: commit: feat: Enhance MobileMenu and UserProfile components with improved styling and layout adjustments
+[33m7f19004[m refs/heads/interactive-feat@{Tue Jun 24 11:16:08 2025}: commit: feat: Add Card and Button components with customizable properties and styles
+[33ma3a1f96[m refs/remotes/origin/interactive-feat@{Sun Jun 15 03:16:20 2025}: update by push
+[33ma3a1f96[m refs/heads/interactive-feat@{Sun Jun 15 03:16:03 2025}: commit: feat: Implement EditorPanel and update EditorWrapper structure, enhance layout and styling for improved user experience
+[33mc0b684a[m refs/remotes/origin/interactive-feat@{Fri Jun 13 21:21:26 2025}: update by push
+[33mc0b684a[m refs/heads/interactive-feat@{Fri Jun 13 21:21:05 2025}: commit: Add nested elements, and components css
+[33m228cde8[m refs/heads/interactive-feat@{Tue Jun 10 20:54:06 2025}: pull --tags origin main: Fast-forward
+[33m228cde8[m refs/remotes/origin/main@{Tue Jun 10 20:53:20 2025}: update by push
+[33m3f99976[m refs/remotes/origin/main@{Mon Jun 9 21:38:46 2025}: update by push
+[33m96ec331[m refs/remotes/origin/main@{Tue Jun 3 20:56:58 2025}: update by push
+[33m5dada15[m refs/remotes/origin/main@{Tue Jun 3 12:37:32 2025}: update by push
+[33mf7ea116[m refs/remotes/origin/main@{Tue Jun 3 12:25:24 2025}: update by push
+[33m23ba746[m refs/remotes/origin/main@{Tue Jun 3 12:06:38 2025}: update by push
+[33m63f34fc[m refs/remotes/origin/main@{Sun Jun 1 22:17:07 2025}: update by push
+[33me08d836[m refs/remotes/origin/main@{Fri May 30 12:47:53 2025}: update by push
+[33m76f68bd[m refs/remotes/origin/main@{Mon May 26 11:35:18 2025}: update by push
+[33mb2c31ad[m refs/remotes/origin/main@{Sun May 25 11:05:24 2025}: update by push
+[33m8af03e6[m refs/remotes/origin/main@{Fri May 23 11:04:42 2025}: update by push
+[33mfa85c7c[m refs/remotes/origin/main@{Fri May 23 09:05:42 2025}: update by push
+[33m725d2be[m refs/remotes/origin/main@{Tue May 20 13:58:19 2025}: update by push
+[33ma4c18b7[m refs/remotes/origin/main@{Sun May 18 12:18:39 2025}: update by push
+[33ma4c18b7[m refs/remotes/origin/interactive-feat@{Fri May 16 20:53:24 2025}: update by push
+[33ma4c18b7[m refs/heads/interactive-feat@{Fri May 16 20:53:09 2025}: commit: feat: update process images handling and improve experience description
+[33m48c778a[m refs/remotes/origin/interactive-feat@{Fri May 16 20:05:11 2025}: update by push
+[33m48c778a[m refs/heads/interactive-feat@{Fri May 16 20:04:58 2025}: commit: feat: enhance MobileMenu animation duration and add scroll reset on completion
+[33m5642755[m refs/remotes/origin/interactive-feat@{Fri May 16 17:00:10 2025}: update by push
+[33m5642755[m refs/heads/interactive-feat@{Fri May 16 16:59:50 2025}: commit: feat: hide background overlay on larger screens in UserProfile component
+[33mf38517e[m refs/remotes/origin/interactive-feat@{Fri May 16 16:58:08 2025}: update by push
+[33mf38517e[m refs/heads/interactive-feat@{Fri May 16 16:57:55 2025}: commit: feat: update UserProfile component to enhance layout and improve button visibility
+[33m9a48c1a[m refs/remotes/origin/interactive-feat@{Fri May 16 16:32:44 2025}: update by push
+[33m9a48c1a[m refs/heads/interactive-feat@{Fri May 16 16:32:29 2025}: commit: feat: remove MobileMenu component from multiple layouts and add it to PageShell for improved structure and functionality
+[33m5114e5e[m refs/remotes/origin/interactive-feat@{Fri May 16 16:06:45 2025}: update by push
+[33m5114e5e[m refs/heads/interactive-feat@{Fri May 16 16:06:36 2025}: commit: feat: refactor MobileMenu component to improve toggle functionality and enhance animation effects
+[33mcfbb3f2[m refs/remotes/origin/interactive-feat@{Fri May 16 15:41:31 2025}: update by push
+[33mcfbb3f2[m refs/heads/interactive-feat@{Fri May 16 15:41:21 2025}: commit: feat: enhance image-compressor plugin to support dynamic webp path generation and improve logging
+[33mddb1d9a[m refs/remotes/origin/interactive-feat@{Fri May 16 15:15:50 2025}: update by push
+[33mddb1d9a[m refs/heads/interactive-feat@{Fri May 16 15:15:41 2025}: commit: feat: remove unused brandmark image to optimize asset management
+[33mdd6c408[m refs/remotes/origin/interactive-feat@{Fri May 16 15:12:11 2025}: update by push
+[33mdd6c408[m refs/heads/interactive-feat@{Fri May 16 15:12:01 2025}: commit: feat: update MobileMenu component for improved animation and user experience; add ScrollToPlugin to GSAP setup
+[33mc187137[m refs/remotes/origin/interactive-feat@{Fri May 16 14:33:51 2025}: update by push
+[33mc187137[m refs/heads/interactive-feat@{Fri May 16 14:33:40 2025}: commit: feat: add Header component with animated brandmark and update MobileMenu and Layout components for improved structure
+[33me2b52d9[m refs/heads/interactive-feat@{Fri May 16 11:19:56 2025}: commit: feat: enhance error page with dynamic SVGs and brandmark images for improved user experience
+[33mefd0eda[m refs/remotes/origin/interactive-feat@{Thu May 15 11:55:20 2025}: update by push
+[33mefd0eda[m refs/heads/interactive-feat@{Thu May 15 11:55:10 2025}: branch: Created from HEAD
+[33mc08783a[m refs/remotes/origin/main@{Sun May 11 12:29:40 2025}: update by push
+[33m9d87cdf[m refs/remotes/origin/main@{Tue May 6 12:17:03 2025}: update by push
+[33m202e6a0[m refs/remotes/origin/main@{Mon May 5 19:48:01 2025}: update by push
+[33m73bb5d7[m refs/remotes/origin/main@{Mon May 5 19:44:04 2025}: update by push
+[33mdbf6e7b[m refs/remotes/origin/main@{Mon May 5 19:32:57 2025}: update by push
+[33m020b294[m refs/remotes/origin/main@{Mon May 5 19:26:39 2025}: update by push
+[33mc1cb866[m refs/remotes/origin/main@{Mon May 5 19:14:23 2025}: update by push
+[33m5495bb1[m refs/remotes/origin/main@{Mon May 5 19:03:56 2025}: update by push
+[33m55876e5[m refs/remotes/origin/main@{Sun May 4 17:03:46 2025}: update by push
+[33

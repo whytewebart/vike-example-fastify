@@ -1,0 +1,34 @@
+{
+    "material-icon-theme.folders.customClones": [
+        {
+            "name": "local",
+            "base": "dump",
+            "color": "light-green-500",
+            "lightColor": "light-green-700",
+            "folderNames": [
+                "local"
+            ]
+        },
+        {
+            "name": "composables",
+            "base": "functions",
+            "color": "orange-500",
+            "lightColor": "light-orange-700",
+            "folderNames": [
+                "composables"
+            ]
+        },
+    ],
+    "material-icon-theme.files.customClones": [
+        {
+            "name": "loader",
+            "base": "stencil",
+            "color": "blue-500",
+            "lightColor": "light-blue-700",
+            "fileNames": [
+                "loader.ts",
+                "loader.js"
+            ]
+        }
+    ]
+}
