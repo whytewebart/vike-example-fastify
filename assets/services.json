@@ -1,0 +1,434 @@
+{
+  "categories": [
+    {
+      "id": "website-applications",
+      "label": "Website & Applications",
+      "groups": [
+        {
+          "label": "Business Websites",
+          "services": [
+            "Corporate Website",
+            "Small Business Website",
+            "Personal Portfolio",
+            "Landing Page",
+            "Marketing Website",
+            "Multi-page Website"
+          ]
+        },
+        {
+          "label": "E-commerce",
+          "services": [
+            "Online Store",
+            "Shopify Store",
+            "WooCommerce Store",
+            "Product Catalog",
+            "Subscription Website",
+            "Booking Website"
+          ]
+        },
+        {
+          "label": "Custom Applications",
+          "services": [
+            "Web Application",
+            "SaaS Platform",
+            "Customer Portal",
+            "Client Dashboard",
+            "Admin Dashboard",
+            "Internal Business Tool",
+            "CRM",
+            "ERP",
+            "Inventory System",
+            "School Management System",
+            "Healthcare Portal",
+            "Event Platform"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "development",
+      "label": "Development Services",
+      "groups": [
+        {
+          "label": "Frontend",
+          "services": [
+            "Frontend Development",
+            "Responsive Development",
+            "Component Development",
+            "UI Implementation",
+            "Dashboard Development",
+            "Progressive Web App (PWA)"
+          ]
+        },
+        {
+          "label": "Backend",
+          "services": [
+            "Backend Development",
+            "REST API Development",
+            "GraphQL API",
+            "Authentication",
+            "Database Design",
+            "File Storage",
+            "Payment Integration",
+            "Email Integration",
+            "SMS Integration",
+            "Third-party API Integration"
+          ]
+        },
+        {
+          "label": "Maintenance",
+          "services": [
+            "Bug Fixes",
+            "Feature Development",
+            "Website Maintenance",
+            "Application Maintenance",
+            "Performance Optimization",
+            "Refactoring",
+            "Technical Debt Cleanup",
+            "Legacy System Updates",
+            "Security Improvements"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "design",
+      "label": "Design",
+      "groups": [
+        {
+          "label": "UI / UX",
+          "services": [
+            "Website UI Design",
+            "Dashboard Design",
+            "Mobile App UI",
+            "Design Systems",
+            "Wireframes",
+            "Interactive Prototype"
+          ]
+        },
+        {
+          "label": "Branding",
+          "services": [
+            "Logo Design",
+            "Brand Identity",
+            "Brand Guidelines",
+            "Business Cards",
+            "Letterheads",
+            "Social Media Graphics",
+            "Marketing Materials"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cloud-devops",
+      "label": "Cloud & DevOps",
+      "groups": [
+        {
+          "label": "Infrastructure",
+          "services": [
+            "Server Setup",
+            "Linux Server Administration",
+            "VPS Configuration",
+            "Cloud Deployment",
+            "Docker",
+            "CI/CD",
+            "SSL Configuration",
+            "Domain Management",
+            "DNS Configuration",
+            "Email Server Setup",
+            "Website Migration",
+            "Backup Strategy",
+            "Monitoring"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "seo-marketing",
+      "label": "SEO & Marketing",
+      "groups": [
+        {
+          "label": "Optimization",
+          "services": [
+            "Technical SEO",
+            "On-page SEO",
+            "Website Audit",
+            "Speed Optimization",
+            "Google Analytics",
+            "Google Search Console",
+            "Schema Markup",
+            "Conversion Optimization"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ai-automation",
+      "label": "AI & Automation",
+      "groups": [
+        {
+          "label": "Automation",
+          "services": [
+            "AI Chatbot",
+            "OpenAI Integration",
+            "Workflow Automation",
+            "Business Process Automation",
+            "CRM Automation",
+            "Email Automation",
+            "SMS Automation",
+            "Data Processing",
+            "Reporting Dashboard"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cms-platforms",
+      "label": "CMS & Platforms",
+      "groups": [
+        {
+          "label": "Shopify",
+          "services": [
+            "Custom Theme",
+            "Theme Customization",
+            "Store Setup",
+            "Store Maintenance",
+            "App Integration"
+          ]
+        },
+        {
+          "label": "WordPress",
+          "services": [
+            "Custom Theme",
+            "Theme Customization",
+            "Plugin Development",
+            "WooCommerce",
+            "Elementor",
+            "Gutenberg"
+          ]
+        },
+        {
+          "label": "Other Platforms",
+          "services": [
+            "Webflow",
+            "Wix Studio",
+            "Framer",
+            "Squarespace"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "frontend-technologies",
+      "label": "Frontend Technologies",
+      "groups": [
+        {
+          "label": "Languages",
+          "services": [
+            "JavaScript",
+            "TypeScript"
+          ]
+        },
+        {
+          "label": "Frameworks",
+          "services": [
+            "Vue.js",
+            "Nuxt",
+            "React",
+            "Next.js",
+            "Astro",
+            "Vite"
+          ]
+        },
+        {
+          "label": "Styling",
+          "services": [
+            "Tailwind CSS",
+            "UnoCSS",
+            "Bootstrap",
+            "Sass",
+            "CSS",
+            "HTML"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "backend-technologies",
+      "label": "Backend Technologies",
+      "groups": [
+        {
+          "label": "JavaScript Runtime",
+          "services": [
+            "Node.js",
+            "Bun",
+            "Deno"
+          ]
+        },
+        {
+          "label": "PHP",
+          "services": [
+            "PHP",
+            "Laravel",
+            "Symfony"
+          ]
+        },
+        {
+          "label": "Python",
+          "services": [
+            "Python",
+            "Django",
+            "Flask",
+            "FastAPI"
+          ]
+        },
+        {
+          "label": ".NET",
+          "services": [
+            "C#",
+            "ASP.NET"
+          ]
+        },
+        {
+          "label": "Java",
+          "services": [
+            "Java",
+            "Spring Boot"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "databases",
+      "label": "Databases",
+      "groups": [
+        {
+          "label": "Database Technologies",
+          "services": [
+            "MySQL",
+            "PostgreSQL",
+            "SQLite",
+            "MongoDB",
+            "Redis",
+            "Firebase",
+            "Supabase",
+            "Appwrite"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mobile",
+      "label": "Mobile Development",
+      "groups": [
+        {
+          "label": "Platforms",
+          "services": [
+            "React Native",
+            "Expo",
+            "Progressive Web Apps",
+            "Android",
+            "iOS"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "apis-integrations",
+      "label": "APIs & Integrations",
+      "groups": [
+        {
+          "label": "Payments",
+          "services": [
+            "Stripe",
+            "PayPal",
+            "Square",
+            "Paystack"
+          ]
+        },
+        {
+          "label": "Communication",
+          "services": [
+            "Twilio",
+            "Mailgun",
+            "SendGrid"
+          ]
+        },
+        {
+          "label": "Authentication",
+          "services": [
+            "Auth0",
+            "Clerk",
+            "Firebase Auth",
+            "OAuth"
+          ]
+        },
+        {
+          "label": "Cloud Platforms",
+          "services": [
+            "AWS",
+            "Cloudflare",
+            "Vercel",
+            "Netlify",
+            "DigitalOcean"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "existing-project",
+      "label": "Help With Existing Project",
+      "groups": [
+        {
+          "label": "Existing Systems",
+          "services": [
+            "Existing Website",
+            "Existing Shopify Store",
+            "Existing WordPress Site",
+            "Existing Web App",
+            "Existing Mobile App",
+            "Existing API",
+            "Existing Database",
+            "Existing Server",
+            "Existing Codebase",
+            "Existing UI Design"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "consulting",
+      "label": "Consulting",
+      "groups": [
+        {
+          "label": "Professional Services",
+          "services": [
+            "Technical Consultation",
+            "Architecture Review",
+            "Code Review",
+            "Performance Audit",
+            "Security Audit",
+            "Product Discovery",
+            "Project Planning",
+            "CTO Advisory"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "other",
+      "label": "Other",
+      "groups": [
+        {
+          "label": "General",
+          "services": [
+            "Not Sure Yet (Need Advice)",
+            "Multiple Services",
+            "Something Else"
+          ]
+        }
+      ]
+    }
+  ]
+}
