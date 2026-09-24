@@ -48,10 +48,8 @@ declare global {
 			>;
 			unhead?: Vike.meta;
 			secrets?: Record<string, string>;
-			stream?:
-        | boolean
-        | 'node'
-        | 'web'
+			stream?: "simple" | "web";
+			pageProps?: Record<string, any>
 		}
 	}
 
@@ -63,4 +61,12 @@ declare global {
 	type PageContextWithApp = PageContext & {
 		app: NonNullable<PageContext["app"]>;
 	};
+}
+
+declare module "vue" {
+	interface ComponentCustomProperties {
+		$pageContext: PageContextClient & {
+			data: Record<string, any>;
+		};
+	}
 }

@@ -14,66 +14,76 @@ import {
   assertDataIsObject,
   callCumulativeHooks,
   objectAssign,
-  objectReplace,
 } from "./utils";
 import { Component } from "./types";
 import PageShell from "./PageShell.vue";
 import { useUnhead } from "./plugins/unhead";
 
 type ChangePage = (pageContext: PageContext) => Promise<void>;
+
+// Helper to normalize the Layout property into a consistent array
+const normalizeLayouts = (Layout: unknown): Component[] => {
+  if (!Layout) return [];
+  return Array.isArray(Layout) ? Layout : [Layout as Component];
+};
+
 async function createApp(pageContext: PageContext, ssr: boolean = true) {
   const pageContextRef = shallowRef(pageContext);
-  const dataRef = shallowRef(pageContext.data);
-
+  // Default to empty object instead of undefined to avoid reactivity issues
+  const dataRef = shallowRef(pageContext.data ?? {});
   const pageRef = shallowRef(pageContext.Page);
-  const layoutRef = shallowRef<Component[]>(
-    pageContext.config.Layout || ([] as any)
-  );
+  const layoutRef = shallowRef<Component[]>(normalizeLayouts(pageContext.config.Layout));
 
   const PageWithLayout = {
     render() {
-      if (!!layoutRef.value && layoutRef.value.length > 0) {
-        // Render Layouts as Nested
-        if (pageContextRef.value.config.nested) {
-          let RootComp = () => h(pageRef.value);
-          layoutRef.value.forEach((layout) => {
-            const Comp = RootComp;
-            RootComp = () => h(layout, null, Comp);
-          });
+      const layouts = layoutRef.value;
+      const PageVNode = h(pageRef.value);
 
-          return RootComp();
-        }
-
-        // Wrap <Page> with <Layout>
-        const app = h(
-          layoutRef.value[0],
-          {},
-          { default: () => h(pageRef.value) }
-        );
-
-        return app;
-      } else {
-        return h(pageRef.value);
+      if (!layouts || layouts.length === 0) {
+        return PageVNode;
       }
+
+      // Render Layouts as Nested (wrapping inside-out)
+      if (pageContextRef.value.config.nested) {
+        // .reduce() replaces the mutating `forEach` loop.
+        return layouts.reduce((childContent, LayoutComponent) => {
+          // Vue 3 best practice: pass component children as a `default` slot function
+          return h(LayoutComponent, null, { default: () => childContent });
+        }, PageVNode);
+      }
+
+      // Wrap <Page> with a single <Layout>
+      return h(layouts[0], null, { default: () => PageVNode });
     },
   };
 
-  const RootComponent = () => h(PageShell, null, () => h(PageWithLayout));
+  // Vue 3 best practice: use slots object for PageShell
+  const RootComponent = () => h(PageShell, null, { default: () => h(PageWithLayout) });
 
   const app: App = ssr
     ? createSSRApp(RootComponent)
     : createVueApp(RootComponent);
+
   objectAssign(pageContext, { app });
 
   const { onCreateApp } = pageContext.config;
   await callCumulativeHooks(onCreateApp, pageContext);
 
+  // Define it as a getter so it is always tied to the reactive shallowRef
+  Object.defineProperty(app.config.globalProperties, '$pageContext', {
+    get: () => pageContextRef.value,
+  });
+
+  // Note: Assuming setPageContext and setData are imported globally or elsewhere,
+  // as they were missing from your original imports list.
   setPageContext(app, pageContextRef);
   setData(app, dataRef);
-  // changePage() is called upon navigation, see +onRenderClient.ts
-  const changePage: ChangePage = async (pageContext: PageContext) => {
+
+  // changePage() is called upon client-side navigation
+  const changePage: ChangePage = async (newPageContext: PageContext) => {
     let returned = false;
     let err: unknown;
+
     app.config.errorHandler = (err_) => {
       if (returned) {
         console.error(err_);
@@ -81,15 +91,21 @@ async function createApp(pageContext: PageContext, ssr: boolean = true) {
         err = err_;
       }
     };
-    const data = pageContext.data ?? {};
+
+    const data = newPageContext.data ?? {};
     assertDataIsObject(data);
-    dataRef.value = pageContext.data;
-    pageContextRef.value = pageContext;
-    pageRef.value = pageContext.Page;
-    layoutRef.value = (pageContext.config.Layout ?? []) as any;
-    useUnhead(pageContext)
+
+    // Batch reactivity updates cleanly
+    dataRef.value = data;
+    pageContextRef.value = newPageContext;
+    pageRef.value = newPageContext.Page;
+    layoutRef.value = normalizeLayouts(newPageContext.config.Layout);
+
+    useUnhead(newPageContext);
+
     await nextTick();
     returned = true;
+
     if (err) throw err;
   };
 

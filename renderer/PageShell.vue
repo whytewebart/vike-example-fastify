@@ -7,6 +7,7 @@
       <slot />
     </div>
   </div>
+  <div viewport="teleports"></div>
 </template>
 
 <style lang="scss">

@@ -76,6 +76,10 @@ const meta: Config["meta"] = {
 		env: { server: true, client: true },
 	},
 
+	pageProps: {
+		env: { server: true, client: true },
+	},
+
 	ssr: {
 		env: { config: true },
 		effect: toggleSsrRelatedConfig,
