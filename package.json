@@ -38,6 +38,7 @@
 		"fastify": "^5.9.0",
 		"fastify-plugin": "^5.1.0",
 		"fastify-raw-body": "^5.0.0",
+		"gsap": "^3.15.0",
 		"js-cookie": "^3.0.8",
 		"json-schema-to-ts": "^3.1.1",
 		"node-html-parser": "^9.0.4",
